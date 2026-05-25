@@ -1,0 +1,846 @@
+<!doctype html>
+<!--
+  Hi.
+
+  This site is a single static file. No framework, no build step, no JS dependencies.
+  All CSS and JS are inline below. Everything degrades cleanly with JS off and respects
+  prefers-reduced-motion.
+
+  Source:  https://github.com/lars-1987/larsh.dev
+  Contact: larsh.dev@proton.me
+
+  — Lars
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lars Holmström — Systems-oriented builder</title>
+<meta name="description" content="Melbourne-based indie developer. Privacy-first tooling, native apps, and operationally practical systems. Projects and homelab." />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Lars Holmström — Systems-oriented builder" />
+<meta property="og:description" content="Privacy-first tooling, native apps, and operationally practical systems." />
+<meta property="og:url" content="https://larsh.dev" />
+<meta property="og:image" content="https://larsh.dev/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@larsitodev" />
+<meta name="twitter:image" content="https://larsh.dev/og.png" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="apple-touch-icon" href="favicon.svg" />
+
+<!-- Fonts: Bricolage Grotesque (display) + Geist (body/mono). Swap/self-host as noted in BUILD.md §6. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   TOKENS  (locked reference — BUILD.md §6)
+   ============================================================ */
+:root{
+  --bg:#0a0b0d; --bg-elevated:#121316; --bg-subtle:#16181c;
+  --fg:#f4f5f7; --muted:#8b9099; --muted-strong:#b4b9c0;
+  --border:#24262b; --border-strong:#34373d;
+  --accent:#4c8fff; --accent-hover:#6aa1ff; --accent-dim:rgba(76,143,255,.12);
+
+  --fs-xs:.78rem; --fs-sm:.9rem; --fs-base:1rem; --fs-md:1.2rem;
+  --fs-lg:1.6rem; --fs-xl:2.4rem; --fs-2xl:3.6rem; --fs-3xl:5rem;
+
+  --sp-1:.5rem; --sp-2:1rem; --sp-3:1.5rem; --sp-4:2rem;
+  --sp-5:3rem; --sp-6:4rem; --sp-7:6rem; --sp-8:8rem;
+
+  --ease:cubic-bezier(.16,1,.3,1); --dur:.6s;
+  --radius:14px; --maxw-text:64ch; --maxw-page:1100px;
+
+  --font-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --font-body:"Geist",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --font-mono:"Geist Mono",ui-monospace,"SFMono-Regular",monospace;
+}
+
+/* ============================================================
+   RESET / BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:var(--font-body);font-size:var(--fs-base);line-height:1.6;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+/* faint atmospheric depth — barely-perceptible (BUILD.md §6) */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(1200px 600px at 70% -10%, rgba(76,143,255,.06), transparent 60%),
+    radial-gradient(900px 500px at 0% 100%, rgba(76,143,255,.04), transparent 55%);
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.05;letter-spacing:-.02em}
+.mono{font-family:var(--font-mono);font-size:var(--fs-sm);letter-spacing:0}
+
+.wrap{max-width:var(--maxw-page);margin:0 auto;padding:0 var(--sp-4)}
+
+/* ============================================================
+   STICKY NAV
+   ============================================================ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:var(--sp-2) var(--sp-4);
+  background:rgba(10,11,13,.6);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;
+  opacity:0;transform:translateY(-100%);
+  transition:opacity .4s var(--ease),transform .4s var(--ease),border-color .4s var(--ease);
+}
+.nav.visible{opacity:1;transform:translateY(0)}
+.nav__name{font-family:var(--font-display);font-weight:600;font-size:var(--fs-md);letter-spacing:-.02em}
+.nav__links{display:flex;gap:var(--sp-3);align-items:center}
+.nav__links a{font-size:var(--fs-sm);color:var(--muted);transition:color .2s}
+.nav__links a:hover,.nav__links a.active{color:var(--fg)}
+.nav__links a.active{position:relative}
+.nav__links a.active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--accent);border-radius:2px}
+
+/* ============================================================
+   INTRO
+   ============================================================ */
+.intro{
+  min-height:100svh;display:flex;align-items:center;
+  position:relative;z-index:1;padding:var(--sp-7) 0;
+}
+.intro__grid{display:grid;grid-template-columns:auto 1fr;gap:var(--sp-6);align-items:center}
+.intro__photo{
+  width:200px;height:200px;object-fit:cover;border-radius:50%;
+  border:1px solid var(--border);
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.02);
+}
+.intro__lede{font-family:var(--font-display);font-weight:600;
+  font-size:clamp(2rem,5vw,var(--fs-3xl));line-height:1.04;letter-spacing:-.03em;
+  max-width:18ch;margin-bottom:var(--sp-3);
+}
+.intro__lede .dim{color:var(--muted-strong)}
+.intro__sub{color:var(--muted);font-size:var(--fs-md);max-width:46ch;margin-bottom:var(--sp-4)}
+.intro__links{display:flex;gap:var(--sp-2);flex-wrap:wrap;margin-top:var(--sp-3)}
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+.sec-header{text-align:center;margin-bottom:var(--sp-6)}
+.sec-label{
+  font-family:var(--font-mono);font-size:var(--fs-xs);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:var(--sp-2);
+}
+.sec-head{font-size:var(--fs-xl);letter-spacing:-.02em;margin-bottom:var(--sp-2)}
+.sec-intro{color:var(--muted);max-width:var(--maxw-text);margin:0 auto;font-size:var(--fs-md)}
+
+/* ============================================================
+   PROJECT TIMELINE  (full-height sections, scroll-driven reveal)
+   ============================================================ */
+.projects{position:relative;z-index:1;padding:var(--sp-7) 0}
+.project{
+  min-height:100svh;display:flex;align-items:center;
+  padding:var(--sp-6) 0;position:relative;
+}
+.project__inner{
+  display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-6);align-items:center;width:100%;
+}
+/* SIDE-BY-SIDE (portrait/phone apps): media right by default; .project--flip puts media left */
+.project__media{position:relative}
+.project--flip .project__media{order:2}
+.project--flip .project__body{order:1}
+
+/* WIDE (web/desktop): screenshot stacked ABOVE text, single column, centered, roomy */
+.project--wide .project__inner{grid-template-columns:1fr;gap:var(--sp-4);max-width:920px;margin:0 auto;justify-items:center;text-align:left}
+.project--wide .project__media{width:100%}
+.project--wide .project__body{width:100%;max-width:760px}
+
+.shot{
+  width:100%;border-radius:var(--radius);border:1px solid var(--border);
+  background:var(--bg-elevated);box-shadow:0 40px 80px -30px rgba(0,0,0,.7);
+  aspect-ratio:16/10;object-fit:cover;
+}
+.shot--phone{aspect-ratio:9/16;max-width:300px;margin:0 auto}
+
+/* ============================================================
+   CAROUSEL  (cross-fade, no horizontal motion — BUILD.md asks
+   for "carousel without moving between them")
+   ============================================================ */
+.carousel{position:relative;width:100%}
+.carousel--phone{max-width:340px;margin:0 auto;padding:10px;
+  background:linear-gradient(160deg,#1a1c20,#0e1013);
+  border-radius:46px;border:1px solid var(--border-strong);
+  box-shadow:0 50px 90px -30px rgba(0,0,0,.75),
+             inset 0 0 0 1px rgba(255,255,255,.04);
+}
+.carousel--phone::before{
+  /* subtle dynamic-island hint at the top of the device */
+  content:"";position:absolute;left:50%;top:18px;transform:translateX(-50%);
+  width:88px;height:24px;border-radius:14px;background:#000;
+  z-index:2;opacity:.9;
+}
+.carousel__stage{
+  position:relative;width:100%;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--bg-elevated);
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.7);
+  overflow:hidden;
+}
+.carousel--wide .carousel__stage{aspect-ratio:16/10}
+.carousel--phone .carousel__stage{
+  aspect-ratio:1179/2556;border-radius:36px;border:0;box-shadow:none;
+  background:#000;
+}
+.carousel__slide{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;opacity:0;
+  transition:opacity 1.1s var(--ease);
+  will-change:opacity;
+}
+.carousel--phone .carousel__dots{margin-top:var(--sp-3)}
+.carousel__slide.is-active{opacity:1}
+.carousel__dots{
+  display:flex;justify-content:center;gap:.55em;
+  margin-top:var(--sp-2);
+}
+.carousel__dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--border-strong);border:0;padding:0;cursor:pointer;
+  transition:background .25s var(--ease),width .25s var(--ease);
+}
+.carousel__dot:hover{background:var(--muted)}
+.carousel__dot.is-active{background:var(--accent);width:18px;border-radius:3px}
+@media (prefers-reduced-motion:reduce){
+  .carousel__slide{transition:none}
+}
+
+.project__num{font-family:var(--font-mono);font-size:var(--fs-sm);color:var(--muted);margin-bottom:var(--sp-1)}
+.project__num.wip{color:var(--accent)}
+.project__name{font-size:var(--fs-2xl);letter-spacing:-.03em;margin-bottom:var(--sp-2)}
+.project__lede{color:var(--muted-strong);font-size:var(--fs-md);margin-bottom:var(--sp-3);max-width:48ch}
+.project__tech{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--muted);
+  margin-bottom:var(--sp-3);line-height:1.7}
+.project__points{list-style:none;display:flex;flex-direction:column;gap:var(--sp-2);margin-bottom:var(--sp-4)}
+.project__points li{position:relative;padding-left:1.4em;color:var(--muted-strong);font-size:var(--fs-sm);line-height:1.55}
+.project__points li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:2px;background:var(--accent)}
+.project__points strong{color:var(--fg);font-weight:600}
+.project__cta{display:flex;gap:var(--sp-2);flex-wrap:wrap;margin-top:var(--sp-3)}
+.cta{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  gap:9px;padding:11px 22px;font-size:var(--fs-sm);font-weight:600;
+  border-radius:12px;background:var(--bg-elevated);border:1px solid var(--border);
+  color:var(--fg);overflow:hidden;isolation:isolate;
+  transition:background .35s var(--ease),border-color .35s var(--ease),
+    box-shadow .35s var(--ease),transform .35s var(--ease);
+}
+.cta:hover{
+  background:var(--bg-subtle);border-color:var(--border-strong);
+  box-shadow:0 14px 30px -14px rgba(0,0,0,.7);
+}
+.cta__lead{
+  position:relative;z-index:2;display:inline-flex;flex:none;
+  width:16px;height:16px;
+  transition:opacity .2s ease-out;
+}
+.cta__lead svg{width:100%;height:100%}
+.cta:hover .cta__lead{opacity:0}
+.cta__label{
+  position:relative;z-index:2;display:inline-block;
+  transition:transform .25s var(--ease);
+}
+.cta:hover .cta__label{transform:translateX(-22px)}
+.cta__trail{
+  position:absolute;right:20px;top:50%;z-index:2;
+  width:14px;height:14px;
+  transform:translate(-8px,-50%);opacity:0;
+  transition:transform .25s var(--ease),opacity .25s var(--ease);
+}
+.cta__trail svg{width:100%;height:100%;display:block}
+.cta:hover .cta__trail{transform:translate(0,-50%);opacity:1}
+.cta--disabled{color:var(--muted);opacity:.55;cursor:default;pointer-events:none}
+.cta--disabled .cta__label{transform:none!important}
+@media (prefers-reduced-motion:reduce){
+  .cta,.cta__lead,.cta__label,.cta__trail{transition:none}
+  .cta:hover .cta__label,.cta:hover .cta__lead{transform:none;opacity:1}
+  .cta:hover .cta__trail{opacity:0}
+}
+
+/* DIRECTIONAL ENTRANCE — focal point shifts down the page (Apple-style).
+   Media and text enter from slightly different offsets, then settle. */
+.project__media.reveal{transform:translateY(28px) translateX(-18px)}
+.project__body.reveal{transform:translateY(28px) translateX(14px)}
+.project--flip .project__media.reveal{transform:translateY(28px) translateX(18px)}
+.project--flip .project__body.reveal{transform:translateY(28px) translateX(-14px)}
+.project--wide .project__media.reveal{transform:translateY(34px) scale(.985)}
+.project--wide .project__body.reveal{transform:translateY(22px)}
+.project__media.reveal.in,.project__body.reveal.in{transform:none}
+
+/* ============================================================
+   HOMELAB
+   ============================================================ */
+.homelab{position:relative;z-index:1;padding:var(--sp-7) 0 var(--sp-8)}
+.lab-specs{
+  max-width:880px;margin:0 auto;
+  border-top:1px solid var(--border);
+}
+.lab-row{
+  display:grid;grid-template-columns:200px 1fr;gap:var(--sp-5);
+  padding:var(--sp-4) 0;
+  border-bottom:1px solid var(--border);
+}
+.lab-row__cat{
+  font-family:var(--font-mono);font-size:var(--fs-xs);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);padding-top:.15em;
+}
+.lab-row__items{display:flex;flex-direction:column;gap:.85em}
+.lab-row__item{font-size:var(--fs-sm);line-height:1.55;color:var(--muted-strong)}
+.lab-row__item b{color:var(--fg);font-weight:600}
+.lab-row__item .sep{color:var(--border-strong);margin:0 .55em}
+@media (max-width:780px){
+  .lab-row{grid-template-columns:1fr;gap:var(--sp-2);padding:var(--sp-3) 0}
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.foot{position:relative;z-index:1;border-top:1px solid var(--border);padding:var(--sp-6) 0;color:var(--muted)}
+.foot__row{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);flex-wrap:wrap}
+.foot__links{display:flex;gap:var(--sp-3)}
+.foot__links a{color:var(--muted);transition:color .2s;display:inline-flex;align-items:center;gap:.4em;font-size:var(--fs-sm)}
+.foot__links a:hover{color:var(--fg)}
+.foot__links svg{width:16px;height:16px}
+.foot__meta{font-family:var(--font-mono);font-size:var(--fs-xs);line-height:1.7;display:inline-flex;align-items:center;gap:.4em}
+.foot__coffee{width:14px;height:14px;flex:none;color:var(--muted-strong)}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal-stagger>*{opacity:0;transform:translateY(20px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease)}
+.reveal-stagger.in>*{opacity:1;transform:none}
+.reveal-stagger.in>*:nth-child(1){transition-delay:.05s}
+.reveal-stagger.in>*:nth-child(2){transition-delay:.12s}
+.reveal-stagger.in>*:nth-child(3){transition-delay:.19s}
+.reveal-stagger.in>*:nth-child(4){transition-delay:.26s}
+.reveal-stagger.in>*:nth-child(5){transition-delay:.33s}
+.reveal-stagger.in>*:nth-child(6){transition-delay:.40s}
+
+/* ============================================================
+   RESPONSIVE  (mobile: drop the two-col, stack cleanly — BUILD.md §8)
+   ============================================================ */
+@media (max-width:780px){
+  .intro__grid{grid-template-columns:1fr;gap:var(--sp-4)}
+  .intro__photo{width:140px;height:170px}
+  .project{min-height:auto;padding:var(--sp-6) 0}
+  .project__inner{grid-template-columns:1fr!important;gap:var(--sp-4)}
+  /* on mobile, media always stacks ABOVE text regardless of desktop side/flip */
+  .project--side .project__media,.project--flip .project__media{order:0!important}
+  .project--side .project__body,.project--flip .project__body{order:1!important}
+  .project__name{font-size:var(--fs-xl)}
+  .nav__name{font-size:var(--fs-base)}
+  .nav__links{gap:var(--sp-2)}
+}
+
+/* ============================================================
+   REDUCED MOTION  (kill all motion, content visible — BUILD.md §8)
+   ============================================================ */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal,.reveal-stagger>*,
+  .project__media.reveal,.project__body.reveal,
+  .project--flip .project__media.reveal,.project--flip .project__body.reveal,
+  .project--wide .project__media.reveal,.project--wide .project__body.reveal{opacity:1!important;transform:none!important}
+  .nav{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================ ICON SPRITE (hidden) ============================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-globe" viewBox="0 0 256 256"><path fill="currentColor" d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24Zm88 104a87.61 87.61 0 0 1-3.33 24h-38.51a157.44 157.44 0 0 0 0-48h38.51A87.61 87.61 0 0 1 216 128Zm-114 40h52a115.11 115.11 0 0 1-26 45 115.27 115.27 0 0 1-26-45Zm-3.9-16a140.84 140.84 0 0 1 0-48h59.88a140.84 140.84 0 0 1 0 48ZM40 128a87.61 87.61 0 0 1 3.33-24h38.51a157.44 157.44 0 0 0 0 48H43.33A87.61 87.61 0 0 1 40 128Zm114-40h-52a115.11 115.11 0 0 1 26-45 115.27 115.27 0 0 1 26 45Zm52.33 0h-35.74a124.12 124.12 0 0 0-22.83-46.6A88.43 88.43 0 0 1 206.37 88ZM78.24 41.4A124.12 124.12 0 0 0 55.41 88H19.63a88.43 88.43 0 0 1 58.61-46.6ZM19.63 168h35.78a124.12 124.12 0 0 0 22.83 46.6A88.43 88.43 0 0 1 19.63 168Zm158.13 46.6A124.12 124.12 0 0 0 200.59 168h35.78a88.43 88.43 0 0 1-58.61 46.6Z"/></symbol>
+    <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M17.543 12.724c-.02-2.013 1.646-2.986 1.72-3.034-.937-1.37-2.396-1.558-2.914-1.58-1.24-.124-2.422.73-3.053.73-.63 0-1.602-.712-2.637-.693-1.355.02-2.605.788-3.302 2.003-1.408 2.444-.36 6.06 1.01 8.04.67.968 1.466 2.056 2.506 2.018 1.007-.04 1.388-.653 2.602-.653 1.215 0 1.56.653 2.62.634 1.082-.02 1.767-.988 2.428-1.962.764-1.128 1.08-2.222 1.098-2.28-.024-.01-2.105-.81-2.127-3.212M15.57 6.84c.55-.67.921-1.598.819-2.524-.79.033-1.749.527-2.316 1.195-.509.593-.954 1.54-.834 2.448.88.068 1.78-.448 2.332-1.118"/></symbol>
+    <symbol id="i-github" viewBox="0 0 256 256"><path fill="currentColor" d="M208.31 75.68A59.78 59.78 0 0 0 202.93 28a8 8 0 0 0-6.93-4 59.75 59.75 0 0 0-48 24h-25.05a59.75 59.75 0 0 0-48-24 8 8 0 0 0-6.93 4 59.78 59.78 0 0 0-5.38 47.68A58.14 58.14 0 0 0 56 104v8a56.06 56.06 0 0 0 48.44 55.47A39.8 39.8 0 0 0 96 192v8H72a24 24 0 0 1-24-24A40 40 0 0 0 8 136a8 8 0 0 0 0 16 24 24 0 0 1 24 24 40 40 0 0 0 40 40h24v16a8 8 0 0 0 16 0v-40a24 24 0 0 1 48 0v40a8 8 0 0 0 16 0v-40a39.8 39.8 0 0 0-8.44-24.53A56.06 56.06 0 0 0 200 112v-8a58.14 58.14 0 0 0-8.31-28.32z"/></symbol>
+    <symbol id="i-arrow-ur" viewBox="0 0 256 256"><path fill="currentColor" d="M200 64v104a8 8 0 0 1-16 0V83.3L69.66 197.66a8 8 0 0 1-11.32-11.32L172.69 72H88a8 8 0 0 1 0-16h104a8 8 0 0 1 8 8z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 256 256"><path fill="currentColor" d="M214.75 211.71l-62.6-91.21 61.77-67.97a8 8 0 0 0-11.84-10.76l-58.84 64.74-41.66-60.7A8 8 0 0 0 94.69 36H48a8 8 0 0 0-6.6 12.52l62.6 91.2-61.77 67.98a8 8 0 1 0 11.84 10.76l58.84-64.74 41.66 60.7A8 8 0 0 0 161.31 220H208a8 8 0 0 0 6.6-12.52z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 256 256"><path fill="currentColor" d="M224 48H32a8 8 0 0 0-8 8v136a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a8 8 0 0 0-8-8zM98.71 128 40 181.81V74.19zm11.84 10.85 12 11.05a8 8 0 0 0 10.82 0l12-11.05 47 43.15H63.5zM157.29 128 216 74.18v107.63z"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============================ NAV ============================ -->
+<nav class="nav" id="nav" aria-label="Primary">
+  <a href="#top" class="nav__name">Lars&nbsp;Holmström</a>
+  <div class="nav__links">
+    <a href="#projects" data-nav="projects">Projects</a>
+    <a href="#homelab" data-nav="homelab">Homelab</a>
+  </div>
+</nav>
+
+<main id="top">
+
+<!-- ============================ INTRO ============================ -->
+<section class="intro wrap" aria-label="Introduction">
+  <div class="intro__grid reveal-stagger" id="intro-grid">
+    <img class="intro__photo"
+         src="assets/portrait.JPG"
+         alt="Portrait of Lars Holmström"
+         width="200" height="200"
+         onerror="this.style.background='var(--bg-subtle)';this.removeAttribute('src');" />
+    <div>
+      <h1 class="intro__lede">I build native apps and <span class="dim">privacy-first web tools.</span></h1>
+      <p class="intro__sub">Melbourne, cyber-security graduate, everything here shipped solo.</p>
+      <div class="intro__links">
+        <a class="cta" href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+          <span class="cta__lead"><svg aria-hidden="true"><use href="#i-x"/></svg></span>
+          <span class="cta__label">@larsitodev</span>
+          <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+        </a>
+        <a class="cta" href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <span class="cta__lead"><svg aria-hidden="true"><use href="#i-github"/></svg></span>
+          <span class="cta__label">lars-1987</span>
+          <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+        </a>
+        <a class="cta" href="mailto:larsh.dev@proton.me" aria-label="Email">
+          <span class="cta__lead"><svg aria-hidden="true"><use href="#i-mail"/></svg></span>
+          <span class="cta__label">larsh.dev@proton.me</span>
+          <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PROJECTS ============================ -->
+<section class="projects wrap" id="projects" aria-label="Projects">
+  <div class="reveal sec-header" id="projects-head">
+    <p class="sec-label">Work</p>
+    <h2 class="sec-head">In progress, and shipped.</h2>
+    <p class="sec-intro">Newest first.</p>
+  </div>
+
+  <!-- ----- Bedcheck (WIP, iOS, side) ----- -->
+  <article class="project project--side">
+    <div class="project__inner">
+      <div class="project__media reveal">
+        <div class="carousel carousel--phone" data-carousel>
+          <div class="carousel__stage">
+            <img class="carousel__slide is-active" src="assets/bedcheck-1.PNG" alt="Bedcheck screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/bedcheck-2.PNG" alt="Bedcheck screen" loading="lazy" />
+          </div>
+          <div class="carousel__dots" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="project__body reveal">
+        <p class="project__num wip">in development</p>
+        <h3 class="project__name">Bedcheck</h3>
+        <p class="project__lede">An iOS accountability app for your <em>bedtime</em>, not your wake time. Escalating notifications, an integrated wake alarm, and HealthKit tracking — no streaks, scores, or shame metrics.</p>
+        <p class="project__tech">Swift 6 (strict concurrency) · iOS 26 · SwiftUI + @Observable · SwiftData · AlarmKit · ActivityKit · WidgetKit · HealthKit · AppIntents</p>
+        <ul class="project__points reveal-stagger">
+          <li><strong>Built against AlarmKit on day one — before the docs existed.</strong> AlarmKit shipped in iOS 26 with little beyond one WWDC session, so I read the <code>.swiftinterface</code> directly to verify API shapes. Found that Xcode silently drops <code>NSAlarmKitUsageDescription</code> from the generated Info.plist (not in its key allowlist), that <code>stopButton</code> was quietly deprecated in 26.1, and that a missing Live Activity widget leaves alarms stuck as an empty Dynamic Island — all from device dogfooding, not documentation.</li>
+          <li><strong>Three-rail reliability for the load-bearing feature.</strong> If the wake alarm fails, someone oversleeps — so it's layered: local on-device notifications, the system-scheduled AlarmKit alarm (fires through Silent/Focus/lock/force-quit), and a best-effort Live Activity. Each rail can fail without breaking the safety net. A documented "independence invariant" guarantees no server roundtrip is ever in the alarm's critical path.</li>
+          <li><strong>Known limitations treated as decisions, not embarrassments.</strong> A ~7,000-line spec written before code, with deviations tracked in a decisions log so docs never drift — and every accepted MVP failure mode documented with why it's acceptable and what fixes it in v1.1.</li>
+        </ul>
+        <div class="project__cta">
+          <span class="cta cta--disabled" aria-disabled="true">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <span class="cta__label">Visit site · coming soon</span>
+          </span>
+          <span class="cta cta--disabled" aria-disabled="true">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-apple"/></svg></span>
+            <span class="cta__label">App Store · coming soon</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ----- Helio (WIP, macOS, wide) ----- -->
+  <article class="project project--wide">
+    <div class="project__inner">
+      <div class="project__media reveal">
+        <div class="carousel carousel--wide" data-carousel>
+          <div class="carousel__stage">
+            <img class="carousel__slide is-active" src="assets/helio-1.png" alt="Helio screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/helio-2.png" alt="Helio screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/helio-3.png" alt="Helio screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/helio-4.png" alt="Helio screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/helio-5.png" alt="Helio screen" loading="lazy" />
+          </div>
+          <div class="carousel__dots" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="project__body reveal">
+        <p class="project__num wip">in development</p>
+        <h3 class="project__name">Helio</h3>
+        <p class="project__lede">A native macOS app for solo multi-project people — schedule focused work sessions, capture context at the end of each, and pick up exactly where you left off. Every project gets its time.</p>
+        <p class="project__tech">SwiftUI · SwiftData · CloudKit · Swift 6 (strict concurrency) · EventKit · macOS 14+</p>
+        <ul class="project__points reveal-stagger">
+          <li><strong>The unit of work is the project, not the task.</strong> Task-first tools break for people running several long-running projects in parallel — the failure isn't forgetting a task, it's neglecting a whole project for weeks because re-loading the context feels insurmountable.</li>
+          <li><strong>A forced wind-down ritual closes every session.</strong> Structured capture of what got done, what's unfinished, and what's next — which auto-loads when you start the next session for that project. The chain stays unbroken across weeks.</li>
+          <li><strong>Getting the carry-forward chain right under CloudKit needed a non-obvious data model.</strong> Storing "next session" tasks as a JSON blob works on one device but breaks under CloudKit's last-write-per-field merge — a stale device silently overwrites the other's tasks. The fix: decompose the blob into individual <code>PendingTask</code> CloudKit records, each with its own merge resolution, materialised atomically into session tasks on next start. The broader lesson: schema choices that look fine on one device hide their pathologies until you add distribution.</li>
+        </ul>
+        <div class="project__cta">
+          <span class="cta cta--disabled" aria-disabled="true">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <span class="cta__label">Visit site · coming soon</span>
+          </span>
+          <span class="cta cta--disabled" aria-disabled="true">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-apple"/></svg></span>
+            <span class="cta__label">App Store · coming soon</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ----- MetaStrip (web, wide) ----- -->
+  <article class="project project--wide">
+    <div class="project__inner">
+      <div class="project__media reveal">
+        <div class="carousel carousel--wide" data-carousel>
+          <div class="carousel__stage">
+            <img class="carousel__slide is-active" src="assets/metastrip-1.png" alt="MetaStrip terminal interface" loading="lazy" />
+            <img class="carousel__slide" src="assets/metastrip-2.png" alt="MetaStrip terminal interface" loading="lazy" />
+          </div>
+          <div class="carousel__dots" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="project__body reveal">
+        <p class="project__num">shipped · open source</p>
+        <h3 class="project__name">MetaStrip</h3>
+        <p class="project__lede">Browser-based metadata removal — GPS, EXIF, AI tags, author data stripped from photos, docs, video and audio. Nothing ever leaves your device.</p>
+        <p class="project__tech">Next.js · 100% client-side · MIT · piexifjs / pdf-lib / jszip + custom binary parsers</p>
+        <ul class="project__points reveal-stagger">
+          <li><strong>Custom equal-size replacement for audio &amp; video.</strong> Hand-wrote an in-browser MP4 atom walker that swaps metadata atoms for <code>free</code> atoms of identical size — plus custom ID3/Vorbis/RIFF parsers replacing blocks with equal-length <code>PADDING</code>/<code>JUNK</code>. No length recomputation, no broken offset chains, playback never breaks.</li>
+          <li><strong>Structural privacy, not a promise.</strong> Zero upload, zero server, zero cache — verifiable in the Network tab. The guarantee is the architecture.</li>
+          <li><strong>Deliberate library-vs-custom split.</strong> Mature libs for the well-trodden image/PDF/Office paths; bespoke parsers only where byte-level control was required.</li>
+        </ul>
+        <div class="project__cta">
+          <a class="cta" href="https://metastrip.app" target="_blank" rel="noopener noreferrer">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <span class="cta__label">Visit site</span>
+            <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+          <a class="cta" href="https://github.com/lars-1987/metastrip" target="_blank" rel="noopener noreferrer">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-github"/></svg></span>
+            <span class="cta__label">Source</span>
+            <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ----- SanctumPDF (web, wide) ----- -->
+  <article class="project project--wide">
+    <div class="project__inner">
+      <div class="project__media reveal">
+        <div class="carousel carousel--wide" data-carousel>
+          <div class="carousel__stage">
+            <img class="carousel__slide is-active" src="assets/sanctumpdf-1.png" alt="SanctumPDF interface" loading="lazy" />
+            <img class="carousel__slide" src="assets/sanctumpdf-2.png" alt="SanctumPDF interface" loading="lazy" />
+            <img class="carousel__slide" src="assets/sanctumpdf-3.png" alt="SanctumPDF interface" loading="lazy" />
+            <img class="carousel__slide" src="assets/sanctumpdf-4.png" alt="SanctumPDF interface" loading="lazy" />
+          </div>
+          <div class="carousel__dots" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="project__body reveal">
+        <p class="project__num">shipped</p>
+        <h3 class="project__name">SanctumPDF</h3>
+        <p class="project__lede">Privacy-first PDF &amp; financial-file conversion PWA. Processing happens in the browser; files are never persisted server-side.</p>
+        <p class="project__tech">Next.js · Tailwind · Supabase · Stripe · Vercel · Wasm: pdf-lib / pdf.js / QPDF</p>
+        <ul class="project__points reveal-stagger">
+          <li><strong>Client-heavy, server-light.</strong> Wasm does the PDF work in-browser; the server only handles auth, payments and licence checks. Files live in memory and vanish on tab close.</li>
+          <li><strong>Avoided the AGPL trap.</strong> Chose pdf-lib + QPDF Wasm over Ghostscript/MuPDF — cut the Wasm payload ~7× (≈4MB → ≈580KB compressed) and removed a licensing landmine.</li>
+          <li><strong>14-locale i18n.</strong> SEO-driven internationalisation expanded the indexed surface from ~36 to 335+ pages.</li>
+        </ul>
+        <div class="project__cta">
+          <a class="cta" href="https://sanctumpdf.com" target="_blank" rel="noopener noreferrer">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <span class="cta__label">Visit site</span>
+            <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ----- Renew (iOS, side) ----- -->
+  <article class="project project--side project--flip">
+    <div class="project__inner">
+      <div class="project__media reveal">
+        <div class="carousel carousel--phone" data-carousel>
+          <div class="carousel__stage">
+            <img class="carousel__slide is-active" src="assets/renew-1.PNG" alt="Renew app screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/renew-2.PNG" alt="Renew app screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/renew-3.PNG" alt="Renew app screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/renew-4.PNG" alt="Renew app screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/renew-5.PNG" alt="Renew app screen" loading="lazy" />
+          </div>
+          <div class="carousel__dots" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="project__body reveal">
+        <p class="project__num">shipped</p>
+        <h3 class="project__name">Renew</h3>
+        <p class="project__lede">Skincare tracking with real analytics — and an OCR→AI pipeline that reads a product label and structures it.</p>
+        <p class="project__tech">React Native · Expo · Supabase · OCR + Gemini</p>
+        <ul class="project__points reveal-stagger">
+          <li><strong>OCR → Gemini extraction pipeline.</strong> Point the camera at a product; OCR lifts the text, Gemini parses it into structured INCI / brand / product data and translates Korean &amp; Japanese labels into a normalised, searchable form.</li>
+          <li><strong>Analytics as the differentiator.</strong> Skin-score trending, ingredient-conflict detection, and time-lagged correlation linking a breakout to something used days earlier.</li>
+          <li><strong>Backed by Supabase — on purpose.</strong> A real backend where longitudinal cross-device data warrants it, in a portfolio that otherwise defaults to on-device.</li>
+        </ul>
+        <div class="project__cta">
+          <a class="cta" href="https://getrenew.app" target="_blank" rel="noopener noreferrer">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <span class="cta__label">Visit site</span>
+            <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+          <a class="cta" href="https://apps.apple.com/us/app/renew-skincare-tracker/id6758534567" target="_blank" rel="noopener noreferrer">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-apple"/></svg></span>
+            <span class="cta__label">Visit App Store</span>
+            <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ----- Vesper (iOS, side) ----- -->
+  <article class="project project--side">
+    <div class="project__inner">
+      <div class="project__media reveal">
+        <div class="carousel carousel--phone" data-carousel>
+          <div class="carousel__stage">
+            <img class="carousel__slide is-active" src="assets/vesper-1.PNG" alt="Vesper app screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/vesper-2.PNG" alt="Vesper app screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/vesper-3.PNG" alt="Vesper app screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/vesper-4.PNG" alt="Vesper app screen" loading="lazy" />
+          </div>
+          <div class="carousel__dots" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="project__body reveal">
+        <p class="project__num">shipped</p>
+        <h3 class="project__name">Vesper</h3>
+        <p class="project__lede">Multilingual contemplative scripture app with a dynamic time-of-day sky system. Fully on-device.</p>
+        <p class="project__tech">Expo · React Native · on-device SQLite · RevenueCat · no backend</p>
+        <ul class="project__points reveal-stagger">
+          <li><strong>Two-database design.</strong> A read-only content DB (~94MB, four translations) cleanly separated from a user-data DB — shippable content distinct from user state.</li>
+          <li><strong>No backend, by design.</strong> Privacy plus zero infra cost, consistent across the portfolio.</li>
+          <li><strong>Dynamic sky system.</strong> Seven time-of-day phases cycle through the day — atmosphere and craft without a server.</li>
+        </ul>
+        <div class="project__cta">
+          <a class="cta" href="https://tryvesper.app" target="_blank" rel="noopener noreferrer">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <span class="cta__label">Visit site</span>
+            <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+          <a class="cta" href="https://apps.apple.com/us/app/vesper-daily-scripture/id6764037293" target="_blank" rel="noopener noreferrer">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-apple"/></svg></span>
+            <span class="cta__label">Visit App Store</span>
+            <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ----- Virtus (iOS, side) ----- -->
+  <article class="project project--side project--flip">
+    <div class="project__inner">
+      <div class="project__media reveal">
+        <div class="carousel carousel--phone" data-carousel>
+          <div class="carousel__stage">
+            <img class="carousel__slide is-active" src="assets/virtus-1.PNG" alt="Virtus app screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/virtus-2.PNG" alt="Virtus app screen" loading="lazy" />
+            <img class="carousel__slide" src="assets/virtus-3.PNG" alt="Virtus app screen" loading="lazy" />
+          </div>
+          <div class="carousel__dots" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="project__body reveal">
+        <p class="project__num">shipped</p>
+        <h3 class="project__name">Virtus</h3>
+        <p class="project__lede">Stoic daily-wisdom and journaling — 150 public-domain passages, entirely on-device.</p>
+        <p class="project__tech">Expo · React Native · RevenueCat · PostHog (cookieless) · no backend</p>
+        <ul class="project__points reveal-stagger">
+          <li><strong>On-device content pipeline.</strong> A curated passage set with journaling prompts, shipped without any server dependency.</li>
+          <li><strong>Shared design system.</strong> The same architecture cleanly reskins into sibling apps — systematised, not copy-pasted.</li>
+        </ul>
+        <div class="project__cta">
+          <a class="cta" href="https://getvirtus.app" target="_blank" rel="noopener noreferrer">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <span class="cta__label">Visit site</span>
+            <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+          <a class="cta" href="https://apps.apple.com/au/app/virtus-stoic-wisdom-journal/id6761154032" target="_blank" rel="noopener noreferrer">
+            <span class="cta__lead"><svg aria-hidden="true"><use href="#i-apple"/></svg></span>
+            <span class="cta__label">Visit App Store</span>
+            <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ============================ HOMELAB ============================ -->
+<section class="homelab wrap" id="homelab" aria-label="Homelab">
+  <div class="reveal sec-header" id="homelab-head">
+    <p class="sec-label">Homelab</p>
+    <h2 class="sec-head">What I run.</h2>
+    <p class="sec-intro">Services I operate and maintain at home, across a few stacks.</p>
+  </div>
+
+  <div class="lab-specs reveal-stagger" id="lab-grid">
+    <div class="lab-row">
+      <div class="lab-row__cat">Virtualisation</div>
+      <div class="lab-row__items">
+        <div class="lab-row__item"><b>Proxmox</b><span class="sep">·</span>VM/LXC host running everything below</div>
+        <div class="lab-row__item"><b>Docker + Compose</b><span class="sep">·</span>service deployment &amp; orchestration</div>
+        <div class="lab-row__item"><b>Portainer</b><span class="sep">·</span>container management across hosts</div>
+        <div class="lab-row__item"><b>Linux</b><span class="sep">·</span>Ubuntu / Arch / Debian, headless</div>
+        <div class="lab-row__item"><b>Arch VM + systemd</b><span class="sep">·</span>persistent Python Discord bot (PUBG API + Steam RSS)</div>
+      </div>
+    </div>
+    <div class="lab-row">
+      <div class="lab-row__cat">Networking &amp; access</div>
+      <div class="lab-row__items">
+        <div class="lab-row__item"><b>Unifi</b><span class="sep">·</span>managed network + segmentation</div>
+        <div class="lab-row__item"><b>Caddy</b><span class="sep">·</span>reverse proxy, automatic TLS</div>
+        <div class="lab-row__item"><b>PiHole + Unbound</b><span class="sep">·</span>DNS filtering with recursive resolution — no upstream resolver</div>
+        <div class="lab-row__item"><b>Tailscale</b><span class="sep">·</span>WireGuard-based secure remote access</div>
+      </div>
+    </div>
+    <div class="lab-row">
+      <div class="lab-row__cat">Storage</div>
+      <div class="lab-row__items">
+        <div class="lab-row__item"><b>ZFS</b><span class="sep">·</span>snapshots, integrity, redundancy</div>
+      </div>
+    </div>
+    <div class="lab-row">
+      <div class="lab-row__cat">Observability &amp; services</div>
+      <div class="lab-row__items">
+        <div class="lab-row__item"><b>Uptime Kuma</b><span class="sep">·</span>service health monitoring &amp; alerting</div>
+        <div class="lab-row__item"><b>Grafana + Teslamate</b><span class="sep">·</span>self-hosted vehicle telemetry dashboards</div>
+        <div class="lab-row__item"><b>Jellyfin</b><span class="sep">·</span>self-hosted media streaming</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="foot wrap">
+  <div class="foot__row">
+    <div class="foot__links">
+      <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer" aria-label="X">
+        <svg viewBox="0 0 256 256" fill="currentColor"><path d="M214.75 211.71l-62.6-91.21 61.77-67.97a8 8 0 0 0-11.84-10.76l-58.84 64.74-41.66-60.7A8 8 0 0 0 94.69 36H48a8 8 0 0 0-6.6 12.52l62.6 91.2-61.77 67.98a8 8 0 1 0 11.84 10.76l58.84-64.74 41.66 60.7A8 8 0 0 0 161.31 220H208a8 8 0 0 0 6.6-12.52z"/></svg></a>
+      <a href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 256 256" fill="currentColor"><path d="M208.31 75.68A59.78 59.78 0 0 0 202.93 28a8 8 0 0 0-6.93-4 59.75 59.75 0 0 0-48 24h-25.05a59.75 59.75 0 0 0-48-24 8 8 0 0 0-6.93 4 59.78 59.78 0 0 0-5.38 47.68A58.14 58.14 0 0 0 56 104v8a56.06 56.06 0 0 0 48.44 55.47A39.8 39.8 0 0 0 96 192v8H72a24 24 0 0 1-24-24A40 40 0 0 0 8 136a8 8 0 0 0 0 16 24 24 0 0 1 24 24 40 40 0 0 0 40 40h24v16a8 8 0 0 0 16 0v-40a24 24 0 0 1 48 0v40a8 8 0 0 0 16 0v-40a39.8 39.8 0 0 0-8.44-24.53A56.06 56.06 0 0 0 200 112v-8a58.14 58.14 0 0 0-8.31-28.32z"/></svg>GitHub</a>
+      <a href="mailto:larsh.dev@proton.me">
+        <svg viewBox="0 0 256 256" fill="currentColor"><path d="M224 48H32a8 8 0 0 0-8 8v136a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a8 8 0 0 0-8-8z"/></svg>Email</a>
+    </div>
+    <p class="foot__meta">built with <svg class="foot__coffee" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208 80h-12.78A24 24 0 0 0 192 64H32a16 16 0 0 0-16 16v56a72.08 72.08 0 0 0 72 72h64a72.08 72.08 0 0 0 71.34-64H208a40 40 0 0 0 0-80zm-32 56a56.06 56.06 0 0 1-56 56H88a56.06 56.06 0 0 1-56-56V80h144zm32 8h-16V96h16a24 24 0 0 1 0 48z"/></svg> in melbourne · <span id="year"></span></p>
+  </div>
+</footer>
+
+</main>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // scroll reveal
+  var revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  if(reduce){
+    revealEls.forEach(function(el){el.classList.add('in');});
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {threshold:0.18, rootMargin:'0px 0px -8% 0px'});
+    revealEls.forEach(function(el){io.observe(el);});
+    // intro reveals immediately on load
+    requestAnimationFrame(function(){
+      var ig = document.getElementById('intro-grid'); if(ig) ig.classList.add('in');
+    });
+  }
+
+  // sticky nav: show after intro leaves
+  var nav = document.getElementById('nav');
+  var intro = document.querySelector('.intro');
+  new IntersectionObserver(function(entries){
+    nav.classList.toggle('visible', !entries[0].isIntersecting);
+  }, {threshold:0.1}).observe(intro);
+
+  // carousels — cross-fade auto-advance, pause on hover, dot navigation,
+  // pause when off-screen so we never animate what nobody sees.
+  document.querySelectorAll('[data-carousel]').forEach(function(car){
+    var slides = car.querySelectorAll('.carousel__slide');
+    if(slides.length <= 1) return;
+    var dotsWrap = car.querySelector('.carousel__dots');
+    var dots = [];
+    slides.forEach(function(_, i){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'carousel__dot' + (i===0 ? ' is-active' : '');
+      b.setAttribute('aria-label', 'Show image ' + (i+1));
+      b.addEventListener('click', function(){ go(i); restart(); });
+      dotsWrap.appendChild(b);
+      dots.push(b);
+    });
+    var idx = 0, timer = null, hovered = false, onScreen = false;
+    function go(n){
+      slides[idx].classList.remove('is-active');
+      dots[idx].classList.remove('is-active');
+      idx = (n + slides.length) % slides.length;
+      slides[idx].classList.add('is-active');
+      dots[idx].classList.add('is-active');
+    }
+    function tick(){ if(!hovered && onScreen) go(idx + 1); }
+    function start(){ if(reduce) return; stop(); timer = setInterval(tick, 4000); }
+    function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+    function restart(){ start(); }
+    car.addEventListener('mouseenter', function(){ hovered = true; });
+    car.addEventListener('mouseleave', function(){ hovered = false; });
+    new IntersectionObserver(function(entries){
+      onScreen = entries[0].isIntersecting;
+      if(onScreen) start(); else stop();
+    }, {threshold:0.25}).observe(car);
+  });
+
+  // active section highlight
+  var navLinks = {projects:document.querySelector('[data-nav="projects"]'),
+                  homelab:document.querySelector('[data-nav="homelab"]')};
+  ['projects','homelab'].forEach(function(id){
+    var sec = document.getElementById(id); if(!sec) return;
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          Object.values(navLinks).forEach(function(l){l&&l.classList.remove('active');});
+          navLinks[id] && navLinks[id].classList.add('active');
+        }
+      });
+    }, {threshold:0.4}).observe(sec);
+  });
+})();
+</script>
+</body>
+</html>
