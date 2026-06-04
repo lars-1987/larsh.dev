@@ -152,6 +152,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 @media (max-width:780px){
   .nav{padding:var(--sp-2) var(--sp-3)}
   .nav--pill{max-width:calc(100% - 24px);padding:.6rem 1.1rem}
+  .nav__surname{display:none}  /* just "Lars" on mobile — keeps the pill roomy */
 }
 
 /* ============================================================
@@ -195,7 +196,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
    ============================================================ */
 .intro{
   min-height:100svh;display:flex;align-items:center;
-  position:relative;z-index:1;padding:var(--sp-7) 0;
+  position:relative;z-index:1;padding-block:var(--sp-7);
 }
 .intro__grid{display:grid;grid-template-columns:auto 1fr;gap:var(--sp-6);align-items:center;
   /* progressive top-down dissolve on scroll — the band sweeps down via --fp (set in JS) */
@@ -232,14 +233,14 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 /* ============================================================
    PROJECT TIMELINE  (full-height sections, scroll-driven reveal)
    ============================================================ */
-.projects{position:relative;z-index:1;padding:var(--sp-7) 0}
+.projects{position:relative;z-index:1;padding-block:var(--sp-7)}
 /* ACCORDION — each project is a row (the skim index); opens one at a time for the deep-dive */
 .accordion{max-width:1000px;margin:0 auto}
 .acc-item + .acc-item{margin-top:2px}
 .acc-h{margin:0;font:inherit}
 .acc-head{
   width:100%;background:none;border:0;cursor:pointer;text-align:left;color:var(--fg);
-  display:grid;grid-template-columns:3.4rem 1fr auto;align-items:center;gap:var(--sp-3);
+  display:grid;grid-template-columns:3.4rem 1fr auto auto;align-items:center;gap:var(--sp-3);
   padding:var(--sp-4) var(--sp-2);border-radius:14px;
   transition:background .3s var(--ease);
 }
@@ -255,7 +256,6 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .acc-name{font-family:var(--font-display);font-weight:700;font-size:var(--fs-lg);letter-spacing:-.02em;line-height:1.1}
 .acc-lede{color:var(--muted);font-size:var(--fs-sm);line-height:1.4;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.acc-aside{display:flex;align-items:center;gap:var(--sp-3)}
 .acc-status{font-family:var(--font-mono);font-size:var(--fs-xs);letter-spacing:.1em;
   text-transform:uppercase;color:var(--muted);white-space:nowrap}
 .acc-status--wip{color:var(--accent)}
@@ -283,7 +283,12 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .acc-item[data-media="web"] .acc-panel__inner{display:flex;flex-direction:column;gap:var(--sp-4)}
 .acc-item[data-media="web"] .acc-media{max-width:820px}
 @media (max-width:780px){
-  .acc-head{grid-template-columns:2.6rem 1fr auto;gap:var(--sp-2);padding:var(--sp-3) var(--sp-1)}
+  /* stack the status under the name so a long status never collides with the title */
+  .acc-head{grid-template-columns:2.6rem 1fr auto;column-gap:var(--sp-2);row-gap:.35em;padding:var(--sp-3) var(--sp-1)}
+  .acc-num{grid-row:1 / span 2;align-self:center}
+  .acc-headline{grid-column:2;grid-row:1}
+  .acc-status{grid-column:2;grid-row:2;justify-self:start}
+  .acc-icon{grid-column:3;grid-row:1 / span 2;align-self:center}
   .acc-item[data-media="phone"] .acc-panel__inner{grid-template-columns:1fr}
   .acc-panel__inner{padding-left:var(--sp-1);padding-right:var(--sp-1)}
 }
@@ -391,7 +396,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 /* ============================================================
    SKILLS / STACK  (monochrome ink brand icons)
    ============================================================ */
-.skills{position:relative;z-index:1;padding:var(--sp-7) 0}
+.skills{position:relative;z-index:1;padding-block:var(--sp-7)}
 .skills__groups{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:var(--sp-6)}
 .skill-group{
   display:grid;grid-template-columns:180px 1fr;gap:var(--sp-5);align-items:start;
@@ -421,7 +426,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 /* ============================================================
    HOMELAB
    ============================================================ */
-.homelab{position:relative;z-index:1;padding:var(--sp-7) 0 var(--sp-8)}
+.homelab{position:relative;z-index:1;padding-block:var(--sp-7) var(--sp-8)}
 .lab-specs{
   max-width:880px;margin:0 auto;
   display:flex;flex-direction:column;gap:var(--sp-5);
@@ -526,7 +531,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 
 <!-- ============================ NAV ============================ -->
 <nav class="nav" id="nav" aria-label="Primary">
-  <a href="#top" class="nav__name"><img class="nav__photo" src="assets/portrait.JPG" alt="" width="30" height="30" />Lars&nbsp;Holmström</a>
+  <a href="#top" class="nav__name"><img class="nav__photo" src="assets/portrait.JPG" alt="" width="30" height="30" />Lars<span class="nav__surname">&nbsp;Holmström</span></a>
   <div class="nav__links">
     <a href="#projects" data-nav="projects">Work</a>
     <a href="#skills" data-nav="skills">Skills</a>
@@ -592,10 +597,8 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
             <span class="acc-name">MetaStrip</span>
             <span class="acc-lede">Browser-based metadata removal — fully client-side, open source.</span>
           </span>
-          <span class="acc-aside">
-            <span class="acc-status">shipped · open source</span>
-            <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
-          </span>
+          <span class="acc-status">shipped · open source</span>
+          <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
         </button>
       </h3>
       <div class="acc-panel" id="p-metastrip" role="region" aria-labelledby="p-metastrip-h">
@@ -642,10 +645,8 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
             <span class="acc-name">SanctumPDF</span>
             <span class="acc-lede">Privacy-first PDF &amp; financial-file conversion, all in the browser.</span>
           </span>
-          <span class="acc-aside">
-            <span class="acc-status">shipped</span>
-            <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
-          </span>
+          <span class="acc-status">shipped</span>
+          <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
         </button>
       </h3>
       <div class="acc-panel" id="p-sanctum" role="region" aria-labelledby="p-sanctum-h">
@@ -689,10 +690,8 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
             <span class="acc-name">Renew</span>
             <span class="acc-lede">Skincare tracking with real analytics and an OCR&rarr;AI label pipeline.</span>
           </span>
-          <span class="acc-aside">
-            <span class="acc-status">shipped</span>
-            <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
-          </span>
+          <span class="acc-status">shipped</span>
+          <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
         </button>
       </h3>
       <div class="acc-panel" id="p-renew" role="region" aria-labelledby="p-renew-h">
@@ -742,10 +741,8 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
             <span class="acc-name">Vesper</span>
             <span class="acc-lede">Multilingual scripture app with a dynamic time-of-day sky system.</span>
           </span>
-          <span class="acc-aside">
-            <span class="acc-status">shipped</span>
-            <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
-          </span>
+          <span class="acc-status">shipped</span>
+          <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
         </button>
       </h3>
       <div class="acc-panel" id="p-vesper" role="region" aria-labelledby="p-vesper-h">
@@ -794,10 +791,8 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
             <span class="acc-name">Virtus</span>
             <span class="acc-lede">Stoic daily-wisdom and journaling — 150 passages, fully on-device.</span>
           </span>
-          <span class="acc-aside">
-            <span class="acc-status">shipped</span>
-            <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
-          </span>
+          <span class="acc-status">shipped</span>
+          <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
         </button>
       </h3>
       <div class="acc-panel" id="p-virtus" role="region" aria-labelledby="p-virtus-h">
@@ -844,10 +839,8 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
             <span class="acc-name">Bedcheck</span>
             <span class="acc-lede">An iOS accountability app for your bedtime, not your wake time.</span>
           </span>
-          <span class="acc-aside">
-            <span class="acc-status acc-status--wip">in development</span>
-            <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
-          </span>
+          <span class="acc-status acc-status--wip">in development</span>
+          <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
         </button>
       </h3>
       <div class="acc-panel" id="p-bedcheck" role="region" aria-labelledby="p-bedcheck-h">
@@ -892,10 +885,8 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
             <span class="acc-name">Helio</span>
             <span class="acc-lede">A native macOS app for people juggling multiple long-running projects.</span>
           </span>
-          <span class="acc-aside">
-            <span class="acc-status acc-status--wip">in development</span>
-            <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
-          </span>
+          <span class="acc-status acc-status--wip">in development</span>
+          <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
         </button>
       </h3>
       <div class="acc-panel" id="p-helio" role="region" aria-labelledby="p-helio-h">
