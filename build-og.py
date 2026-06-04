@@ -3,22 +3,22 @@
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 W, H = 1200, 630
-BG = (10, 11, 13)
-FG = (244, 245, 247)
-MUTED = (139, 144, 153)
-ACCENT = (76, 143, 255)
-BORDER = (36, 38, 43)
+BG = (234, 237, 224)     # cool sage-tinted paper
+FG = (47, 62, 53)        # deep forest ink
+MUTED = (86, 100, 89)    # secondary green-grey
+ACCENT = (70, 98, 79)    # readable forest-green eyebrow
+BORDER = (47, 62, 53)    # hairline (used at low alpha via outline)
 
 img = Image.new("RGB", (W, H), BG)
 
-# subtle atmospheric glow (matches body::before on the site)
+# subtle atmospheric wash (matches body::before on the site — warm sage glow)
 glow = Image.new("RGB", (W, H), BG)
 gd = ImageDraw.Draw(glow)
-for r, alpha in [(900, 18), (600, 12)]:
-    gd.ellipse((W - 400 - r, -200 - r, W - 400 + r, -200 + r),
-               fill=(min(255, BG[0] + alpha), min(255, BG[1] + alpha + 2), min(255, BG[2] + alpha + 5)))
-glow = glow.filter(ImageFilter.GaussianBlur(120))
-img = Image.blend(img, glow, 0.6)
+for r, alpha in [(900, -10), (600, -6)]:
+    gd.ellipse((W - 360 - r, -220 - r, W - 360 + r, -220 + r),
+               fill=(min(255, max(0, BG[0] + alpha - 8)), min(255, max(0, BG[1] + alpha)), min(255, max(0, BG[2] + alpha - 14))))
+glow = glow.filter(ImageFilter.GaussianBlur(130))
+img = Image.blend(img, glow, 0.55)
 
 draw = ImageDraw.Draw(img)
 
