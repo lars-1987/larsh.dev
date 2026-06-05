@@ -131,7 +131,8 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
   box-shadow:0 16px 34px -12px rgba(47,62,53,.32), 0 4px 12px -6px rgba(47,62,53,.2);
 }
 .nav__name{font-family:var(--font-display);font-weight:700;font-size:var(--fs-md);letter-spacing:-.02em;color:var(--fg);display:inline-flex;align-items:center;
-  transition:transform .4s var(--ease-spring)}
+  max-width:340px;overflow:hidden;
+  transition:transform .4s var(--ease-spring),max-width .55s var(--ease-spring),opacity .3s var(--ease)}
 .nav__name:hover{transform:translateX(3px)}
 /* avatar springs in only when the bar condenses into the pill */
 .nav__photo{
@@ -149,9 +150,13 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .nav__links a:hover,.nav__links a.active{color:var(--fg)}
 .nav__links a.active{position:relative}
 .nav__links a.active::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:2px;background:var(--accent);border-radius:2px}
+/* third state: at the footer the bar sheds the name + avatar and centres just the links */
+.nav--footer{max-width:320px;justify-content:center}
+.nav--footer .nav__name{max-width:0;opacity:0;margin:0;pointer-events:none}
 @media (max-width:780px){
   .nav{padding:var(--sp-2) var(--sp-3)}
   .nav--pill{max-width:calc(100% - 24px);padding:.6rem 1.1rem}
+  .nav--footer{max-width:min(320px, calc(100% - 24px))}
   .nav__surname{display:none}  /* just "Lars" on mobile — keeps the pill roomy */
 }
 
@@ -449,13 +454,33 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 /* ============================================================
    FOOTER
    ============================================================ */
-.foot{position:relative;z-index:1;border-top:1px solid var(--border);padding:var(--sp-6) 0;color:var(--muted)}
-.foot__row{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);flex-wrap:wrap}
-.foot__links{display:flex;gap:var(--sp-3)}
-.foot__links a{color:var(--muted);transition:color .2s;display:inline-flex;align-items:center;gap:.4em;font-size:var(--fs-sm)}
-.foot__links a:hover{color:var(--fg)}
-.foot__links svg{width:16px;height:16px}
-.foot__meta{font-family:var(--font-mono);font-size:var(--fs-xs);line-height:1.7;display:inline-flex;align-items:center;gap:.4em}
+.foot{
+  position:relative;z-index:1;
+  min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:var(--sp-7) var(--sp-4) var(--sp-8);
+}
+.foot__inner{
+  display:flex;flex-direction:column;align-items:center;gap:var(--sp-3);max-width:640px;
+  /* dissolves in as it scrolls into view — mirrors the hero's exit mask, driven by --ff in JS */
+  --ff:0%;
+  -webkit-mask-image:linear-gradient(to bottom, transparent calc(var(--ff) - 28%), #000 var(--ff));
+  mask-image:linear-gradient(to bottom, transparent calc(var(--ff) - 28%), #000 var(--ff));
+}
+.foot__photo{
+  width:128px;height:128px;object-fit:cover;border-radius:50%;
+  border:1px solid var(--border-strong);box-shadow:var(--shadow-md), inset 0 0 0 1px rgba(255,255,255,.18);
+  margin-bottom:var(--sp-1);
+}
+.foot__name{font-family:var(--font-display);font-weight:700;
+  font-size:clamp(2.8rem,8vw,6rem);letter-spacing:-.04em;line-height:.98;color:var(--fg)}
+.foot__tag{color:var(--muted-strong);font-size:var(--fs-md);max-width:42ch;margin-top:var(--sp-1)}
+.foot__hello{display:block;margin-top:var(--sp-2);color:var(--fg);font-weight:600}
+.foot__links{display:flex;gap:var(--sp-2);flex-wrap:wrap;justify-content:center;margin-top:var(--sp-3)}
+.foot__meta{
+  position:absolute;left:0;right:0;bottom:var(--sp-5);
+  font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--muted);
+  display:inline-flex;align-items:center;justify-content:center;gap:.4em;
+}
 .foot__coffee{width:14px;height:14px;flex:none;color:var(--muted-strong)}
 
 /* ============================================================
@@ -1029,18 +1054,30 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 </section>
 
 <!-- ============================ FOOTER ============================ -->
-<footer class="foot wrap">
-  <div class="foot__row">
+<footer class="foot" id="footer" aria-label="Get in touch">
+  <div class="foot__inner" id="foot-inner">
+    <img class="foot__photo" src="assets/portrait.JPG" alt="Portrait of Lars Holmström" width="128" height="128" />
+    <h2 class="foot__name">Lars Holmström</h2>
+    <p class="foot__tag">Melbourne-based, building privacy-first software solo.<span class="foot__hello">Say hello:</span></p>
     <div class="foot__links">
-      <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer" aria-label="X">
-        <svg viewBox="0 0 256 256" fill="currentColor"><path d="M214.75 211.71l-62.6-91.21 61.77-67.97a8 8 0 0 0-11.84-10.76l-58.84 64.74-41.66-60.7A8 8 0 0 0 94.69 36H48a8 8 0 0 0-6.6 12.52l62.6 91.2-61.77 67.98a8 8 0 1 0 11.84 10.76l58.84-64.74 41.66 60.7A8 8 0 0 0 161.31 220H208a8 8 0 0 0 6.6-12.52z"/></svg></a>
-      <a href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 256 256" fill="currentColor"><path d="M208.31 75.68A59.78 59.78 0 0 0 202.93 28a8 8 0 0 0-6.93-4 59.75 59.75 0 0 0-48 24h-25.05a59.75 59.75 0 0 0-48-24 8 8 0 0 0-6.93 4 59.78 59.78 0 0 0-5.38 47.68A58.14 58.14 0 0 0 56 104v8a56.06 56.06 0 0 0 48.44 55.47A39.8 39.8 0 0 0 96 192v8H72a24 24 0 0 1-24-24A40 40 0 0 0 8 136a8 8 0 0 0 0 16 24 24 0 0 1 24 24 40 40 0 0 0 40 40h24v16a8 8 0 0 0 16 0v-40a24 24 0 0 1 48 0v40a8 8 0 0 0 16 0v-40a39.8 39.8 0 0 0-8.44-24.53A56.06 56.06 0 0 0 200 112v-8a58.14 58.14 0 0 0-8.31-28.32z"/></svg>GitHub</a>
-      <a class="js-mail" href="#" data-u="larsh.dev" data-d="proton.me" aria-label="Email">
-        <svg viewBox="0 0 256 256" fill="currentColor"><path d="M224 48H32a8 8 0 0 0-8 8v136a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a8 8 0 0 0-8-8z"/></svg>Email</a>
+      <a class="cta" href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+        <span class="cta__lead"><svg aria-hidden="true"><use href="#i-x"/></svg></span>
+        <span class="cta__label">@larsitodev</span>
+        <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+      </a>
+      <a class="cta" href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <span class="cta__lead"><svg aria-hidden="true"><use href="#i-github"/></svg></span>
+        <span class="cta__label">lars-1987</span>
+        <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+      </a>
+      <a class="cta js-mail" href="#" data-u="larsh.dev" data-d="proton.me" aria-label="Email">
+        <span class="cta__lead"><svg aria-hidden="true"><use href="#i-mail"/></svg></span>
+        <span class="cta__label rev" data-mail-label>em.notorp@ved.hsral</span>
+        <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+      </a>
     </div>
-    <p class="foot__meta">built with <svg class="foot__coffee" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208 80h-12.78A24 24 0 0 0 192 64H32a16 16 0 0 0-16 16v56a72.08 72.08 0 0 0 72 72h64a72.08 72.08 0 0 0 71.34-64H208a40 40 0 0 0 0-80zm-32 56a56.06 56.06 0 0 1-56 56H88a56.06 56.06 0 0 1-56-56V80h144zm32 8h-16V96h16a24 24 0 0 1 0 48z"/></svg> in melbourne · <span id="year"></span></p>
   </div>
+  <p class="foot__meta">built with <svg class="foot__coffee" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208 80h-12.78A24 24 0 0 0 192 64H32a16 16 0 0 0-16 16v56a72.08 72.08 0 0 0 72 72h64a72.08 72.08 0 0 0 71.34-64H208a40 40 0 0 0 0-80zm-32 56a56.06 56.06 0 0 1-56 56H88a56.06 56.06 0 0 1-56-56V80h144zm32 8h-16V96h16a24 24 0 0 1 0 48z"/></svg> in melbourne · <span id="year"></span></p>
 </footer>
 
 </main>
@@ -1086,18 +1123,30 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
   var pfill = document.getElementById('progress-fill');
   var cue = document.getElementById('scroll-cue');
   var heroContent = document.getElementById('intro-grid');
+  var footer = document.getElementById('footer');
+  var footInner = document.getElementById('foot-inner');
   var ticking = false;
   function updateScroll(){
     var st = window.scrollY || document.documentElement.scrollTop || 0;
-    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    var vh = window.innerHeight;
+    var docH = document.documentElement.scrollHeight - vh;
     var p = docH > 0 ? Math.min(1, Math.max(0, st / docH)) : 0;
     if(pfill) pfill.style.transform = 'scaleY(' + p + ')';
-    if(nav) nav.classList.toggle('nav--pill', st > window.innerHeight * 0.18);
+    // footer progress: 0 when its top is at the viewport bottom, 1 when it fully fills
+    var footProg = 0;
+    if(footer){ footProg = Math.min(1, Math.max(0, 1 - footer.getBoundingClientRect().top / vh)); }
+    if(footInner && !reduce) footInner.style.setProperty('--ff', (128 * (1 - footProg)) + '%');
+    // nav: detaches into the pill after the hero; at the footer it sheds the name + avatar
+    // and the links spring to centre (third state)
+    if(nav){
+      nav.classList.toggle('nav--pill', st > vh * 0.18);
+      nav.classList.toggle('nav--footer', footProg >= 0.5);
+    }
     if(progress) progress.classList.toggle('visible', st > 120);
     if(cue) cue.classList.toggle('is-gone', st > 40);
     // hero dissolves progressively from the top as it scrolls away (gradient mask, no parallax)
     if(heroContent && !reduce){
-      var hp = Math.min(1, st / (window.innerHeight * 0.7));
+      var hp = Math.min(1, st / (vh * 0.7));
       heroContent.style.setProperty('--fp', (hp * 128) + '%');
     }
     ticking = false;
