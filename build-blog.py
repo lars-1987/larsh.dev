@@ -9,8 +9,10 @@ builds an "On this page" TOC, and writes self-contained static HTML to blog/.
 Zero runtime dependencies ship to the site — this is a one-shot local tool, like
 build-og.py. Run:  python3 build-blog.py
 """
-import os, re, html, math
+import os, re, html, json
 import markdown
+
+SITE = "https://larsh.dev"
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name, guess_lexer
 from pygments.formatters import HtmlFormatter
@@ -271,7 +273,7 @@ __CODE_CSS__
 }
 """.replace("__CODE_CSS__", CODE_CSS)
 
-def page(title, desc, body_html, extra_script=""):
+def page(title, desc, body_html, extra_script="", head_extra=""):
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -279,6 +281,8 @@ def page(title, desc, body_html, extra_script=""):
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}" />
+<meta name="author" content="Lars Holmström" />
+{head_extra}
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -346,9 +350,30 @@ def main():
     <span>&copy; <span>{date[:4]}</span> Lars Holmstr&ouml;m &middot; <a href="../">larsh.dev</a></span>
   </footer>
 </div>"""
+        title = meta.get('title', '')
+        sub = meta.get('subtitle', '')
+        url = f"{SITE}/blog/{slug}.html"
+        ld = {"@context": "https://schema.org", "@type": "BlogPosting",
+              "headline": title, "description": sub,
+              "datePublished": date, "dateModified": date,
+              "author": {"@type": "Person", "name": "Lars Holmström", "url": SITE + "/"},
+              "publisher": {"@type": "Person", "name": "Lars Holmström"},
+              "url": url, "mainEntityOfPage": url, "image": SITE + "/og.png",
+              "keywords": ", ".join(tags)}
+        head_extra = f'''<link rel="canonical" href="{url}" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="{html.escape(title)}" />
+<meta property="og:description" content="{html.escape(sub)}" />
+<meta property="og:url" content="{url}" />
+<meta property="og:site_name" content="Lars Holmström" />
+<meta property="og:image" content="{SITE}/og.png" />
+<meta property="article:published_time" content="{date}" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@larsitodev" />
+<meta name="twitter:image" content="{SITE}/og.png" />
+<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>'''
         out = os.path.join(OUT_DIR, slug + '.html')
-        open(out, 'w').write(page(meta.get('title','') + ' — Lars Holmström',
-                                  meta.get('subtitle',''), body_html, POST_SCRIPT))
+        open(out, 'w').write(page(title + ' — Lars Holmström', sub, body_html, POST_SCRIPT, head_extra))
         posts.append(dict(slug=slug, meta=meta, read=read, date=date, tags=tags))
         print('wrote', out)
 
@@ -371,9 +396,41 @@ def main():
   </header>
   <ul class="posts">{rows}</ul>
 </div>"""
+    idx_desc = 'Engineering write-ups and debugging war stories by Lars Holmström — how the privacy-first tools on larsh.dev actually got built.'
+    blog_ld = {"@context": "https://schema.org", "@type": "Blog",
+               "name": "Notes — Lars Holmström", "description": idx_desc,
+               "url": f"{SITE}/blog/",
+               "author": {"@type": "Person", "name": "Lars Holmström", "url": SITE + "/"},
+               "blogPost": [{"@type": "BlogPosting", "headline": p['meta'].get('title', ''),
+                             "url": f"{SITE}/blog/{p['slug']}.html", "datePublished": p['date']}
+                            for p in posts]}
+    idx_head = f'''<link rel="canonical" href="{SITE}/blog/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Notes — Lars Holmström" />
+<meta property="og:description" content="{html.escape(idx_desc)}" />
+<meta property="og:url" content="{SITE}/blog/" />
+<meta property="og:image" content="{SITE}/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<script type="application/ld+json">{json.dumps(blog_ld, ensure_ascii=False)}</script>'''
     open(os.path.join(OUT_DIR, 'index.html'), 'w').write(
-        page('Notes — Lars Holmström', 'Engineering write-ups and debugging war stories by Lars Holmström.', index_body))
+        page('Notes — Lars Holmström', idx_desc, index_body, "", idx_head))
     print('wrote', os.path.join(OUT_DIR, 'index.html'))
+
+    # sitemap.xml at the project root
+    urls = [(SITE + '/', None, '1.0'), (SITE + '/blog/', None, '0.8')]
+    urls += [(f"{SITE}/blog/{p['slug']}.html", p['date'], '0.7') for p in posts]
+    sm = ['<?xml version="1.0" encoding="UTF-8"?>',
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for loc, lastmod, prio in urls:
+        sm.append('  <url>')
+        sm.append(f'    <loc>{loc}</loc>')
+        if lastmod:
+            sm.append(f'    <lastmod>{lastmod}</lastmod>')
+        sm.append(f'    <priority>{prio}</priority>')
+        sm.append('  </url>')
+    sm.append('</urlset>\n')
+    open(os.path.join(ROOT, 'sitemap.xml'), 'w').write('\n'.join(sm))
+    print('wrote', os.path.join(ROOT, 'sitemap.xml'))
 
 if __name__ == '__main__':
     main()

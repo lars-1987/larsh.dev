@@ -3,17 +3,21 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Notes — Lars Holmström</title>
-<meta name="description" content="Engineering write-ups and debugging war stories by Lars Holmström — how the privacy-first tools on larsh.dev actually got built." />
+<title>I built a whole tool to avoid formatting code blocks — Lars Holmström</title>
+<meta name="description" content="A short story about solving a thirty-second problem with an afternoon of work." />
 <meta name="author" content="Lars Holmström" />
-<link rel="canonical" href="https://larsh.dev/blog/" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Notes — Lars Holmström" />
-<meta property="og:description" content="Engineering write-ups and debugging war stories by Lars Holmström — how the privacy-first tools on larsh.dev actually got built." />
-<meta property="og:url" content="https://larsh.dev/blog/" />
+<link rel="canonical" href="https://larsh.dev/blog/i-built-a-whole-tool-to-avoid-formatting-code-blocks.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="I built a whole tool to avoid formatting code blocks" />
+<meta property="og:description" content="A short story about solving a thirty-second problem with an afternoon of work." />
+<meta property="og:url" content="https://larsh.dev/blog/i-built-a-whole-tool-to-avoid-formatting-code-blocks.html" />
+<meta property="og:site_name" content="Lars Holmström" />
 <meta property="og:image" content="https://larsh.dev/og.png" />
+<meta property="article:published_time" content="2026-06-06" />
 <meta name="twitter:card" content="summary_large_image" />
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Blog", "name": "Notes — Lars Holmström", "description": "Engineering write-ups and debugging war stories by Lars Holmström — how the privacy-first tools on larsh.dev actually got built.", "url": "https://larsh.dev/blog/", "author": {"@type": "Person", "name": "Lars Holmström", "url": "https://larsh.dev/"}, "blogPost": [{"@type": "BlogPosting", "headline": "I built a whole tool to avoid formatting code blocks", "url": "https://larsh.dev/blog/i-built-a-whole-tool-to-avoid-formatting-code-blocks.html", "datePublished": "2026-06-06"}, {"@type": "BlogPosting", "headline": "The Bug That Only Existed in Spanish", "url": "https://larsh.dev/blog/the-bug-that-only-existed-in-spanish.html", "datePublished": "2026-06-02"}]}</script>
+<meta name="twitter:creator" content="@larsitodev" />
+<meta name="twitter:image" content="https://larsh.dev/og.png" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "I built a whole tool to avoid formatting code blocks", "description": "A short story about solving a thirty-second problem with an afternoon of work.", "datePublished": "2026-06-06", "dateModified": "2026-06-06", "author": {"@type": "Person", "name": "Lars Holmström", "url": "https://larsh.dev/"}, "publisher": {"@type": "Person", "name": "Lars Holmström"}, "url": "https://larsh.dev/blog/i-built-a-whole-tool-to-avoid-formatting-code-blocks.html", "mainEntityOfPage": "https://larsh.dev/blog/i-built-a-whole-tool-to-avoid-formatting-code-blocks.html", "image": "https://larsh.dev/og.png", "keywords": "side projects, typescript, tools"}</script>
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -224,22 +228,70 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </head>
 <body>
 <div class="wrap">
-  <a class="back" href="../">&larr; Back to larsh.dev</a>
-  <header class="blog-head">
-    <p class="blog-eyebrow">Notes</p>
-    <h1 class="blog-title">Writing &amp; war stories.</h1>
-    <p class="blog-intro">How the things on the front page actually got built — and the bugs that fought back. Optional reading.</p>
+  <a class="back" href="index.html">&larr; All notes</a>
+  <header class="post__head">
+    <div class="post__meta"><span class="post__cat">SIDE PROJECTS</span> 2026-06-06 &middot; 2 min read</div>
+    <h1 class="post__title">I built a whole tool to avoid formatting code blocks</h1>
+    <p class="post__sub">A short story about solving a thirty-second problem with an afternoon of work.</p>
+    <div class="post__tags"><span>side projects</span><span>typescript</span><span>tools</span></div>
   </header>
-  <ul class="posts"><li><a class="post-row" href="i-built-a-whole-tool-to-avoid-formatting-code-blocks.html">
-      <div class="post-row__meta"><span>2026-06-06</span><span>2 min</span><span>side projects &middot; typescript &middot; tools</span></div>
-      <div class="post-row__title">I built a whole tool to avoid formatting code blocks</div>
-      <p class="post-row__sub">A short story about solving a thirty-second problem with an afternoon of work.</p>
-    </a></li><li><a class="post-row" href="the-bug-that-only-existed-in-spanish.html">
-      <div class="post-row__meta"><span>2026-06-02</span><span>7 min</span><span>debugging &middot; react &middot; nextjs</span></div>
-      <div class="post-row__title">The Bug That Only Existed in Spanish</div>
-      <p class="post-row__sub">How browser auto-translation white-screened my app — and why I spent the first hour blaming an innocent PNG</p>
-    </a></li></ul>
+  <div class="post__body">
+    <aside class="toc"><p class="toc__label">On this page</p><ul class="toc__list"><li><a href="#the-thirty-second-problem">The thirty-second problem</a></li><li><a href="#the-afternoon">The afternoon</a></li><li><a href="#what-it-actually-does">What it actually does</a></li><li><a href="#was-it-worth-it">Was it worth it</a></li></ul></aside>
+    <article class="prose"><p>I write this blog in Markdown, like a reasonable person. In Markdown, a code block is three backticks, the code, and three more backticks. It looks great in my editor. It is, briefly, perfect.</p>
+<p>Then I publish it, and the rendered code looks like a ransom note.</p>
+<h2 id="the-thirty-second-problem">The thirty-second problem</h2>
+<p>The clean little fenced block my editor gave me for free does not survive the trip to HTML. So every post, I would start fiddling. A bit of CSS here. A syntax highlighter there. A terminal window wrapper, because I think they look nice and nobody can stop me. Every post, the same fiddling, to hand-reproduce the thing Markdown had already handed me at the top of the file.</p>
+<p>This is the part of the story where a sensible person writes one CSS snippet, saves it somewhere, and moves on with their life.</p>
+<p>I built a tool instead.</p>
+<h2 id="the-afternoon">The afternoon</h2>
+<p>The honest origin is that I already had a Python script doing this for the blog. It used Pygments, a Catppuccin theme I mapped by hand, and a little terminal wrapper. It worked. It was also 380 lines and lived on my laptop.</p>
+<div class="term"><div class="term__bar" aria-hidden="true"><span class="term__dots"><i></i><i></i><i></i></span><span class="term__lang">python</span></div><pre class="term__code"><code><span class="c1"># build-blog.py, the ancestor. it worked, and nobody else could ever use it.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">terminal</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+    <span class="n">hl</span> <span class="o">=</span> <span class="n">highlight</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">lexer_for</span><span class="p">(</span><span class="n">lang</span><span class="p">),</span> <span class="n">formatter</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;div class=&quot;term&quot;&gt;</span><span class="si">{</span><span class="n">hl</span><span class="si">}</span><span class="s1">&lt;/div&gt;&#39;</span>
+</code></pre></div>
+<p>So I did the responsible thing and rewrote it as a web app in an afternoon, to solve a problem that, generously, cost me thirty seconds a post.</p>
+<div class="term"><div class="term__bar" aria-hidden="true"><span class="term__dots"><i></i><i></i><i></i></span><span class="term__lang">bash</span></div><pre class="term__code"><code>npm<span class="w"> </span>create<span class="w"> </span>vite@latest<span class="w"> </span>fenced<span class="w"> </span>--<span class="w"> </span>--template<span class="w"> </span>vanilla-ts
+npm<span class="w"> </span>i<span class="w"> </span>markdown-it<span class="w"> </span>shiki
+<span class="c1"># congratulations, you have now spent more time than you will ever save</span>
+</code></pre></div>
+<p>The whole idea fits in a function. Markdown comes in, every code block gets handed to a real syntax highlighter, and the result gets wrapped in some chrome. That is it. That is the product.</p>
+<div class="term"><div class="term__bar" aria-hidden="true"><span class="term__dots"><i></i><i></i><i></i></span><span class="term__lang">typescript</span></div><pre class="term__code"><code><span class="c1">// the entire concept, more or less</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">fence</span><span class="p">(</span><span class="nx">code</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">lang</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">html</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">highlight</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span><span class="w"> </span><span class="nx">lang</span><span class="p">);</span><span class="w"> </span><span class="c1">// shiki does the genuinely hard part</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="sb">`&lt;div class=&quot;fenced&quot;&gt;</span><span class="si">${</span><span class="nx">html</span><span class="si">}</span><span class="sb">&lt;/div&gt;`</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="what-it-actually-does">What it actually does</h2>
+<p>It is called fenced, and it lives at <a href="https://fenced.dev">fenced.dev</a>. You paste Markdown, it gives you back self-contained HTML where every code block is decorated and, importantly, still real, selectable text. Not a screenshot. I have strong and tedious opinions about code screenshots, the short version being that you cannot copy from them, they ignore dark mode, and they die on a phone.</p>
+<p>It runs entirely in your browser. Nothing is uploaded, because there is no server to upload to. Every block comes out one of three ways: a terminal window, a clean themed card, or plain. Pick a theme, copy the HTML, or download one portable file. The highlighting is Shiki, so the themes are real, including all four Catppuccin flavours, which is the only opinion in this paragraph I will defend.</p>
+<h2 id="was-it-worth-it">Was it worth it</h2>
+<p>No.</p>
+<p>Was it worth the afternoon, plus the three further afternoons I then spent on a theme picker, a privacy policy, an OpenGraph image, and a cookieless analytics setup I will check exactly once? Also no.</p>
+<p>But it is done, it is free, and I no longer format code blocks by hand.</p>
+<p>This post was written in Markdown and run through fenced. The code blocks above decorated themselves. Yes, I noticed the recursion too.</p></article>
+  </div>
+  <footer class="post__foot">
+    <a class="back" href="index.html">&larr; All notes</a>
+    <span>&copy; <span>2026</span> Lars Holmstr&ouml;m &middot; <a href="../">larsh.dev</a></span>
+  </footer>
 </div>
-
+<script>
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var links = {};
+  document.querySelectorAll('.toc__list a').forEach(function(a){
+    links[a.getAttribute('href').slice(1)] = a;
+  });
+  var visible = {};
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ visible[e.target.id] = e.isIntersecting; });
+    var ids = Object.keys(links);
+    var active = ids.filter(function(id){ return visible[id]; })[0] || null;
+    ids.forEach(function(id){ links[id] && links[id].classList.toggle('active', id===active); });
+  }, {rootMargin:'-10% 0px -75% 0px', threshold:0});
+  document.querySelectorAll('.prose h2[id]').forEach(function(h){ io.observe(h); });
+})();
+</script>
 </body>
 </html>
