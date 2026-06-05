@@ -616,11 +616,56 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 
   <div class="accordion reveal" id="accordion">
 
-    <!-- 01 MetaStrip -->
+    <!-- 01 SanctumPDF -->
     <article class="acc-item is-open" data-media="web">
       <h3 class="acc-h">
-        <button class="acc-head" type="button" aria-expanded="true" aria-controls="p-metastrip" id="p-metastrip-h">
+        <button class="acc-head" type="button" aria-expanded="true" aria-controls="p-sanctum" id="p-sanctum-h">
           <span class="acc-num">01</span>
+          <span class="acc-headline">
+            <span class="acc-name">SanctumPDF</span>
+            <span class="acc-lede">Privacy-first PDF &amp; financial-file conversion, all in the browser.</span>
+          </span>
+          <span class="acc-status">shipped</span>
+          <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
+        </button>
+      </h3>
+      <div class="acc-panel" id="p-sanctum" role="region" aria-labelledby="p-sanctum-h">
+        <div class="acc-panel__wrap"><div class="acc-panel__inner">
+          <div class="acc-media">
+            <div class="carousel carousel--wide" data-carousel>
+              <div class="carousel__stage">
+                <img class="carousel__slide is-active" src="assets/sanctumpdf-1.png" alt="SanctumPDF interface" loading="lazy" />
+                <img class="carousel__slide" src="assets/sanctumpdf-2.png" alt="SanctumPDF interface" loading="lazy" />
+                <img class="carousel__slide" src="assets/sanctumpdf-3.png" alt="SanctumPDF interface" loading="lazy" />
+                <img class="carousel__slide" src="assets/sanctumpdf-4.png" alt="SanctumPDF interface" loading="lazy" />
+              </div>
+              <div class="carousel__dots" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="acc-detail">
+            <p class="project__tech">Next.js · Tailwind · Supabase · Stripe · Vercel · Wasm: pdf-lib / pdf.js / QPDF</p>
+            <ul class="project__points">
+              <li><strong>Client-heavy, server-light.</strong> Wasm does the PDF work in-browser; the server only handles auth, payments and licence checks. Files live in memory and vanish on tab close.</li>
+              <li><strong>Avoided the AGPL trap.</strong> Chose pdf-lib + QPDF Wasm over Ghostscript/MuPDF — cut the Wasm payload ~7&times; (&asymp;4MB &rarr; &asymp;580KB compressed) and removed a licensing landmine.</li>
+              <li><strong>14-locale i18n.</strong> SEO-driven internationalisation expanded the indexed surface from ~36 to 335+ pages.</li>
+            </ul>
+            <div class="project__cta">
+              <a class="cta" href="https://sanctumpdf.com" target="_blank" rel="noopener noreferrer">
+                <span class="cta__lead"><svg aria-hidden="true"><use href="#i-globe"/></svg></span>
+                <span class="cta__label">Visit site</span>
+                <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+              </a>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </article>
+
+    <!-- 02 MetaStrip -->
+    <article class="acc-item" data-media="web">
+      <h3 class="acc-h">
+        <button class="acc-head" type="button" aria-expanded="false" aria-controls="p-metastrip" id="p-metastrip-h">
+          <span class="acc-num">02</span>
           <span class="acc-headline">
             <span class="acc-name">MetaStrip</span>
             <span class="acc-lede">Browser-based metadata removal — fully client-side, open source.</span>
@@ -664,43 +709,37 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
       </div>
     </article>
 
-    <!-- 02 SanctumPDF -->
+    <!-- 03 fenced -->
     <article class="acc-item" data-media="web">
       <h3 class="acc-h">
-        <button class="acc-head" type="button" aria-expanded="false" aria-controls="p-sanctum" id="p-sanctum-h">
-          <span class="acc-num">02</span>
+        <button class="acc-head" type="button" aria-expanded="false" aria-controls="p-fenced" id="p-fenced-h">
+          <span class="acc-num">03</span>
           <span class="acc-headline">
-            <span class="acc-name">SanctumPDF</span>
-            <span class="acc-lede">Privacy-first PDF &amp; financial-file conversion, all in the browser.</span>
+            <span class="acc-name">fenced</span>
+            <span class="acc-lede">Markdown to self-contained HTML &mdash; fully client-side, open source.</span>
           </span>
-          <span class="acc-status">shipped</span>
+          <span class="acc-status">shipped &middot; open source</span>
           <span class="acc-icon"><svg aria-hidden="true"><use href="#i-caret-down"/></svg></span>
         </button>
       </h3>
-      <div class="acc-panel" id="p-sanctum" role="region" aria-labelledby="p-sanctum-h">
+      <div class="acc-panel" id="p-fenced" role="region" aria-labelledby="p-fenced-h">
         <div class="acc-panel__wrap"><div class="acc-panel__inner">
-          <div class="acc-media">
-            <div class="carousel carousel--wide" data-carousel>
-              <div class="carousel__stage">
-                <img class="carousel__slide is-active" src="assets/sanctumpdf-1.png" alt="SanctumPDF interface" loading="lazy" />
-                <img class="carousel__slide" src="assets/sanctumpdf-2.png" alt="SanctumPDF interface" loading="lazy" />
-                <img class="carousel__slide" src="assets/sanctumpdf-3.png" alt="SanctumPDF interface" loading="lazy" />
-                <img class="carousel__slide" src="assets/sanctumpdf-4.png" alt="SanctumPDF interface" loading="lazy" />
-              </div>
-              <div class="carousel__dots" aria-hidden="true"></div>
-            </div>
-          </div>
           <div class="acc-detail">
-            <p class="project__tech">Next.js · Tailwind · Supabase · Stripe · Vercel · Wasm: pdf-lib / pdf.js / QPDF</p>
+            <p class="project__tech">Vite + TypeScript &middot; 100% client-side &middot; MIT &middot; markdown-it / Shiki (fine-grained, JS regex engine)</p>
             <ul class="project__points">
-              <li><strong>Client-heavy, server-light.</strong> Wasm does the PDF work in-browser; the server only handles auth, payments and licence checks. Files live in memory and vanish on tab close.</li>
-              <li><strong>Avoided the AGPL trap.</strong> Chose pdf-lib + QPDF Wasm over Ghostscript/MuPDF — cut the Wasm payload ~7&times; (&asymp;4MB &rarr; &asymp;580KB compressed) and removed a licensing landmine.</li>
-              <li><strong>14-locale i18n.</strong> SEO-driven internationalisation expanded the indexed surface from ~36 to 335+ pages.</li>
+              <li><strong>Decoration that survives the clipboard.</strong> Syntax tokens render as inline styles and the window chrome runs on CSS custom properties, so every fenced block is portable, self-contained HTML. Copy one into a CMS or IDE and it keeps its look with zero stylesheet, no class names to carry along.</li>
+              <li><strong>Theme-aware terminals via <code>color-mix</code>.</strong> Each block derives its bar, border, and line-number shades from the chosen Shiki theme&rsquo;s own background and foreground, so a dark Catppuccin window stays correct on a light page instead of inheriting the host surface. The same CSS is the single source shared by the live preview and the export, so the download is byte-for-byte what you saw.</li>
+              <li><strong>Lean by construction.</strong> Fine-grained Shiki imports plus the JavaScript regex engine drop the WASM blob and every unused grammar. The preview paints instantly in plain mode and upgrades the moment the highlighter loads, with a plain-text fallback if it is ever blocked. Client-side throughout, nothing uploaded, cookieless analytics gated on DNT and GPC.</li>
             </ul>
             <div class="project__cta">
-              <a class="cta" href="https://sanctumpdf.com" target="_blank" rel="noopener noreferrer">
+              <a class="cta" href="https://fenced.dev" target="_blank" rel="noopener noreferrer">
                 <span class="cta__lead"><svg aria-hidden="true"><use href="#i-globe"/></svg></span>
                 <span class="cta__label">Visit site</span>
+                <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+              </a>
+              <a class="cta" href="https://github.com/lars-1987/fenced" target="_blank" rel="noopener noreferrer">
+                <span class="cta__lead"><svg aria-hidden="true"><use href="#i-github"/></svg></span>
+                <span class="cta__label">Source</span>
                 <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
               </a>
             </div>
@@ -709,11 +748,11 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
       </div>
     </article>
 
-    <!-- 03 Renew -->
+    <!-- 04 Renew -->
     <article class="acc-item" data-media="phone">
       <h3 class="acc-h">
         <button class="acc-head" type="button" aria-expanded="false" aria-controls="p-renew" id="p-renew-h">
-          <span class="acc-num">03</span>
+          <span class="acc-num">04</span>
           <span class="acc-headline">
             <span class="acc-name">Renew</span>
             <span class="acc-lede">Skincare tracking with real analytics and an OCR&rarr;AI label pipeline.</span>
@@ -760,11 +799,11 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
       </div>
     </article>
 
-    <!-- 04 Vesper -->
+    <!-- 05 Vesper -->
     <article class="acc-item" data-media="phone">
       <h3 class="acc-h">
         <button class="acc-head" type="button" aria-expanded="false" aria-controls="p-vesper" id="p-vesper-h">
-          <span class="acc-num">04</span>
+          <span class="acc-num">05</span>
           <span class="acc-headline">
             <span class="acc-name">Vesper</span>
             <span class="acc-lede">Multilingual scripture app with a dynamic time-of-day sky system.</span>
@@ -810,11 +849,11 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
       </div>
     </article>
 
-    <!-- 05 Virtus -->
+    <!-- 06 Virtus -->
     <article class="acc-item" data-media="phone">
       <h3 class="acc-h">
         <button class="acc-head" type="button" aria-expanded="false" aria-controls="p-virtus" id="p-virtus-h">
-          <span class="acc-num">05</span>
+          <span class="acc-num">06</span>
           <span class="acc-headline">
             <span class="acc-name">Virtus</span>
             <span class="acc-lede">Stoic daily-wisdom and journaling — 150 passages, fully on-device.</span>
@@ -858,11 +897,11 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
       </div>
     </article>
 
-    <!-- 06 Bedcheck -->
+    <!-- 07 Bedcheck -->
     <article class="acc-item" data-media="phone">
       <h3 class="acc-h">
         <button class="acc-head" type="button" aria-expanded="false" aria-controls="p-bedcheck" id="p-bedcheck-h">
-          <span class="acc-num">06</span>
+          <span class="acc-num">07</span>
           <span class="acc-headline">
             <span class="acc-name">Bedcheck</span>
             <span class="acc-lede">An iOS accountability app for your bedtime, not your wake time.</span>
@@ -904,11 +943,11 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
       </div>
     </article>
 
-    <!-- 07 Helio -->
+    <!-- 08 Helio -->
     <article class="acc-item" data-media="web">
       <h3 class="acc-h">
         <button class="acc-head" type="button" aria-expanded="false" aria-controls="p-helio" id="p-helio-h">
-          <span class="acc-num">07</span>
+          <span class="acc-num">08</span>
           <span class="acc-headline">
             <span class="acc-name">Helio</span>
             <span class="acc-lede">A native macOS app for people juggling multiple long-running projects.</span>
