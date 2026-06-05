@@ -241,6 +241,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .projects{position:relative;z-index:1;padding-block:var(--sp-7)}
 /* ACCORDION — each project is a row (the skim index); opens one at a time for the deep-dive */
 .accordion{max-width:1000px;margin:0 auto}
+.work-more{display:flex;justify-content:center;margin-top:var(--sp-6)}
 .acc-item + .acc-item{margin-top:2px}
 .acc-h{margin:0;font:inherit}
 .acc-head{
@@ -476,6 +477,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .foot__tag{color:var(--muted-strong);font-size:var(--fs-md);max-width:42ch;margin-top:var(--sp-1)}
 .foot__hello{display:block;margin-top:var(--sp-2);color:var(--fg);font-weight:600}
 .foot__links{display:flex;gap:var(--sp-2);flex-wrap:wrap;justify-content:center;margin-top:var(--sp-3)}
+.foot__blog{margin-top:var(--sp-4)}
 .foot__meta{
   position:absolute;left:0;right:0;bottom:var(--sp-5);
   font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--muted);
@@ -531,6 +533,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
     <symbol id="i-x" viewBox="0 0 256 256"><path fill="currentColor" d="M214.75 211.71l-62.6-91.21 61.77-67.97a8 8 0 0 0-11.84-10.76l-58.84 64.74-41.66-60.7A8 8 0 0 0 94.69 36H48a8 8 0 0 0-6.6 12.52l62.6 91.2-61.77 67.98a8 8 0 1 0 11.84 10.76l58.84-64.74 41.66 60.7A8 8 0 0 0 161.31 220H208a8 8 0 0 0 6.6-12.52z"/></symbol>
     <symbol id="i-mail" viewBox="0 0 256 256"><path fill="currentColor" d="M224 48H32a8 8 0 0 0-8 8v136a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a8 8 0 0 0-8-8zM98.71 128 40 181.81V74.19zm11.84 10.85 12 11.05a8 8 0 0 0 10.82 0l12-11.05 47 43.15H63.5zM157.29 128 216 74.18v107.63z"/></symbol>
     <symbol id="i-caret-down" viewBox="0 0 256 256"><path fill="currentColor" d="M213.66 101.66l-80 80a8 8 0 0 1-11.32 0l-80-80a8 8 0 0 1 11.32-11.32L128 164.69l74.34-74.35a8 8 0 0 1 11.32 11.32Z"/></symbol>
+    <symbol id="i-article" viewBox="0 0 256 256"><path fill="currentColor" d="M216 40H40a16 16 0 0 0-16 16v144a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16Zm0 160H40V56h176v144Zm-32-104a8 8 0 0 1-8 8H80a8 8 0 0 1 0-16h96a8 8 0 0 1 8 8Zm0 32a8 8 0 0 1-8 8H80a8 8 0 0 1 0-16h96a8 8 0 0 1 8 8Zm0 32a8 8 0 0 1-8 8H80a8 8 0 0 1 0-16h96a8 8 0 0 1 8 8Z"/></symbol>
     <!-- tech brand marks (Simple Icons, recoloured via currentColor) -->
     <symbol id="t-swift" viewBox="0 0 24 24"><path fill="currentColor" d="M7.508 0c-.287 0-.573 0-.86.002-.241.002-.483.003-.724.01-.132.003-.263.009-.395.015A9.154 9.154 0 0 0 4.348.15 5.492 5.492 0 0 0 2.85.645 5.04 5.04 0 0 0 .645 2.848c-.245.48-.4.972-.495 1.5-.093.52-.122 1.05-.136 1.576a35.2 35.2 0 0 0-.012.724C0 6.935 0 7.221 0 7.508v8.984c0 .287 0 .575.002.862.002.24.005.481.012.722.014.526.043 1.057.136 1.576.095.528.25 1.02.495 1.5a5.03 5.03 0 0 0 2.205 2.203c.48.244.97.4 1.498.495.52.093 1.05.124 1.576.138.241.007.483.009.724.01.287.002.573.002.86.002h8.984c.287 0 .573 0 .86-.002.241-.001.483-.003.724-.01a10.523 10.523 0 0 0 1.578-.138 5.322 5.322 0 0 0 1.498-.495 5.035 5.035 0 0 0 2.203-2.203c.245-.48.4-.972.495-1.5.093-.52.124-1.05.138-1.576.007-.241.009-.481.01-.722.002-.287.002-.575.002-.862V7.508c0-.287 0-.573-.002-.86a33.662 33.662 0 0 0-.01-.724 10.5 10.5 0 0 0-.138-1.576 5.328 5.328 0 0 0-.495-1.5A5.039 5.039 0 0 0 21.152.645 5.32 5.32 0 0 0 19.654.15a10.493 10.493 0 0 0-1.578-.138 34.98 34.98 0 0 0-.722-.01C17.067 0 16.779 0 16.492 0H7.508zm6.035 3.41c4.114 2.47 6.545 7.162 5.549 11.131-.024.093-.05.181-.076.272l.002.001c2.062 2.538 1.5 5.258 1.236 4.745-1.072-2.086-3.066-1.568-4.088-1.043a6.803 6.803 0 0 1-.281.158l-.02.012-.002.002c-2.115 1.123-4.957 1.205-7.812-.022a12.568 12.568 0 0 1-5.64-4.838c.649.48 1.35.902 2.097 1.252 3.019 1.414 6.051 1.311 8.197-.002C9.651 12.73 7.101 9.67 5.146 7.191a10.628 10.628 0 0 1-1.005-1.384c2.34 2.142 6.038 4.83 7.365 5.576C8.69 8.408 6.208 4.743 6.324 4.86c4.436 4.47 8.528 6.996 8.528 6.996.154.085.27.154.36.213.085-.215.16-.437.224-.668.708-2.588-.09-5.548-1.893-7.992z"/></symbol>
     <symbol id="t-typescript" viewBox="0 0 24 24"><path fill="currentColor" d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"/></symbol>
@@ -951,6 +954,13 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
     </article>
 
   </div>
+  <div class="work-more reveal">
+    <a class="cta" href="blog/">
+      <span class="cta__lead"><svg aria-hidden="true"><use href="#i-article"/></svg></span>
+      <span class="cta__label">more writing on how these were built</span>
+      <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+    </a>
+  </div>
 </section>
 
 <!-- ============================ SKILLS / STACK ============================ -->
@@ -1076,6 +1086,11 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
         <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
       </a>
     </div>
+    <a class="cta foot__blog" href="blog/">
+      <span class="cta__lead"><svg aria-hidden="true"><use href="#i-article"/></svg></span>
+      <span class="cta__label">Blog / notes</span>
+      <span class="cta__trail"><svg aria-hidden="true"><use href="#i-arrow-ur"/></svg></span>
+    </a>
   </div>
   <p class="foot__meta">built with <svg class="foot__coffee" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208 80h-12.78A24 24 0 0 0 192 64H32a16 16 0 0 0-16 16v56a72.08 72.08 0 0 0 72 72h64a72.08 72.08 0 0 0 71.34-64H208a40 40 0 0 0 0-80zm-32 56a56.06 56.06 0 0 1-56 56H88a56.06 56.06 0 0 1-56-56V80h144zm32 8h-16V96h16a24 24 0 0 1 0 48z"/></svg> in melbourne · <span id="year"></span></p>
 </footer>
