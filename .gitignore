@@ -1,5 +1,8 @@
 # Planning / scope doc — local only
 BUILD.md
 
+# Claude Code session data — local only
+.claude/
+
 # macOS
 .DS_Store

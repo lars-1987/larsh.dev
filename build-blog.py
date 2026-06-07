@@ -184,6 +184,8 @@ a{color:inherit;text-decoration:none}
   font-family:var(--mono);font-size:var(--fs-sm);color:var(--muted)}
 .post__cat{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);
   background:var(--accent-dim);padding:.3em .7em;border-radius:6px}
+.post__author{color:var(--accent);text-decoration:none}
+.post__author:hover{text-decoration:underline;text-underline-offset:3px}
 .post__title{font-weight:700;font-size:var(--fs-2xl);letter-spacing:-.035em;line-height:1.05}
 .post__sub{color:var(--muted-strong);font-size:var(--fs-md);margin-top:var(--sp-3);max-width:60ch}
 .post__tags{display:flex;gap:.5em;flex-wrap:wrap;margin-top:var(--sp-3)}
@@ -336,7 +338,7 @@ def main():
         body_html = f"""<div class="wrap">
   <a class="back" href="index.html">&larr; All notes</a>
   <header class="post__head">
-    <div class="post__meta"><span class="post__cat">{html.escape(cat)}</span> {html.escape(date)} &middot; {read} min read</div>
+    <div class="post__meta"><span class="post__cat">{html.escape(cat)}</span> <span>{html.escape(date)} &middot; {read} min read &middot; by <a class="post__author" href="../">Lars Holmstr&ouml;m</a></span></div>
     <h1 class="post__title">{html.escape(meta.get('title',''))}</h1>
     <p class="post__sub">{html.escape(meta.get('subtitle',''))}</p>
     <div class="post__tags">{tag_html}</div>
