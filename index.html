@@ -273,7 +273,8 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .detail__shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;
   transition:opacity .6s var(--ease)}
 /* the visible shot drifts slowly (Ken Burns) so the pane feels alive, never static */
-@keyframes ken-burns{from{transform:scale(1.012)}to{transform:scale(1.05) translate(-1.1%,-.7%)}}
+/* stays within the fully-contained frame (max scale 1) so the device is never clipped */
+@keyframes ken-burns{from{transform:scale(.96) translate(-1%,.6%)}to{transform:scale(1) translate(0,0)}}
 .detail__shot img.on{opacity:1;animation:ken-burns 22s ease-in-out infinite alternate}
 .detail__zoom{position:absolute;right:0;bottom:0;display:inline-flex;align-items:center;gap:.4em;
   font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
