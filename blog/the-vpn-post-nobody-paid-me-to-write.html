@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The VPN Post Nobody Paid Me to Write — Lars Holmström</title>
+<meta name="description" content="No affiliate links, no &#x27;top pick&#x27; that mysteriously pays the highest commission. Just what these things actually do, what they don&#x27;t, and whether you need one." />
+<meta name="author" content="Lars Holmström" />
+<link rel="canonical" href="https://larsh.dev/blog/the-vpn-post-nobody-paid-me-to-write.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The VPN Post Nobody Paid Me to Write" />
+<meta property="og:description" content="No affiliate links, no &#x27;top pick&#x27; that mysteriously pays the highest commission. Just what these things actually do, what they don&#x27;t, and whether you need one." />
+<meta property="og:url" content="https://larsh.dev/blog/the-vpn-post-nobody-paid-me-to-write.html" />
+<meta property="og:site_name" content="Lars Holmström" />
+<meta property="og:image" content="https://larsh.dev/og.png" />
+<meta property="article:published_time" content="2026-06-09" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@larsitodev" />
+<meta name="twitter:image" content="https://larsh.dev/og.png" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "The VPN Post Nobody Paid Me to Write", "description": "No affiliate links, no 'top pick' that mysteriously pays the highest commission. Just what these things actually do, what they don't, and whether you need one.", "datePublished": "2026-06-09", "dateModified": "2026-06-09", "author": {"@type": "Person", "name": "Lars Holmström", "url": "https://larsh.dev/"}, "publisher": {"@type": "Person", "name": "Lars Holmström"}, "url": "https://larsh.dev/blog/the-vpn-post-nobody-paid-me-to-write.html", "mainEntityOfPage": "https://larsh.dev/blog/the-vpn-post-nobody-paid-me-to-write.html", "image": "https://larsh.dev/og.png", "keywords": "privacy, vpn, security, opinion"}</script>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#EAEDE0;--bg-warm:#F2F4EC;--bg-elevated:#E1E6D4;--bg-subtle:#D6DCC8;
+  --sage:#BFD0B3;--sage-mid:#7F9C86;--fg:#2F3E35;--muted:#566459;--muted-strong:#3b4a40;
+  --border:rgba(47,62,53,.16);--border-strong:rgba(47,62,53,.30);
+  --accent:#46624f;--accent-dim:rgba(127,156,134,.18);
+  --shadow-sm:0 10px 24px -14px rgba(47,62,53,.30);
+  --shadow-lg:0 40px 80px -34px rgba(47,62,53,.40);
+  --fs-sm:.9rem;--fs-base:1rem;--fs-md:1.18rem;--fs-lg:1.55rem;--fs-2xl:clamp(2rem,5vw,3.4rem);
+  --sp-1:.5rem;--sp-2:1rem;--sp-3:1.5rem;--sp-4:2rem;--sp-5:3rem;--sp-6:4rem;--sp-7:6rem;
+  --ease:cubic-bezier(.16,1,.3,1);--ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --radius:14px;--maxw:1080px;
+  --font:"Geist",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SFMono-Regular",monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:2rem;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:var(--fs-base);
+  line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(1200px 620px at 78% -12%,rgba(127,156,134,.18),transparent 60%),
+  radial-gradient(1000px 520px at -5% 102%,rgba(191,208,179,.42),transparent 55%)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--sp-4);position:relative;z-index:1}
+.mono{font-family:var(--mono)}
+
+/* back link */
+.back{display:inline-flex;align-items:center;gap:.5em;margin-top:var(--sp-5);
+  font-family:var(--mono);font-size:var(--fs-sm);color:var(--muted);
+  padding:.5em .9em;border-radius:10px;background:var(--bg-elevated);
+  transition:background .25s var(--ease),transform .25s var(--ease-spring),color .25s var(--ease)}
+.back:hover{color:var(--fg);transform:translateX(-3px)}
+
+/* post header */
+.post__head{padding:var(--sp-6) 0 var(--sp-5);max-width:820px}
+.post__meta{display:flex;align-items:center;gap:var(--sp-2);flex-wrap:wrap;margin-bottom:var(--sp-3);
+  font-family:var(--mono);font-size:var(--fs-sm);color:var(--muted)}
+.post__cat{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);
+  background:var(--accent-dim);padding:.3em .7em;border-radius:6px}
+.post__author{color:var(--accent);text-decoration:none}
+.post__author:hover{text-decoration:underline;text-underline-offset:3px}
+.post__title{font-weight:700;font-size:var(--fs-2xl);letter-spacing:-.035em;line-height:1.05}
+.post__sub{color:var(--muted-strong);font-size:var(--fs-md);margin-top:var(--sp-3);max-width:60ch}
+.post__tags{display:flex;gap:.5em;flex-wrap:wrap;margin-top:var(--sp-3)}
+.post__tags span{font-family:var(--mono);font-size:.72rem;color:var(--muted);
+  background:var(--bg-elevated);padding:.35em .7em;border-radius:6px}
+
+/* layout */
+.post__body{display:grid;grid-template-columns:200px 1fr;gap:var(--sp-6);align-items:start;
+  padding-bottom:var(--sp-7)}
+.toc{position:sticky;top:var(--sp-4);align-self:start}
+.toc__label{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:var(--sp-2)}
+.toc__list{list-style:none;display:flex;flex-direction:column}
+.toc__list a{display:block;padding:.4em 0 .4em var(--sp-2);font-size:var(--fs-sm);color:var(--muted);
+  border-left:2px solid var(--border);transition:color .2s var(--ease),border-color .2s var(--ease)}
+.toc__list a:hover{color:var(--fg)}
+.toc__list a.active{color:var(--fg);border-left-color:var(--accent);font-weight:500}
+
+/* prose */
+.prose{max-width:70ch;min-width:0}
+.prose>p,.prose>ul,.prose>ol,.prose>blockquote,.prose .term{margin-bottom:var(--sp-3)}
+.prose h2{font-size:var(--fs-lg);font-weight:700;letter-spacing:-.02em;
+  margin:var(--sp-6) 0 var(--sp-3);scroll-margin-top:1.5rem}
+.prose h2:first-child{margin-top:0}
+.prose p{color:var(--muted-strong)}
+.prose a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:var(--sage-mid)}
+.prose a:hover{text-decoration-thickness:2px}
+.prose strong{color:var(--fg);font-weight:600}
+.prose em{font-style:italic}
+.prose ul,.prose ol{padding-left:1.3em;color:var(--muted-strong)}
+.prose li{margin-bottom:.5em}
+.prose li::marker{color:var(--sage-mid)}
+.prose blockquote{border-left:3px solid var(--accent);padding:.2em 0 .2em var(--sp-3);
+  color:var(--muted);font-style:italic}
+.prose blockquote p{color:var(--muted)}
+/* inline code */
+.prose :not(.term__code) > code{font-family:var(--mono);font-size:.86em;
+  background:var(--bg-elevated);color:var(--accent);padding:.15em .4em;border-radius:6px;
+  white-space:nowrap}
+
+/* terminal code block */
+.term{border-radius:14px;overflow:hidden;background:#1e1e2e;border:1px solid #11111b;
+  box-shadow:var(--shadow-lg)}
+.term__bar{display:flex;align-items:center;gap:.7em;padding:.65em .9em;background:#181825;
+  border-bottom:1px solid #11111b}
+.term__dots{display:inline-flex;gap:.45em}
+.term__dots i{width:11px;height:11px;border-radius:50%;background:#45475a}
+.term__dots i:nth-child(1){background:#f38ba8}
+.term__dots i:nth-child(2){background:#f9e2af}
+.term__dots i:nth-child(3){background:#a6e3a1}
+.term__lang{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:#6c7086;margin-left:auto}
+.term__code{margin:0;padding:1.1em 1.2em;overflow-x:auto;font-family:var(--mono);
+  font-size:.84rem;line-height:1.7;color:#cdd6f4;tab-size:2}
+.term__code code{font-family:inherit;background:none;padding:0;color:inherit;white-space:pre}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.term__code .hll { background-color: #ffffcc }
+.term__code { background: #1e1e2e; color: #CDD6F4 }
+.term__code .c { color: #6C7086; font-style: italic } /* Comment */
+.term__code .err { color: #F38BA8 } /* Error */
+.term__code .k { color: #CBA6F7 } /* Keyword */
+.term__code .l { color: #CDD6F4 } /* Literal */
+.term__code .n { color: #CDD6F4 } /* Name */
+.term__code .o { color: #89DCEB } /* Operator */
+.term__code .p { color: #9399B2 } /* Punctuation */
+.term__code .ch { color: #6C7086; font-style: italic } /* Comment.Hashbang */
+.term__code .cm { color: #6C7086; font-style: italic } /* Comment.Multiline */
+.term__code .cp { color: #F5C2E7; font-style: italic } /* Comment.Preproc */
+.term__code .cpf { color: #6C7086; font-style: italic } /* Comment.PreprocFile */
+.term__code .c1 { color: #6C7086; font-style: italic } /* Comment.Single */
+.term__code .cs { color: #6C7086; font-style: italic } /* Comment.Special */
+.term__code .gd { color: #F38BA8 } /* Generic.Deleted */
+.term__code .ge { font-style: italic } /* Generic.Emph */
+.term__code .gh { color: #89B4FA } /* Generic.Heading */
+.term__code .gi { color: #A6E3A1 } /* Generic.Inserted */
+.term__code .gs { font-weight: bold } /* Generic.Strong */
+.term__code .kc { color: #FAB387 } /* Keyword.Constant */
+.term__code .kd { color: #CBA6F7 } /* Keyword.Declaration */
+.term__code .kn { color: #CBA6F7 } /* Keyword.Namespace */
+.term__code .kp { color: #CBA6F7 } /* Keyword.Pseudo */
+.term__code .kr { color: #CBA6F7 } /* Keyword.Reserved */
+.term__code .kt { color: #F9E2AF } /* Keyword.Type */
+.term__code .ld { color: #CDD6F4 } /* Literal.Date */
+.term__code .m { color: #FAB387 } /* Literal.Number */
+.term__code .s { color: #A6E3A1 } /* Literal.String */
+.term__code .na { color: #89B4FA } /* Name.Attribute */
+.term__code .nb { color: #F38BA8 } /* Name.Builtin */
+.term__code .nc { color: #F9E2AF } /* Name.Class */
+.term__code .no { color: #FAB387 } /* Name.Constant */
+.term__code .nd { color: #F9E2AF } /* Name.Decorator */
+.term__code .ni { color: #CDD6F4 } /* Name.Entity */
+.term__code .ne { color: #CDD6F4 } /* Name.Exception */
+.term__code .nf { color: #89B4FA } /* Name.Function */
+.term__code .nl { color: #CDD6F4 } /* Name.Label */
+.term__code .nn { color: #F9E2AF } /* Name.Namespace */
+.term__code .nx { color: #CDD6F4 } /* Name.Other */
+.term__code .py { color: #CDD6F4 } /* Name.Property */
+.term__code .nt { color: #CBA6F7 } /* Name.Tag */
+.term__code .nv { color: #CDD6F4 } /* Name.Variable */
+.term__code .ow { color: #CBA6F7 } /* Operator.Word */
+.term__code .pm { color: #9399B2 } /* Punctuation.Marker */
+.term__code .w { color: #CDD6F4 } /* Text.Whitespace */
+.term__code .mb { color: #FAB387 } /* Literal.Number.Bin */
+.term__code .mf { color: #FAB387 } /* Literal.Number.Float */
+.term__code .mh { color: #FAB387 } /* Literal.Number.Hex */
+.term__code .mi { color: #FAB387 } /* Literal.Number.Integer */
+.term__code .mo { color: #FAB387 } /* Literal.Number.Oct */
+.term__code .sa { color: #A6E3A1 } /* Literal.String.Affix */
+.term__code .sb { color: #A6E3A1 } /* Literal.String.Backtick */
+.term__code .sc { color: #A6E3A1 } /* Literal.String.Char */
+.term__code .dl { color: #A6E3A1 } /* Literal.String.Delimiter */
+.term__code .sd { color: #A6E3A1 } /* Literal.String.Doc */
+.term__code .s2 { color: #A6E3A1 } /* Literal.String.Double */
+.term__code .se { color: #F5C2E7 } /* Literal.String.Escape */
+.term__code .sh { color: #A6E3A1 } /* Literal.String.Heredoc */
+.term__code .si { color: #F5C2E7 } /* Literal.String.Interpol */
+.term__code .sx { color: #A6E3A1 } /* Literal.String.Other */
+.term__code .sr { color: #FAB387 } /* Literal.String.Regex */
+.term__code .s1 { color: #A6E3A1 } /* Literal.String.Single */
+.term__code .ss { color: #A6E3A1 } /* Literal.String.Symbol */
+.term__code .bp { color: #F38BA8 } /* Name.Builtin.Pseudo */
+.term__code .fm { color: #89B4FA } /* Name.Function.Magic */
+.term__code .vc { color: #CDD6F4 } /* Name.Variable.Class */
+.term__code .vg { color: #CDD6F4 } /* Name.Variable.Global */
+.term__code .vi { color: #F38BA8 } /* Name.Variable.Instance */
+.term__code .vm { color: #CDD6F4 } /* Name.Variable.Magic */
+.term__code .il { color: #FAB387 } /* Literal.Number.Integer.Long */
+
+/* post footer */
+.post__foot{border-top:1px solid var(--border);padding:var(--sp-5) 0 var(--sp-7);
+  display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);flex-wrap:wrap;
+  font-size:var(--fs-sm);color:var(--muted)}
+.post__foot a{color:var(--accent)}
+
+/* blog index */
+.blog-head{padding:var(--sp-6) 0 var(--sp-5);max-width:680px}
+.blog-eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:var(--sp-2)}
+.blog-title{font-weight:700;font-size:var(--fs-2xl);letter-spacing:-.035em;line-height:1.05}
+.blog-intro{color:var(--muted-strong);font-size:var(--fs-md);margin-top:var(--sp-3)}
+.posts{list-style:none;max-width:820px;padding-bottom:var(--sp-7)}
+.posts li{border-top:1px solid var(--border)}
+.post-row{display:block;padding:var(--sp-4) var(--sp-2);border-radius:14px;
+  transition:background .3s var(--ease),transform .3s var(--ease-spring)}
+.post-row:hover{background:var(--bg-elevated);transform:translateX(4px)}
+.post-row__meta{font-family:var(--mono);font-size:.78rem;color:var(--muted);
+  display:flex;gap:var(--sp-2);flex-wrap:wrap;margin-bottom:.5em}
+.post-row__title{font-size:var(--fs-lg);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.post-row__sub{color:var(--muted);font-size:var(--fs-sm);margin-top:.5em;max-width:62ch}
+
+@media (max-width:820px){
+  .post__body{grid-template-columns:1fr;gap:var(--sp-4)}
+  .toc{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">&larr; All notes</a>
+  <header class="post__head">
+    <div class="post__meta"><span class="post__cat">PRIVACY</span> <span>2026-06-09 &middot; 13 min read &middot; by <a class="post__author" href="../">Lars Holmstr&ouml;m</a></span></div>
+    <h1 class="post__title">The VPN Post Nobody Paid Me to Write</h1>
+    <p class="post__sub">No affiliate links, no &#x27;top pick&#x27; that mysteriously pays the highest commission. Just what these things actually do, what they don&#x27;t, and whether you need one.</p>
+    <div class="post__tags"><span>privacy</span><span>vpn</span><span>security</span><span>opinion</span></div>
+  </header>
+  <div class="post__body">
+    <aside class="toc"><p class="toc__label">On this page</p><ul class="toc__list"><li><a href="#what-a-vpn-actually-is">What a VPN actually is</a></li><li><a href="#does-it-actually-make-you-private-or-is-it-just-a-fancy-location-spoofer">Does it actually make you &quot;private&quot;? Or is it just a fancy location spoofer?</a></li><li><a href="#what-a-vpn-does-not-do">What a VPN does not do</a></li><li><a href="#vpns-to-avoid-and-why">VPNs to avoid, and why</a></li><li><a href="#the-actual-reviews">The actual reviews</a></li><li><a href="#the-breakdown">The breakdown</a></li><li><a href="#so-which-one-should-you-get-probably-none-of-them">So which one should you get? Probably none of them.</a></li></ul></aside>
+    <article class="prose"><p>Try to research VPNs for five minutes and you'll notice something. Every article has a winner. The winner has a discount code. The discount code is an affiliate link. And the "winner" is, with suspicious regularity, whichever provider pays the reviewer the most per signup.</p>
+<p>I have a security background and a privacy tool of my own to run, so people ask me which VPN to get. This post is my answer, and the only thing I get paid for writing it is the warm feeling of not having an affiliate dashboard. Nobody sponsored this. There are no links to click that make me money. If I recommend something it's because I'd use it, and if I tell you to skip something it's because I would.</p>
+<p>Fair warning: my actual conclusion is that most people asking "which VPN should I buy" are asking the wrong question. We'll get there.</p>
+<h2 id="what-a-vpn-actually-is">What a VPN actually is</h2>
+<p>A VPN (virtual private network) does one genuinely useful thing: it takes all the traffic leaving your device, encrypts it, and routes it through a server somewhere else before it heads out to the wider internet. Two consequences follow from that.</p>
+<p>First, whoever is between you and that server (the cafe wifi, the airport network, your ISP) sees encrypted noise going to one address instead of a readable list of everywhere you went. Second, the website on the other end sees the VPN server's IP and location, not yours.</p>
+<p>That's it. That's the whole magic trick. Everything else a VPN company sells you is either a consequence of those two things or marketing built on top of them.</p>
+<h2 id="does-it-actually-make-you-private-or-is-it-just-a-fancy-location-spoofer">Does it actually make you "private"? Or is it just a fancy location spoofer?</h2>
+<p>Here's the part the ads are cagey about. A VPN doesn't make you anonymous. It moves your trust.</p>
+<p>Without a VPN, your ISP can see the domains you connect to. With a VPN, your ISP can't, but your VPN provider now can. You haven't deleted the watcher, you've swapped your ISP for a company in (hopefully) a friendlier country whose entire business model is promising not to look. Whether that's an upgrade depends entirely on whether you trust that company more than your ISP. Sometimes you genuinely do. But it's a trust transfer, not a cloak of invisibility.</p>
+<p>And for a huge slice of real-world use, the honest description of a VPN is "a really good location spoofer." Want to watch the UK Netflix catalogue from Melbourne? A VPN is exactly the right tool. Want to look like you're in the US so a website stops geo-blocking you? Perfect. That use case is legitimate and common and there's nothing embarrassing about it being the main reason most people actually want one. It's just not the same thing as "now I am a ghost," which is what the marketing implies.</p>
+<h2 id="what-a-vpn-does-not-do">What a VPN does not do</h2>
+<p>Quicker to list, and more useful, because this is where the marketing does the most lying by omission.</p>
+<ul>
+<li><strong>It does not make you anonymous.</strong> You logged into your Google account, your email, your bank. They know exactly who you are. The IP address was never the thing identifying you.</li>
+<li><strong>It does not stop tracking.</strong> Cookies, browser fingerprinting, your logged-in accounts, ad networks. None of that cares what your IP is. A VPN does nothing about the surveillance that actually follows you around.</li>
+<li><strong>It does not protect you from malware or phishing.</strong> Some bundle a blocklist-based ad/tracker blocker, which is fine, but the VPN part isn't what's helping there.</li>
+<li><strong>It does not make HTTPS more secure.</strong> Your connection to any half-decent website is already encrypted. The padlock was doing that job before you installed anything.</li>
+<li><strong>It does not hide your activity from a site you're logged into.</strong> Obvious when said out loud, routinely forgotten in practice.</li>
+</ul>
+<p>If you take one thing from this section: a VPN protects the <em>transport</em> of your data between you and the VPN server. It does almost nothing about who you are once your traffic arrives somewhere.</p>
+<h2 id="vpns-to-avoid-and-why">VPNs to avoid, and why</h2>
+<p><strong>"Free" VPNs.</strong> Running a global server network costs real money. If you aren't paying, the product is you, and the way a free VPN monetises you is the exact opposite of what you installed it for. The category has a long, well-documented history of logging and selling traffic, injecting ads, and in several cases shipping outright spyware. A free VPN is a stranger offering to carry all your mail for you, for free, forever, out of kindness. Decline.</p>
+<p>There is exactly one safe flavour of free: a reputable paid provider's limited free tier, where the free users are subsidised by paying ones rather than being the revenue. Proton's free tier is the standout example. That's a real company with a real audited business, not a "free VPN."</p>
+<p><strong>Anyone vague about logging.</strong> "We respect your privacy" is not a no-logs policy. The thing that matters is whether the claim has been <em>independently audited</em>, and ideally whether it's ever been tested by an actual court order or server seizure. Marketing copy is free to write. Audits cost money and reputation, which is the point.</p>
+<p><strong>Providers who hide who owns them.</strong> This is the big one, and it's the thing affiliate roundups will never tell you, because the people who own the VPNs frequently also own the review sites. More on that in a second.</p>
+<h2 id="the-actual-reviews">The actual reviews</h2>
+<p>I've focused on the things that age badly and that the ad-driven articles gloss over: who owns them, what jurisdiction they answer to, whether the no-logs claim has been audited or court-tested, and the catch. Specifics below are current as of June 2026. VPN companies get acquired and change policies constantly, so if you're reading this a year from now, re-verify before trusting any single line.</p>
+<h3 id="mullvad-the-one-id-actually-recommend-to-a-privacy-nerd">Mullvad: the one I'd actually recommend to a privacy nerd</h3>
+<p>Swedish, owned by its founders through a company called Amagicom, and almost aggressively uninterested in growth-hacking you. No email to sign up: you get a random account number. You can literally mail them cash in an envelope. Flat 5 euro a month, no "save 84% with our 3-year plan" countdown-timer nonsense.</p>
+<p>Audited repeatedly by Cure53 and Assured, with reports published publicly. And it has the rarest credential of all: in 2024 Swedish police raided their Gothenburg office looking for user data and left with nothing, because there was nothing to take. That's the no-logs claim tested in the real world, not in a press release.</p>
+<p>The catch: it's bad at streaming (services block its IPs), the server network is smaller than the giants, and the whole experience assumes you know why you're there. This is a privacy tool, not a Netflix unblocker.</p>
+<h3 id="proton-vpn-the-one-id-recommend-to-almost-everyone-else">Proton VPN: the one I'd recommend to almost everyone else</h3>
+<p>From the Proton Mail people, based in Switzerland, which sits outside the major intelligence-sharing alliances and has genuinely strong privacy law. The clients are fully open source, so you don't have to take the audit's word for it, you can read the code. No-logs policy audited every year since 2022 by Securitum, plus a SOC 2 report, all published.</p>
+<p>There's a usable free tier (the good kind, subsidised by paying users) which makes it the easy answer for "I just want something trustworthy for cafe wifi without thinking about it." It streams well, the apps are pleasant, and the privacy story is the most <em>verifiable</em> of any mainstream provider because of the open source angle.</p>
+<p>The catch: one to keep an eye on rather than a dealbreaker. There's a proposed Swiss surveillance-law change (VUPF) floating around in 2026 that could, depending how it lands, erode the jurisdiction advantage. Proton has said it would move infrastructure rather than comply with privacy-eroding rules. Worth watching, not worth panicking over today.</p>
+<h3 id="nordvpn-the-competent-giant">NordVPN: the competent giant</h3>
+<p>Panama-based (no mandatory data retention there), owned by Nord Security. Genuinely fast, enormous server network, streams everything, slick apps. No-logs policy audited repeatedly, most recently a fifth audit by Deloitte. RAM-only servers, so a seized machine has nothing on its disk to surrender.</p>
+<p>Two pieces of nuance the ads skip. One: back in early 2026 there was a breach claim doing the rounds; Nord's account is that it involved an isolated third-party proof-of-concept environment, not production, and no real customer data. Take that as you will, but it wasn't the catastrophe some headlines implied. Two, more interestingly: an October 2024 transparency disclosure showed that under a binding Panamanian warrant, Nord handed over payment data and confirmation that an account existed. No traffic logs, because they don't keep those, but it's a useful reminder that "no activity logs" is not the same as "they have literally nothing on you."</p>
+<p>The catch: not open source, so the no-logs claim rests on audits and trust rather than readable code. And it shares a corporate parent with Surfshark, which both products were notably quiet about (see below).</p>
+<h3 id="surfshark-nords-cheaper-sibling-and-yes-theyre-siblings">Surfshark: Nord's cheaper sibling, and yes, they're siblings</h3>
+<p>Cheap, unlimited devices on one account, decent speeds, audited no-logs policy (twice, 2022 and 2023, a shorter track record than Nord's). Based in the Netherlands, which is a Nine Eyes member, though Dutch law doesn't mandate VPN data retention.</p>
+<p>The thing worth knowing: Surfshark and NordVPN completed a merger in 2022 and share corporate ownership, investors, and senior leadership. For a while both kept marketing themselves as independent head-to-head competitors, which is a fun trick to pull on the people comparing them. If you're picking "Nord vs Surfshark" thinking you're choosing between rivals, you're choosing between two products from the same company. Fine if you know; less fine when you don't.</p>
+<h3 id="expressvpn-fast-polished-and-owned-by-a-company-you-should-know-about">ExpressVPN: fast, polished, and owned by a company you should know about</h3>
+<p>British Virgin Islands jurisdiction, RAM-only servers (their "TrustedServer" branding), PwC-audited, fast and beginner-friendly. As a <em>product</em> it's genuinely good and the audit practices are credible.</p>
+<p>The asterisk is ownership. ExpressVPN is owned by Kape Technologies. Kape was previously called Crossrider, a name with a documented history in the browser-adware world before it rebranded and pivoted to privacy tools. That pivot may be entirely sincere. But here's the part that matters for <em>this</em> post specifically: Kape also owns CyberGhost, Private Internet Access, and ZenMate, <strong>and it owns the review sites vpnMentor and WizCase.</strong> So some of the glowing VPN roundups recommending ExpressVPN are published by the company that owns ExpressVPN. That's the affiliate-conflict problem in its purest form, and it's exactly why I wrote this.</p>
+<h3 id="private-internet-access-pia-the-court-tested-workhorse">Private Internet Access (PIA): the court-tested workhorse</h3>
+<p>US-based, which sounds like a dealbreaker (Five Eyes, no friendly jurisdiction) until you look at the record. PIA has been subpoenaed in multiple US federal cases and each time produced nothing, because there was nothing logged. That's about as strong a real-world no-logs proof as exists, sitting in public court records. Open-source apps, audited, unlimited devices, excellent for torrenting, very cheap.</p>
+<p>The catch: same as Express, it's owned by Kape, so the same ownership-concentration caveat applies. And US jurisdiction means that while there's nothing to hand over today, you're trusting that the no-logs architecture stays that way under a government that can compel a lot. The court history is reassuring; the jurisdiction is still the jurisdiction.</p>
+<h2 id="the-breakdown">The breakdown</h2>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Jurisdiction</th>
+<th>Owner</th>
+<th>Audited no-logs</th>
+<th>Court / raid tested</th>
+<th>Open source</th>
+<th>Best at</th>
+<th>The catch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mullvad</strong></td>
+<td>Sweden</td>
+<td>Founder-owned (Amagicom)</td>
+<td>Yes, repeatedly</td>
+<td>Yes (2024 raid, nothing taken)</td>
+<td>Partially</td>
+<td>Anonymity, principle</td>
+<td>Poor streaming, small network</td>
+</tr>
+<tr>
+<td><strong>Proton VPN</strong></td>
+<td>Switzerland</td>
+<td>Proton AG</td>
+<td>Yes, yearly since 2022</td>
+<td>No, but open source</td>
+<td>Yes, fully</td>
+<td>Trustworthy all-rounder, free tier</td>
+<td>Swiss law change to watch</td>
+</tr>
+<tr>
+<td><strong>NordVPN</strong></td>
+<td>Panama</td>
+<td>Nord Security</td>
+<td>Yes, 5x (Deloitte)</td>
+<td>Partially (gave payment data under warrant)</td>
+<td>No</td>
+<td>Speed, streaming</td>
+<td>Not open source, Surfshark sibling</td>
+</tr>
+<tr>
+<td><strong>Surfshark</strong></td>
+<td>Netherlands</td>
+<td>Nord Security</td>
+<td>Yes, 2x</td>
+<td>No</td>
+<td>No</td>
+<td>Price, unlimited devices</td>
+<td>Same owner as Nord</td>
+</tr>
+<tr>
+<td><strong>ExpressVPN</strong></td>
+<td>BVI</td>
+<td>Kape Technologies</td>
+<td>Yes (PwC)</td>
+<td>No</td>
+<td>No</td>
+<td>Speed, ease of use</td>
+<td>Kape also owns review sites</td>
+</tr>
+<tr>
+<td><strong>PIA</strong></td>
+<td>USA</td>
+<td>Kape Technologies</td>
+<td>Yes</td>
+<td>Yes (multiple US cases)</td>
+<td>Yes</td>
+<td>Torrenting, value, proof</td>
+<td>US jurisdiction, Kape-owned</td>
+</tr>
+</tbody>
+</table>
+<p>A note on that table: "court/raid tested" is the column the marketing can't manufacture. An audit is a company paying someone to check their homework. A raid that comes up empty is the homework surviving a pop quiz nobody studied for. Mullvad and PIA are the two that have actually been through it.</p>
+<h2 id="so-which-one-should-you-get-probably-none-of-them">So which one should you get? Probably none of them.</h2>
+<p>Here's the part that won't get me any affiliate commissions.</p>
+<p>Most people don't need a VPN. The marketing has convinced a generation that browsing without one is like leaving your front door open, and that's just not how the threat model works for a normal person in 2026. Your traffic to almost every site is already encrypted by HTTPS. Your ISP knowing which domains you visit is a real privacy cost, but a VPN fixes that by handing the same information to a VPN company instead, and the rest of the surveillance economy (your accounts, cookies, fingerprinting, the apps on your phone) doesn't care about your IP at all.</p>
+<p>There are three good reasons to actually have one:</p>
+<ol>
+<li><strong>You're regularly on untrusted networks.</strong> Cafe wifi, airport wifi, hotel networks, conferences. Encrypting your transport on a network full of strangers is the original, legitimate use case and it's a good one.</li>
+<li><strong>You want to watch things from another region.</strong> Netflix in another country, sport that's geo-blocked, a service that won't serve your location. Totally valid. Just buy the location spoofer and skip the privacy theatre.</li>
+<li><strong>You genuinely trust the VPN provider more than your ISP with the record of where you go.</strong> For some people, in some countries, with some ISPs, this is unambiguously true. If that's you, it's a real reason. Just be honest that it's a trust transfer, not magic.</li>
+</ol>
+<p>If one of those is you, here's my actual no-commission advice: <strong>Proton VPN</strong> if you want trustworthy-and-easy and like that you can read the source, <strong>Mullvad</strong> if you care about privacy as a principle and will mail an envelope of cash to prove it, <strong>PIA or Nord</strong> if you mostly want speed and streaming and the court record or audit trail is enough for you. If none of those three reasons describes you, save your money. The best VPN for most people is understanding why they probably don't need one.</p>
+<p>Anyway. That's the post with no link to click. Strange feeling. I might go install an affiliate dashboard just to feel something.</p></article>
+  </div>
+  <footer class="post__foot">
+    <a class="back" href="index.html">&larr; All notes</a>
+    <span>&copy; <span>2026</span> Lars Holmstr&ouml;m &middot; <a href="../">larsh.dev</a></span>
+  </footer>
+</div>
+<script>
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var links = {};
+  document.querySelectorAll('.toc__list a').forEach(function(a){
+    links[a.getAttribute('href').slice(1)] = a;
+  });
+  var visible = {};
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ visible[e.target.id] = e.isIntersecting; });
+    var ids = Object.keys(links);
+    var active = ids.filter(function(id){ return visible[id]; })[0] || null;
+    ids.forEach(function(id){ links[id] && links[id].classList.toggle('active', id===active); });
+  }, {rootMargin:'-10% 0px -75% 0px', threshold:0});
+  document.querySelectorAll('.prose h2[id]').forEach(function(h){ io.observe(h); });
+})();
+</script>
+</body>
+</html>
