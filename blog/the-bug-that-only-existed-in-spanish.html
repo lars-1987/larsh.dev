@@ -83,7 +83,9 @@ a{color:inherit;text-decoration:none}
 .toc__list a.active{color:var(--fg);border-left-color:var(--accent);font-weight:500}
 
 /* prose */
-.prose{max-width:70ch;min-width:0}
+.prose{min-width:0}
+/* cap flowing text for readability, but let tables + code blocks use the full width */
+.prose>p,.prose>ul,.prose>ol,.prose>blockquote,.prose>h2,.prose>h3{max-width:70ch}
 .prose>p,.prose>ul,.prose>ol,.prose>blockquote,.prose .term{margin-bottom:var(--sp-3)}
 .prose h2{font-size:var(--fs-lg);font-weight:700;letter-spacing:-.02em;
   margin:var(--sp-6) 0 var(--sp-3);scroll-margin-top:1.5rem}
@@ -104,6 +106,18 @@ a{color:inherit;text-decoration:none}
 .prose :not(.term__code) > code{font-family:var(--mono);font-size:.86em;
   background:var(--bg-elevated);color:var(--accent);padding:.15em .4em;border-radius:6px;
   white-space:nowrap}
+
+/* tables — wide comparisons get a bordered, striped, horizontally-scrollable layout */
+.prose__table{overflow-x:auto;margin:var(--sp-4) 0;border:1px solid var(--border);
+  border-radius:12px;-webkit-overflow-scrolling:touch}
+.prose table{width:100%;min-width:720px;border-collapse:collapse;font-size:.85rem;line-height:1.45}
+.prose thead th{text-align:left;vertical-align:bottom;font-weight:600;color:var(--fg);
+  background:var(--bg-elevated);padding:.7em .85em;border-bottom:1px solid var(--border-strong)}
+.prose tbody td{vertical-align:top;padding:.62em .85em;color:var(--muted-strong);
+  border-bottom:1px solid var(--border)}
+.prose tbody tr:last-child td{border-bottom:0}
+.prose tbody tr:nth-child(even){background:var(--bg-warm)}
+.prose th:first-child,.prose td:first-child{color:var(--fg);font-weight:600;white-space:nowrap}
 
 /* terminal code block */
 .term{border-radius:14px;overflow:hidden;background:#1e1e2e;border:1px solid #11111b;
