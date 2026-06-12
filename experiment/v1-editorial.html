@@ -1,0 +1,845 @@
+<!doctype html>
+<!--
+  EXPERIMENT — full-bleed editorial redesign of larsh.dev
+  Direction: quiet luxury. Warm ivory paper, espresso ink, one bronze accent.
+  Fraunces (display serif) + Instrument Sans (body) + Spline Sans Mono (labels).
+  Full-width composition: hairlines run edge to edge, type meets the gutters,
+  whitespace fills the whole browser instead of a centred column.
+  Single static file, no build step. Assets referenced from ../assets/.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lars Holmström — full-stack product builder, front-end first</title>
+<meta name="description" content="Melbourne-based full-stack developer with a front-end obsession. Eight products designed, built and shipped solo — native apps and privacy-first web tools." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Instrument+Sans:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --paper:#F5F2EA;        /* warm ivory page */
+  --paper-deep:#EDE8DC;   /* recessed panels */
+  --paper-card:#FAF8F2;   /* lifted cards */
+  --ink:#211E18;          /* espresso ink */
+  --ink-soft:#6B6457;     /* secondary text */
+  --ink-faint:#8F8779;    /* tertiary / labels */
+  --line:rgba(33,30,24,.16);
+  --line-strong:rgba(33,30,24,.34);
+  --bronze:#8A5A3B;       /* the single accent */
+  --bronze-soft:rgba(138,90,59,.10);
+
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Instrument Sans",ui-sans-serif,system-ui,sans-serif;
+  --mono:"Spline Sans Mono",ui-monospace,monospace;
+
+  --gutter:clamp(20px,4vw,72px);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px;-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:1rem;line-height:1.65;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+/* grain — barely there, keeps large ivory fields from feeling flat */
+body::after{
+  content:"";position:fixed;inset:-50%;z-index:200;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 9s steps(6) infinite;
+}
+@keyframes grain{
+  0%,100%{transform:translate(0,0)}20%{transform:translate(-2%,1%)}
+  40%{transform:translate(1%,-2%)}60%{transform:translate(2%,2%)}80%{transform:translate(-1%,-1%)}
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--bronze);outline-offset:3px;border-radius:2px}
+::selection{background:var(--bronze);color:var(--paper)}
+
+.serif{font-family:var(--serif)}
+em{font-family:var(--serif);font-style:italic;font-weight:400}
+
+/* mono micro-label */
+.lbl{
+  font-family:var(--mono);font-size:.7rem;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);
+}
+.lbl b{color:var(--bronze);font-weight:500}
+
+/* full-bleed hairline */
+.rule{border:0;border-top:1px solid var(--line);width:100%}
+
+/* page gutter — content breathes against the full viewport, no max-width cage */
+.gx{padding-left:var(--gutter);padding-right:var(--gutter)}
+
+/* ============================================================
+   ENTRANCE / SCROLL REVEALS
+   ============================================================ */
+.rv{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease),transform 1.1s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}.rv-d4{transition-delay:.32s}
+
+/* hairlines draw themselves edge to edge when they enter */
+.rule.rv{transform:scaleX(0);transform-origin:left center;transition:transform 1.4s var(--ease)}
+.rule.rv.in{transform:scaleX(1)}
+
+/* images unveil from below; the photo settles from a gentle zoom.
+   NB: the clip lives on the img, not the wrapper — Chrome's IntersectionObserver
+   reports zero intersection for an element clipped by its own clip-path. */
+.unveil{overflow:hidden}
+.unveil img{
+  clip-path:inset(100% 0 0 0);transform:scale(1.12);
+  transition:clip-path 1.3s var(--ease),transform 1.6s var(--ease);
+}
+.unveil.in img{clip-path:inset(0 0 0 0);transform:scale(1)}
+
+/* hero line mask reveal */
+.mask{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.mask > span{display:block;transform:translateY(112%);transition:transform 1.25s var(--ease)}
+.loaded .mask > span{transform:none}
+.mask:nth-child(2) > span{transition-delay:.12s}
+.mask:nth-child(3) > span{transition-delay:.24s}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  body::after{animation:none}
+  .rv,.rule.rv,.unveil,.unveil img,.mask > span{transition:none!important;animation:none!important}
+  .rv,.rule.rv{opacity:1;transform:none}
+  .unveil img{clip-path:none;transform:none}
+  .mask > span{transform:none}
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:1.1rem var(--gutter);
+  transition:background .5s var(--ease),box-shadow .5s var(--ease),padding .5s var(--ease);
+}
+.nav.scrolled{
+  padding-top:.8rem;padding-bottom:.8rem;
+  background:rgba(245,242,234,.82);
+  -webkit-backdrop-filter:blur(14px) saturate(1.15);backdrop-filter:blur(14px) saturate(1.15);
+  box-shadow:0 1px 0 var(--line);
+}
+.nav__name{font-family:var(--serif);font-weight:500;font-size:1.12rem;letter-spacing:-.01em}
+.nav__name i{font-style:italic;font-weight:400;color:var(--ink-soft)}
+.nav__clock{position:absolute;left:50%;transform:translateX(-50%)}
+.nav__links{display:flex;gap:clamp(1rem,2.5vw,2.4rem);align-items:center}
+.nav__links a{font-size:.86rem;font-weight:500;color:var(--ink-soft);position:relative;transition:color .25s}
+.nav__links a:hover{color:var(--ink)}
+.nav__links a::after{
+  content:"";position:absolute;left:0;right:100%;bottom:-4px;height:1px;
+  background:var(--bronze);transition:right .35s var(--ease);
+}
+.nav__links a:hover::after{right:0}
+@media (max-width:720px){
+  .nav__clock{display:none}
+  .nav__links a:not(.nav__contact){display:none}
+}
+
+/* ============================================================
+   HERO — full viewport, type meets the gutters
+   ============================================================ */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;position:relative}
+.hero__meta{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;
+  padding-top:7.5rem;margin-bottom:auto;
+}
+.hero__meta .lbl{line-height:1.9}
+.hero__portrait{
+  width:clamp(74px,8vw,104px);height:clamp(74px,8vw,104px);object-fit:cover;border-radius:50%;
+  filter:saturate(.92);
+  opacity:0;transform:scale(.85);transition:opacity 1s var(--ease) .5s,transform 1.2s var(--ease) .5s;
+}
+.loaded .hero__portrait{opacity:1;transform:none}
+.hero__h1{
+  font-family:var(--serif);font-weight:340;
+  font-size:clamp(2.9rem,9.2vw,9.4rem);
+  line-height:1.005;letter-spacing:-.025em;
+  font-variation-settings:"opsz" 144;
+  margin-bottom:clamp(1.6rem,3.5vh,3rem);
+}
+.hero__h1 em{font-weight:380;color:var(--bronze)}
+.hero__foot{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;
+  padding-bottom:1.4rem;
+}
+.hero__sub{max-width:44ch;color:var(--ink-soft);font-size:clamp(.98rem,1.25vw,1.18rem);line-height:1.6}
+.hero__sub strong{color:var(--ink);font-weight:600}
+.hero__cue{display:flex;align-items:center;gap:.8em}
+.hero__cue .lbl{letter-spacing:.22em}
+.hero__cue-line{display:block;width:1px;height:44px;background:var(--line-strong);overflow:hidden;position:relative}
+.hero__cue-line::after{
+  content:"";position:absolute;left:0;top:-100%;width:100%;height:100%;background:var(--bronze);
+  animation:cue-drop 2.6s var(--ease) infinite;
+}
+@keyframes cue-drop{0%{top:-100%}55%{top:100%}100%{top:100%}}
+@media (prefers-reduced-motion:reduce){.hero__cue-line::after{animation:none}}
+@media (max-width:720px){
+  .hero__meta .lbl{font-size:.6rem;letter-spacing:.12em;line-height:2}
+  .hero__meta{align-items:center}
+}
+
+/* ============================================================
+   TICKER — slow editorial strip between hero and work
+   ============================================================ */
+.ticker{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:.95rem 0}
+.ticker__track{display:flex;width:max-content;animation:tick 56s linear infinite}
+.ticker:hover .ticker__track{animation-play-state:paused}
+.ticker__seq{display:flex;align-items:center;white-space:nowrap}
+.ticker__seq span{
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:1.02rem;color:var(--ink-soft);padding:0 1.6rem;
+}
+.ticker__seq i{font-style:normal;color:var(--bronze);font-size:.6rem}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.ticker__track{animation:none}}
+
+/* ============================================================
+   SECTION HEADERS — number left, headline right of the line
+   ============================================================ */
+.sec-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:2rem;flex-wrap:wrap;
+  padding-top:1.6rem;margin-bottom:clamp(3rem,7vh,5.5rem);
+}
+.sec-head h2{
+  font-family:var(--serif);font-weight:380;letter-spacing:-.02em;line-height:1.05;
+  font-size:clamp(2.1rem,4.6vw,4rem);max-width:18ch;
+}
+.sec-head h2 em{color:var(--bronze)}
+.sec-head .lbl{flex:none}
+section{padding-top:clamp(4.5rem,11vh,8rem);padding-bottom:clamp(4.5rem,11vh,8rem)}
+
+/* ============================================================
+   FEATURED CASE STUDIES — alternating full-width compositions
+   ============================================================ */
+.case{
+  display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(1.2rem,2.5vw,2.8rem);
+  align-items:center;
+}
+.case + .case{margin-top:clamp(5rem,13vh,10rem)}
+.case__media{grid-column:1 / span 7}
+.case--flip .case__media{grid-column:6 / span 7;order:2}
+.case__body{grid-column:9 / span 4}
+.case--flip .case__body{grid-column:1 / span 4;order:1}
+
+.case__frame{
+  position:relative;background:var(--paper-deep);
+  padding:clamp(1.1rem,2.4vw,2.6rem);
+  box-shadow:0 30px 70px -38px rgba(33,30,24,.38);
+}
+.case__frame img{box-shadow:0 14px 38px -20px rgba(33,30,24,.4)}
+.case__index{
+  position:absolute;top:.85rem;left:1.1rem;z-index:2;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;color:var(--ink-faint);
+}
+/* phone screenshots: two staggered uprights inside the frame */
+.case__phones{display:flex;gap:clamp(.8rem,1.8vw,1.6rem);align-items:flex-start;justify-content:center}
+.case__phones .unveil:nth-child(2){margin-top:clamp(1.6rem,3.5vw,3.2rem)}
+.case__phones img{width:clamp(110px,13.5vw,220px)}
+
+.case__kicker{margin-bottom:1.1rem}
+.case__name{
+  font-family:var(--serif);font-weight:420;font-size:clamp(1.9rem,3vw,2.7rem);
+  letter-spacing:-.02em;line-height:1.05;margin-bottom:.7rem;
+}
+.case__lede{color:var(--ink-soft);font-size:1.02rem;margin-bottom:1.3rem}
+.case__points{list-style:none;display:flex;flex-direction:column;margin-bottom:1.5rem}
+.case__points li{
+  position:relative;padding:.85rem 0 .85rem 1.5rem;border-top:1px solid var(--line);
+  font-size:.92rem;color:var(--ink-soft);line-height:1.55;
+}
+.case__points li:last-child{border-bottom:1px solid var(--line)}
+.case__points li::before{
+  content:"";position:absolute;left:.1em;top:1.42em;width:5px;height:5px;border-radius:50%;background:var(--bronze);
+}
+.case__points strong{color:var(--ink);font-weight:600}
+.case__tech{font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;color:var(--ink-faint);line-height:1.9;margin-bottom:1.6rem}
+.case__links{display:flex;gap:1.6rem;flex-wrap:wrap}
+
+/* underlined editorial link with arrow that walks on hover */
+.tlink{
+  display:inline-flex;align-items:center;gap:.5em;
+  font-size:.88rem;font-weight:600;padding-bottom:.25em;
+  border-bottom:1px solid var(--line-strong);
+  transition:border-color .3s var(--ease),color .3s var(--ease);
+}
+.tlink svg{width:13px;height:13px;flex:none;transition:transform .35s var(--ease)}
+.tlink:hover{color:var(--bronze);border-color:var(--bronze)}
+.tlink:hover svg{transform:translate(3px,-3px)}
+.tlink--muted{color:var(--ink-faint);border-bottom-style:dashed;pointer-events:none;font-weight:500}
+
+@media (max-width:980px){
+  .case{grid-template-columns:1fr;gap:2rem}
+  .case__media,.case--flip .case__media{grid-column:1 / -1;order:0}
+  .case__body,.case--flip .case__body{grid-column:1 / -1;order:1;max-width:62ch}
+}
+
+/* ============================================================
+   PROJECT INDEX — full-width rows + cursor-following preview
+   ============================================================ */
+.index-rows{display:flex;flex-direction:column}
+.irow{
+  position:relative;display:grid;align-items:baseline;
+  grid-template-columns:3.2rem 1fr auto auto;gap:clamp(.8rem,2.5vw,2.5rem);
+  padding:1.35rem 0;border-top:1px solid var(--line);
+  transition:padding .45s var(--ease);
+}
+.index-rows .irow:last-child{border-bottom:1px solid var(--line)}
+.irow__num{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--ink-faint);transition:color .3s}
+.irow__name{
+  font-family:var(--serif);font-weight:400;font-size:clamp(1.5rem,3vw,2.3rem);
+  letter-spacing:-.015em;line-height:1.1;display:inline-flex;align-items:baseline;gap:.6em;
+  transition:transform .45s var(--ease),color .3s var(--ease);
+}
+.irow__wip{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze)}
+.irow__desc{font-size:.88rem;color:var(--ink-soft);max-width:34ch;text-align:right}
+.irow__type{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);width:8.5em;text-align:right}
+@media (hover:hover){
+  .irow:hover{padding-left:.6rem}
+  .irow:hover .irow__name{color:var(--bronze)}
+  .irow:hover .irow__num{color:var(--bronze)}
+}
+@media (max-width:860px){
+  .irow{grid-template-columns:2.4rem 1fr auto}
+  .irow__desc{display:none}
+}
+/* floating preview that trails the cursor over the index */
+.peek{
+  position:fixed;z-index:90;width:min(340px,30vw);aspect-ratio:4/3;pointer-events:none;
+  top:0;left:0;opacity:0;background:var(--paper-deep);
+  transition:opacity .35s var(--ease);
+  box-shadow:0 30px 80px -30px rgba(33,30,24,.5);
+}
+.peek.on{opacity:1}
+.peek img{position:absolute;inset:14px;width:calc(100% - 28px);height:calc(100% - 28px);object-fit:contain;opacity:0;transition:opacity .3s var(--ease)}
+.peek img.show{opacity:1}
+@media (hover:none),(max-width:860px){.peek{display:none}}
+
+/* ============================================================
+   CAPABILITIES — four columns spanning the full width
+   ============================================================ */
+.caps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1.5rem,3vw,3rem)}
+.cap{border-top:1px solid var(--line-strong);padding-top:1.2rem}
+.cap__num{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;color:var(--bronze);display:block;margin-bottom:.9rem}
+.cap h3{font-family:var(--serif);font-weight:480;font-size:1.35rem;letter-spacing:-.01em;margin-bottom:.4rem}
+.cap p{font-size:.88rem;color:var(--ink-soft);margin-bottom:1.1rem;line-height:1.55}
+.cap ul{list-style:none;display:flex;flex-wrap:wrap;gap:.45em}
+.cap li{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.03em;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:999px;padding:.32em .8em;
+  transition:border-color .3s,color .3s,background .3s;
+}
+.cap li:hover{border-color:var(--bronze);color:var(--bronze);background:var(--bronze-soft)}
+@media (max-width:980px){.caps{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.caps{grid-template-columns:1fr}}
+
+/* homelab aside */
+.lab{
+  margin-top:clamp(3.5rem,8vh,6rem);background:var(--paper-deep);
+  padding:clamp(1.8rem,4vw,3.2rem) var(--gutter);
+  display:grid;grid-template-columns:minmax(200px,.9fr) 2fr;gap:clamp(1.5rem,4vw,4rem);align-items:start;
+}
+.lab h3{font-family:var(--serif);font-weight:420;font-size:clamp(1.4rem,2.4vw,2rem);letter-spacing:-.015em;margin-top:.5rem;max-width:14ch;line-height:1.15}
+.lab p{font-size:.92rem;color:var(--ink-soft);max-width:58ch;margin-bottom:1.2rem}
+.lab__list{font-family:var(--mono);font-size:.74rem;line-height:2.1;color:var(--ink-soft);columns:2;column-gap:3rem}
+.lab__list b{color:var(--ink);font-weight:500}
+@media (max-width:860px){.lab{grid-template-columns:1fr}.lab__list{columns:1}}
+
+/* ============================================================
+   WRITING
+   ============================================================ */
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.2rem,2.5vw,2.5rem)}
+.post{
+  display:flex;flex-direction:column;gap:1rem;background:var(--paper-card);
+  border:1px solid var(--line);padding:1.7rem 1.6rem 1.5rem;min-height:230px;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .4s;
+}
+.post:hover{transform:translateY(-6px);border-color:transparent;box-shadow:0 26px 60px -30px rgba(33,30,24,.4)}
+.post__title{font-family:var(--serif);font-weight:440;font-size:1.32rem;letter-spacing:-.01em;line-height:1.25;flex:1}
+.post__foot{display:flex;justify-content:space-between;align-items:center}
+.post__arrow{width:15px;height:15px;color:var(--bronze);transition:transform .35s var(--ease)}
+.post:hover .post__arrow{transform:translate(3px,-3px)}
+@media (max-width:860px){.posts{grid-template-columns:1fr}}
+
+/* ============================================================
+   CONTACT / FOOTER — the page ends in ink
+   ============================================================ */
+.foot{background:var(--ink);color:var(--paper);padding-top:clamp(5rem,13vh,9rem)}
+.foot ::selection{background:var(--paper);color:var(--ink)}
+.foot .lbl{color:rgba(245,242,234,.45)}
+.foot__h{
+  font-family:var(--serif);font-weight:330;letter-spacing:-.025em;line-height:1.04;
+  font-size:clamp(2.6rem,7vw,6.6rem);max-width:14ch;
+  margin:1.2rem 0 2.6rem;font-variation-settings:"opsz" 144;
+}
+.foot__h em{color:#C99B73}
+.foot__mail{
+  display:inline-flex;align-items:center;gap:.55em;
+  font-family:var(--serif);font-style:italic;font-size:clamp(1.25rem,2.6vw,2rem);
+  border-bottom:1px solid rgba(245,242,234,.35);padding-bottom:.18em;
+  transition:border-color .3s,color .3s;
+}
+.foot__mail:hover{color:#C99B73;border-color:#C99B73}
+.foot__mail svg{width:.8em;height:.8em;transition:transform .35s var(--ease)}
+.foot__mail:hover svg{transform:translate(4px,-4px)}
+.foot__grid{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;
+  margin-top:clamp(3.5rem,9vh,6.5rem);padding-bottom:2rem;
+}
+.foot__links{display:flex;gap:2rem}
+.foot__links a{font-size:.88rem;font-weight:500;color:rgba(245,242,234,.65);transition:color .25s}
+.foot__links a:hover{color:var(--paper)}
+.foot__rule{border:0;border-top:1px solid rgba(245,242,234,.14)}
+.foot__meta{
+  display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  padding-top:1.3rem;padding-bottom:1.5rem;
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:rgba(245,242,234,.4);
+}
+/* giant ghost name across the very bottom */
+.foot__name{
+  font-family:var(--serif);font-weight:360;letter-spacing:-.03em;line-height:.84;
+  font-size:clamp(3.4rem,12.5vw,13rem);white-space:nowrap;text-align:center;
+  color:transparent;-webkit-text-stroke:1px rgba(245,242,234,.22);
+  user-select:none;padding-top:1rem;
+}
+</style>
+</head>
+<body>
+
+<!-- ============================ NAV ============================ -->
+<header class="nav" id="nav">
+  <a class="nav__name" href="#top">Lars <i>Holmström</i></a>
+  <span class="nav__clock lbl" id="clock" aria-hidden="true">Melbourne&ensp;—&ensp;··:··</span>
+  <nav class="nav__links" aria-label="Site">
+    <a href="#work">Work</a>
+    <a href="#index">Index</a>
+    <a href="#capabilities">Capabilities</a>
+    <a href="#writing">Writing</a>
+    <a class="nav__contact" href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- ============================ HERO ============================ -->
+<section class="hero gx" aria-label="Introduction">
+  <div class="hero__meta">
+    <p class="lbl">Full-stack developer<br/>front-end first<br/><b>Open to product roles</b></p>
+    <img class="hero__portrait" src="../assets/portrait.JPG" alt="Portrait of Lars Holmström" width="104" height="104" />
+    <p class="lbl" style="text-align:right">Melbourne, Australia<br/>Cyber-security graduate<br/>Everything shipped solo</p>
+  </div>
+  <h1 class="hero__h1">
+    <span class="mask"><span>I design, build &amp;</span></span>
+    <span class="mask"><span>ship <em>complete</em></span></span>
+    <span class="mask"><span>products.</span></span>
+  </h1>
+  <div class="hero__foot rv rv-d3">
+    <p class="hero__sub">
+      Eight products from first sketch to App Store and production web —
+      <strong>interface to infrastructure</strong>, with the obsession pointed
+      squarely at the front of the stack.
+    </p>
+    <div class="hero__cue" aria-hidden="true">
+      <span class="lbl">Selected work</span>
+      <span class="hero__cue-line"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TICKER ============================ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track" id="ticker-track">
+    <div class="ticker__seq">
+      <span>SanctumPDF</span><i>◆</i><span>MetaStrip</span><i>◆</i><span>Fenced</span><i>◆</i>
+      <span>Renew</span><i>◆</i><span>Vesper</span><i>◆</i><span>Virtus</span><i>◆</i>
+      <span>Bedcheck</span><i>◆</i><span>Helio</span><i>◆</i>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ FEATURED WORK ============================ -->
+<section class="gx" id="work" aria-label="Selected work">
+  <hr class="rule rv" />
+  <div class="sec-head">
+    <span class="lbl rv">01 — Selected work</span>
+    <h2 class="rv rv-d1">Four products, <em>end to end.</em></h2>
+  </div>
+
+  <!-- SanctumPDF -->
+  <article class="case">
+    <div class="case__media">
+      <div class="case__frame">
+        <span class="case__index">SP — 01 / WEB</span>
+        <div class="unveil"><img src="../assets/sanctumpdf1.webp" alt="SanctumPDF interface" loading="lazy" /></div>
+      </div>
+    </div>
+    <div class="case__body">
+      <p class="lbl case__kicker"><b>Shipped</b> · Web app</p>
+      <h3 class="case__name">SanctumPDF</h3>
+      <p class="case__lede">Privacy-first PDF &amp; financial-file conversion — the heavy lifting happens in the browser.</p>
+      <ul class="case__points">
+        <li><strong>Client-heavy, server-light.</strong> Wasm does the PDF work in-browser; files live in memory and vanish on tab close.</li>
+        <li><strong>Avoided the AGPL trap.</strong> pdf-lib + QPDF Wasm cut the payload ~7× and removed a licensing landmine.</li>
+        <li><strong>14-locale i18n</strong> grew the indexed surface from ~36 to 335+ pages.</li>
+      </ul>
+      <p class="case__tech">Next.js · Tailwind · Supabase · Stripe · Vercel · Wasm</p>
+      <div class="case__links">
+        <a class="tlink" href="https://sanctumpdf.com" target="_blank" rel="noopener noreferrer">Visit site
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      </div>
+    </div>
+  </article>
+
+  <!-- Renew -->
+  <article class="case case--flip">
+    <div class="case__media">
+      <div class="case__frame">
+        <span class="case__index">RN — 02 / iOS</span>
+        <div class="case__phones">
+          <div class="unveil"><img src="../assets/renew1.webp" alt="Renew app — skin log" loading="lazy" /></div>
+          <div class="unveil"><img src="../assets/renew2.webp" alt="Renew app — analytics" loading="lazy" /></div>
+          <div class="unveil"><img src="../assets/renew3.webp" alt="Renew app — product scan" loading="lazy" /></div>
+        </div>
+      </div>
+    </div>
+    <div class="case__body">
+      <p class="lbl case__kicker"><b>Shipped</b> · Mobile app</p>
+      <h3 class="case__name">Renew</h3>
+      <p class="case__lede">Skincare tracking with real analytics and an OCR&nbsp;→&nbsp;AI label pipeline.</p>
+      <ul class="case__points">
+        <li><strong>OCR → Gemini extraction.</strong> Point the camera at a product; the label becomes structured, searchable INCI data — Korean and Japanese included.</li>
+        <li><strong>Offline-first by architecture.</strong> A local WatermelonDB makes logging instant with no signal, then syncs to Supabase.</li>
+        <li><strong>Analytics as the differentiator</strong> — skin-score trends and time-lagged ingredient correlation.</li>
+      </ul>
+      <p class="case__tech">React Native · Expo · WatermelonDB · Supabase · OCR + Gemini</p>
+      <div class="case__links">
+        <a class="tlink" href="https://getrenew.app" target="_blank" rel="noopener noreferrer">Visit site
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        <a class="tlink" href="https://apps.apple.com/us/app/renew-skincare-tracker/id6758534567" target="_blank" rel="noopener noreferrer">App Store
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      </div>
+    </div>
+  </article>
+
+  <!-- MetaStrip -->
+  <article class="case">
+    <div class="case__media">
+      <div class="case__frame">
+        <span class="case__index">MS — 03 / WEB · OSS</span>
+        <div class="unveil"><img src="../assets/metastrip1.webp" alt="MetaStrip interface" loading="lazy" /></div>
+      </div>
+    </div>
+    <div class="case__body">
+      <p class="lbl case__kicker"><b>Shipped</b> · Open source</p>
+      <h3 class="case__name">MetaStrip</h3>
+      <p class="case__lede">Browser-based metadata removal — fully client-side, verifiable in the Network tab.</p>
+      <ul class="case__points">
+        <li><strong>Equal-size metadata replacement.</strong> Hand-written MP4/ID3/Vorbis/RIFF parsers swap metadata for identical-length padding, so playback never breaks.</li>
+        <li><strong>Structural privacy, not a promise.</strong> Zero upload, zero server, zero cache — the guarantee is the architecture.</li>
+      </ul>
+      <p class="case__tech">Next.js · 100% client-side · MIT · custom binary parsers</p>
+      <div class="case__links">
+        <a class="tlink" href="https://metastrip.app" target="_blank" rel="noopener noreferrer">Visit site
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        <a class="tlink" href="https://github.com/lars-1987/metastrip" target="_blank" rel="noopener noreferrer">Source
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      </div>
+    </div>
+  </article>
+
+  <!-- Bedcheck -->
+  <article class="case case--flip">
+    <div class="case__media">
+      <div class="case__frame">
+        <span class="case__index">BC — 04 / iOS 26</span>
+        <div class="case__phones">
+          <div class="unveil"><img src="../assets/bedcheck1.webp" alt="Bedcheck app — bedtime view" loading="lazy" /></div>
+          <div class="unveil"><img src="../assets/bedcheck2.webp" alt="Bedcheck app — alarm setup" loading="lazy" /></div>
+        </div>
+      </div>
+    </div>
+    <div class="case__body">
+      <p class="lbl case__kicker"><b>In development</b> · Mobile app</p>
+      <h3 class="case__name">Bedcheck</h3>
+      <p class="case__lede">An iOS accountability app for your bedtime, not your wake time.</p>
+      <ul class="case__points">
+        <li><strong>Built against AlarmKit before the docs existed.</strong> Read the <code>.swiftinterface</code> directly; surfaced silent Xcode bugs through device dogfooding.</li>
+        <li><strong>Three-rail reliability.</strong> Local notifications + AlarmKit + a Live Activity — each can fail without breaking the safety net.</li>
+        <li><strong>A ~7,000-line spec before code,</strong> with every accepted failure mode documented.</li>
+      </ul>
+      <p class="case__tech">Swift 6 · SwiftUI · SwiftData · AlarmKit · ActivityKit · HealthKit</p>
+      <div class="case__links">
+        <span class="tlink tlink--muted">App Store — coming soon</span>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ============================ FULL INDEX ============================ -->
+<section class="gx" id="index" aria-label="All projects">
+  <hr class="rule rv" />
+  <div class="sec-head">
+    <span class="lbl rv">02 — Complete index</span>
+    <h2 class="rv rv-d1">Everything, <em>shipped solo.</em></h2>
+  </div>
+  <div class="index-rows rv" id="index-rows"></div>
+</section>
+
+<!-- ============================ CAPABILITIES ============================ -->
+<section class="gx" id="capabilities" aria-label="Capabilities">
+  <hr class="rule rv" />
+  <div class="sec-head">
+    <span class="lbl rv">03 — Capabilities</span>
+    <h2 class="rv rv-d1">Pixel to <em>Postgres.</em></h2>
+  </div>
+  <div class="caps">
+    <div class="cap rv">
+      <span class="cap__num">A</span>
+      <h3>Front end</h3>
+      <p>Where the obsession lives — interfaces, motion, design systems, and the last 5% most people skip.</p>
+      <ul><li>React</li><li>Next.js</li><li>TypeScript</li><li>Tailwind CSS</li><li>CSS motion</li><li>Design systems</li><li>i18n</li></ul>
+    </div>
+    <div class="cap rv rv-d1">
+      <span class="cap__num">B</span>
+      <h3>Native &amp; mobile</h3>
+      <p>Shipped apps in the App Store across two stacks — React Native where it fits, Swift when it matters.</p>
+      <ul><li>Swift 6</li><li>SwiftUI</li><li>React Native</li><li>Expo</li><li>SwiftData</li><li>WidgetKit</li><li>HealthKit</li></ul>
+    </div>
+    <div class="cap rv rv-d2">
+      <span class="cap__num">C</span>
+      <h3>Back end &amp; data</h3>
+      <p>Server-light by philosophy — the right database in the right place, payments and auth done properly.</p>
+      <ul><li>Node.js</li><li>PostgreSQL</li><li>Supabase</li><li>SQLite</li><li>WatermelonDB</li><li>CloudKit</li><li>Stripe</li></ul>
+    </div>
+    <div class="cap rv rv-d3">
+      <span class="cap__num">D</span>
+      <h3>Infrastructure</h3>
+      <p>From Vercel deploys to a self-hosted homelab — comfortable owning the whole path to production.</p>
+      <ul><li>Vercel</li><li>Cloudflare</li><li>Docker</li><li>Proxmox</li><li>Linux</li><li>Caddy</li><li>ZFS</li></ul>
+    </div>
+  </div>
+
+  <aside class="lab rv" style="margin-left:calc(var(--gutter) * -1);margin-right:calc(var(--gutter) * -1)">
+    <div>
+      <span class="lbl">The proving ground</span>
+      <h3>A homelab that runs like production.</h3>
+    </div>
+    <div>
+      <p>Everything above gets exercised at home first — a Proxmox cluster behind a segmented Unifi network, services deployed with Docker Compose behind Caddy with automatic TLS, monitored, snapshotted, and reachable over Tailscale.</p>
+      <div class="lab__list">
+        <div><b>Proxmox</b> — VM / LXC host</div>
+        <div><b>PiHole + Unbound</b> — recursive DNS</div>
+        <div><b>Caddy</b> — reverse proxy, auto TLS</div>
+        <div><b>Tailscale</b> — WireGuard access</div>
+        <div><b>ZFS</b> — snapshots &amp; integrity</div>
+        <div><b>Grafana + Teslamate</b> — telemetry</div>
+        <div><b>Uptime Kuma</b> — monitoring</div>
+        <div><b>Jellyfin</b> — media streaming</div>
+      </div>
+    </div>
+  </aside>
+</section>
+
+<!-- ============================ WRITING ============================ -->
+<section class="gx" id="writing" aria-label="Writing">
+  <hr class="rule rv" />
+  <div class="sec-head">
+    <span class="lbl rv">04 — Writing</span>
+    <h2 class="rv rv-d1">Notes from <em>the build.</em></h2>
+  </div>
+  <div class="posts">
+    <a class="post rv" href="../blog/the-bug-that-only-existed-in-spanish.html">
+      <span class="lbl">Engineering</span>
+      <span class="post__title serif">The bug that only existed in Spanish</span>
+      <span class="post__foot"><span class="lbl">Read</span>
+        <svg class="post__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+    <a class="post rv rv-d1" href="../blog/i-built-a-whole-tool-to-avoid-formatting-code-blocks.html">
+      <span class="lbl">Engineering</span>
+      <span class="post__title serif">I built a whole tool to avoid formatting code blocks</span>
+      <span class="post__foot"><span class="lbl">Read</span>
+        <svg class="post__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+    <a class="post rv rv-d2" href="../blog/the-vpn-post-nobody-paid-me-to-write.html">
+      <span class="lbl">Privacy</span>
+      <span class="post__title serif">The VPN post nobody paid me to write</span>
+      <span class="post__foot"><span class="lbl">Read</span>
+        <svg class="post__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="foot" id="contact" aria-label="Contact">
+  <div class="gx">
+    <span class="lbl rv">05 — Contact</span>
+    <h2 class="foot__h rv rv-d1">Have a product<br/>that needs <em>building?</em></h2>
+    <a class="foot__mail js-mail rv rv-d2" href="#" data-u="larsh.dev" data-d="proton.me">
+      <span data-mail-label>say hello</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg>
+    </a>
+    <div class="foot__grid">
+      <p class="lbl">Lars Holmström<br/>Melbourne, Australia</p>
+      <nav class="foot__links" aria-label="Profiles">
+        <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer">X / @larsitodev</a>
+        <a href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="../blog/">Blog</a>
+      </nav>
+    </div>
+  </div>
+  <hr class="foot__rule" />
+  <div class="foot__meta gx">
+    <span>© <span id="year"></span> — built by hand in Melbourne</span>
+    <span>No framework · no build step · no tracking</span>
+  </div>
+  <div class="foot__name" aria-hidden="true">Holmström</div>
+</footer>
+
+<!-- floating index preview -->
+<div class="peek" id="peek" aria-hidden="true"></div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // hero entrance
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    document.body.classList.add('loaded');
+  });});
+
+  // Melbourne clock
+  var clock = document.getElementById('clock');
+  function tickClock(){
+    try{
+      var t = new Intl.DateTimeFormat('en-AU',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Australia/Melbourne'}).format(new Date());
+      clock.innerHTML = 'Melbourne&ensp;—&ensp;' + t;
+    }catch(e){ clock.textContent = 'Melbourne'; }
+  }
+  tickClock(); setInterval(tickClock, 30000);
+
+  // nav state
+  var nav = document.getElementById('nav');
+  function onScroll(){ nav.classList.toggle('scrolled', window.scrollY > 40); }
+  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  // duplicate ticker content for the seamless loop
+  var track = document.getElementById('ticker-track');
+  track.appendChild(track.children[0].cloneNode(true));
+
+  // email — assembled client-side, never in the source
+  document.querySelectorAll('.js-mail').forEach(function(a){
+    var addr = a.getAttribute('data-u') + '@' + a.getAttribute('data-d');
+    a.setAttribute('href','mailto:' + addr);
+    a.querySelector('[data-mail-label]').textContent = addr;
+  });
+
+  // ---------- complete index ----------
+  var P = [
+    {n:'SanctumPDF', t:'Web app',        d:'Privacy-first PDF & file conversion in the browser', img:'sanctumpdf1.webp', h:'https://sanctumpdf.com'},
+    {n:'MetaStrip',  t:'Web · OSS',      d:'Client-side metadata removal, hand-written parsers',  img:'metastrip1.webp',  h:'https://metastrip.app'},
+    {n:'Fenced',     t:'Web · OSS',      d:'Markdown to portable, self-contained HTML',           img:'fenced1.webp',     h:'https://fenced.dev'},
+    {n:'Renew',      t:'Mobile app',     d:'Skincare analytics with an OCR → AI pipeline',        img:'renew1.webp',      h:'https://getrenew.app'},
+    {n:'Vesper',     t:'Mobile app',     d:'Multilingual scripture with a dynamic sky system',    img:'vesper1.webp',     h:'https://tryvesper.app'},
+    {n:'Virtus',     t:'Mobile app',     d:'Stoic wisdom & journaling, fully on-device',          img:'virtus1.webp',     h:'https://getvirtus.app'},
+    {n:'Bedcheck',   t:'Mobile app',     d:'Bedtime accountability on AlarmKit, day one',         img:'bedcheck1.webp',   wip:true},
+    {n:'Helio',      t:'macOS app',      d:'Project-first focus for long-running work',           img:'helio1.webp',      wip:true}
+  ];
+  var rows = document.getElementById('index-rows');
+  var peek = document.getElementById('peek');
+  P.forEach(function(p,i){
+    var el = document.createElement(p.h ? 'a' : 'div');
+    el.className = 'irow';
+    if(p.h){ el.href = p.h; el.target = '_blank'; el.rel = 'noopener noreferrer'; }
+    el.innerHTML =
+      '<span class="irow__num">' + String(i+1).padStart(2,'0') + '</span>' +
+      '<span class="irow__name">' + p.n + (p.wip ? '<span class="irow__wip">in development</span>' : '') + '</span>' +
+      '<span class="irow__desc">' + p.d + '</span>' +
+      '<span class="irow__type">' + p.t + '</span>';
+    el.dataset.i = i;
+    rows.appendChild(el);
+    var img = document.createElement('img');
+    img.src = '../assets/' + p.img; img.alt = ''; img.loading = 'lazy';
+    peek.appendChild(img);
+  });
+
+  // cursor-trailing preview (lerped, calm)
+  if(matchMedia('(hover:hover)').matches && !reduce){
+    var mx=0,my=0,px=0,py=0,active=-1,raf=null;
+    var imgs = peek.querySelectorAll('img');
+    function loop(){
+      px += (mx-px)*.09; py += (my-py)*.09;
+      peek.style.transform = 'translate(' + (px+26) + 'px,' + (py-90) + 'px)' + (active>-1?' scale(1)':' scale(.92)');
+      raf = requestAnimationFrame(loop);
+    }
+    rows.addEventListener('mousemove', function(e){ mx=e.clientX; my=e.clientY; });
+    rows.addEventListener('mouseover', function(e){
+      var row = e.target.closest('.irow'); if(!row) return;
+      var i = +row.dataset.i;
+      if(i!==active){
+        imgs.forEach(function(im,j){ im.classList.toggle('show', j===i); });
+        if(active===-1){ px=mx; py=my; peek.classList.add('on'); if(!raf) loop(); }
+        active = i;
+      }
+    });
+    function hidePeek(){
+      active = -1; peek.classList.remove('on');
+      if(raf){ cancelAnimationFrame(raf); raf=null; }
+    }
+    rows.addEventListener('mouseleave', hidePeek);
+    // hover state isn't re-evaluated while scrolling — hide once the rows leave the cursor
+    addEventListener('scroll', function(){
+      if(active>-1){
+        var r = rows.getBoundingClientRect();
+        if(my < r.top || my > r.bottom) hidePeek();
+      }
+    }, {passive:true});
+  }
+
+  // ---------- scroll reveals ----------
+  var els = document.querySelectorAll('.rv, .unveil');
+  if(reduce){
+    els.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        // reveal when entering — or if already scrolled past (hash landing, fast jumps)
+        if(e.isIntersecting || e.boundingClientRect.top < 0){
+          e.target.classList.add('in'); io.unobserve(e.target);
+        }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:.05});
+    els.forEach(function(el){ io.observe(el); });
+    // safety sweep for instant jumps that skip the viewport entirely
+    addEventListener('scroll', function(){
+      els.forEach(function(el){
+        if(!el.classList.contains('in') && el.getBoundingClientRect().top < 0){
+          el.classList.add('in'); io.unobserve(el);
+        }
+      });
+    }, {passive:true});
+  }
+})();
+</script>
+</body>
+</html>
