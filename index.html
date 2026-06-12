@@ -9,20 +9,20 @@
   Source:  https://github.com/lars-1987/larsh.dev
   Contact: the email button on the page (assembled client-side to keep it off scrapers)
 
-  — Lars
+  Lars
 -->
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Lars Holmström — native apps & privacy-first web tools</title>
-<meta name="description" content="Melbourne-based indie developer building native apps and privacy-first, client-side web tools — MetaStrip, SanctumPDF, Fenced — plus a homelab. Projects, stack, and engineering write-ups." />
+<title>Lars Holmström: native apps & privacy-first web tools</title>
+<meta name="description" content="Melbourne-based indie developer building native apps and privacy-first, client-side web tools: MetaStrip, SanctumPDF, Fenced, plus a homelab. Projects, stack, and engineering write-ups." />
 <link rel="canonical" href="https://larsh.dev/" />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Lars Holmström" />
-<meta property="og:title" content="Lars Holmström — native apps & privacy-first web tools" />
+<meta property="og:title" content="Lars Holmström: native apps & privacy-first web tools" />
 <meta property="og:description" content="Melbourne-based indie developer building native apps and privacy-first, client-side web tools. Projects, stack, and engineering write-ups." />
 <meta property="og:url" content="https://larsh.dev/" />
 <meta property="og:image" content="https://larsh.dev/og.png" />
@@ -36,7 +36,7 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="apple-touch-icon" href="favicon.svg" />
 
-<!-- Structured data — helps name searches surface the site -->
+<!-- Structured data: helps name searches surface the site -->
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Lars Holmström","url":"https://larsh.dev/","jobTitle":"Software developer","description":"Melbourne-based indie developer building native apps and privacy-first web tools.","address":{"@type":"PostalAddress","addressLocality":"Melbourne","addressCountry":"AU"},"sameAs":["https://x.com/larsitodev","https://github.com/lars-1987"]}</script>
 
 <!-- Fonts: Geist as the single grotesque superfamily (Apple-editorial: weight + size + tracking do the work) + Geist Mono for micro-labels. -->
@@ -46,21 +46,21 @@
 
 <style>
 /* ============================================================
-   TOKENS  (locked reference — BUILD.md §6)
+   TOKENS  (locked reference: BUILD.md §6)
    ============================================================ */
 :root{
-  /* —— cream editorial palette (maps the provided swatches) —— */
-  --bg:#EAEDE0;          /* page — cool sage-tinted paper (distinct from MetaStrip's warm cream) */
-  --bg-warm:#F2F4EC;     /* lighter cool pop — hover lift */
+  /* cream editorial palette (maps the provided swatches) */
+  --bg:#EAEDE0;          /* page: cool sage-tinted paper (distinct from MetaStrip's warm cream) */
+  --bg-warm:#F2F4EC;     /* lighter cool pop, hover lift */
   --bg-elevated:#E1E6D4; /* raised chips / cards (slightly deeper + greener than page) */
   --bg-subtle:#D6DCC8;   /* inset / hover tint */
   --sage:#BFD0B3;        /* light sage tint */
-  --sage-mid:#7F9C86;    /* decorative sage — hairlines, big numerals, icon hover (NOT text) */
+  --sage-mid:#7F9C86;    /* decorative sage: hairlines, big numerals, icon hover (NOT text) */
   --fg:#2F3E35;          /* primary text + headings (deep forest)  10.2:1 */
   --muted:#566459;       /* secondary text  5.65:1 AA */
   --muted-strong:#3b4a40;/* stronger secondary  8.48:1 AA */
   --border:rgba(47,62,53,.16); --border-strong:rgba(47,62,53,.30);
-  --accent:#46624f;      /* single accent — readable forest-green  6.09:1 */
+  --accent:#46624f;      /* single accent: readable forest-green  6.09:1 */
   --accent-hover:#37503f; --accent-dim:rgba(127,156,134,.18);
 
   /* warm shadows (greenish-brown, low alpha) instead of black on cream */
@@ -75,7 +75,7 @@
   --sp-5:3rem; --sp-6:4rem; --sp-7:6rem; --sp-8:8rem;
 
   --ease:cubic-bezier(.16,1,.3,1); --dur:.6s;
-  --ease-spring:cubic-bezier(.34,1.56,.64,1); /* overshoot — the "bloopy" Apple bounce */
+  --ease-spring:cubic-bezier(.34,1.56,.64,1); /* overshoot: the "bloopy" Apple bounce */
   --radius:16px; --maxw-text:64ch; --maxw-page:1100px;
 
   --font-display:"Geist",ui-sans-serif,system-ui,-apple-system,sans-serif;
@@ -96,7 +96,7 @@ body{
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
   overflow-x:hidden;
 }
-/* faint atmospheric depth — barely-perceptible warm wash */
+/* faint atmospheric depth: barely-perceptible warm wash */
 body::before{
   content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
@@ -127,7 +127,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
     background .4s var(--ease),border-color .4s var(--ease),
     box-shadow .4s var(--ease),backdrop-filter .4s var(--ease);
 }
-/* detached floating pill once the hero scrolls away — same colour as the page, lifted by shadow */
+/* detached floating pill once the hero scrolls away: same colour as the page, lifted by shadow */
 .nav--pill{
   top:14px;max-width:600px;padding:.7rem 1.4rem;
   background:rgba(234,237,224,.9);
@@ -162,7 +162,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
   .nav{padding:var(--sp-2) var(--sp-3)}
   .nav--pill{max-width:calc(100% - 24px);padding:.6rem 1.1rem}
   .nav--footer{max-width:min(320px, calc(100% - 24px))}
-  .nav__surname{display:none}  /* just "Lars" on mobile — keeps the pill roomy */
+  .nav__surname{display:none}  /* just "Lars" on mobile, keeps the pill roomy */
 }
 
 /* ============================================================
@@ -177,7 +177,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .scroll-cue.is-gone{opacity:0;pointer-events:none}
 .scroll-cue svg{width:26px;height:26px;animation:cue-bounce 2.4s cubic-bezier(.45,.05,.55,.95) infinite}
 .scroll-cue:hover{color:var(--fg)}
-/* a calm fall-and-settle bob, with a hold at rest — matches the site's easing */
+/* a calm fall-and-settle bob, with a hold at rest: matches the site's easing */
 @keyframes cue-bounce{
   0%,12%{transform:translateY(0)}
   50%{transform:translateY(10px)}
@@ -209,7 +209,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
   position:relative;z-index:1;padding-block:var(--sp-7);
 }
 .intro__grid{display:grid;grid-template-columns:auto 1fr;gap:var(--sp-6);align-items:center;
-  /* progressive top-down dissolve on scroll — the band sweeps down via --fp (set in JS) */
+  /* progressive top-down dissolve on scroll: the band sweeps down via --fp (set in JS) */
   --fp:0%;
   -webkit-mask-image:linear-gradient(to bottom, transparent calc(var(--fp) - 28%), #000 var(--fp));
   mask-image:linear-gradient(to bottom, transparent calc(var(--fp) - 28%), #000 var(--fp));
@@ -244,12 +244,12 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
    PROJECT TIMELINE  (full-height sections, scroll-driven reveal)
    ============================================================ */
 .projects{position:relative;z-index:1;padding-block:var(--sp-7)}
-/* SHOWCASE — filter pills + a fixed-height detail pane that swaps in place
+/* SHOWCASE: filter pills + a fixed-height detail pane that swaps in place
    (so the grid never moves) + a minimal project grid. Replaces the accordion. */
 .work-more{display:flex;justify-content:center;margin-top:var(--sp-6)}
 .showcase__top{display:flex;flex-direction:column;align-items:center;padding-bottom:var(--sp-4)}
 
-/* filter pills — iOS segmented control: a single highlight thumb slides + resizes
+/* filter pills, iOS segmented control: a single highlight thumb slides + resizes
    between options (JS positions it). Flat, so it doesn't compete with the nav pill. */
 .filters{position:relative;display:inline-flex;gap:.25em;padding:.35em;border-radius:999px;
   background:var(--bg-elevated);margin:0 auto var(--sp-4)}
@@ -263,7 +263,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .filters button:hover{color:var(--fg)}
 .filters button.active{color:var(--fg)}
 
-/* detail pane — FIXED height so swapping projects never moves the grid */
+/* detail pane: FIXED height so swapping projects never moves the grid */
 .detail{width:100%;max-width:var(--maxw-page);display:grid;gap:var(--sp-5);align-items:center;
   height:clamp(490px,62vh,580px)}
 .detail--wide{grid-template-columns:1.45fr 1fr}
@@ -302,7 +302,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .detail__more svg{width:13px;height:13px;transition:transform .25s var(--ease-spring)}
 .detail__more:hover svg{transform:translateX(3px)}
 .detail__cta{display:flex;gap:var(--sp-2);flex-wrap:wrap}
-/* entrance — the pane animates in each time a project is selected (innerHTML is
+/* entrance: the pane animates in each time a project is selected (innerHTML is
    regenerated, so these run fresh on every render): media leads, body cascades. */
 @keyframes detail-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .detail__media{animation:detail-in .55s var(--ease) both}
@@ -315,11 +315,11 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .detail__body > *:nth-child(6){animation-delay:.31s}
 .detail__body > *:nth-child(7){animation-delay:.36s}
 
-/* project grid — equal-size cards: index numeral pinned top-left, name + type
-   pinned bottom-left. On hover the card stays put; only the contents animate —
+/* project grid, equal-size cards: index numeral pinned top-left, name + type
+   pinned bottom-left. On hover the card stays put; only the contents animate:
    the numeral slides out left and an up-right arrow slides in from the right. */
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-2);padding:var(--sp-2) 0 0}
-/* staggered entrance — cells rise in sequence the first time the grid is seen */
+/* staggered entrance: cells rise in sequence the first time the grid is seen */
 .cell--enter{opacity:0;transform:translateY(18px)}
 .grid--revealing .cell--enter{opacity:1;transform:none;
   transition:opacity .5s var(--ease),transform .55s var(--ease)}
@@ -335,14 +335,14 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
   border:1px solid transparent;background:var(--bg-elevated);border-radius:16px;padding:var(--sp-3);
   transition:background .3s var(--ease),border-color .3s var(--ease)}
 .cell.active{background:var(--fg);border-color:var(--fg);color:var(--bg)}
-/* index numeral — top-left, slides out left on hover */
+/* index numeral: top-left, slides out left on hover */
 .cell__num{position:absolute;top:var(--sp-3);left:var(--sp-3);
   font-family:var(--font-display);font-weight:700;font-size:1.8rem;line-height:1;letter-spacing:-.04em;
   color:var(--sage-mid);font-variant-numeric:tabular-nums;
   transition:transform .45s var(--ease-spring),opacity .3s var(--ease)}
 .cell.active .cell__num{color:var(--sage)}
 @media (hover:hover){.cell:hover .cell__num{transform:translateX(-180%);opacity:0}}
-/* up-right arrow — top-right, slides in from the right on hover */
+/* up-right arrow: top-right, slides in from the right on hover */
 .cell__arrow{position:absolute;top:var(--sp-3);right:var(--sp-3);width:22px;height:22px;
   display:grid;place-items:center;color:var(--accent);
   opacity:0;transform:translateX(16px);
@@ -350,13 +350,13 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .cell.active .cell__arrow{color:var(--sage)}
 .cell__arrow svg{width:20px;height:20px}
 @media (hover:hover){.cell:hover .cell__arrow{opacity:1;transform:translateX(0)}}
-/* name + type — pinned bottom-left */
+/* name + type: pinned bottom-left */
 .cell__meta{position:absolute;left:var(--sp-3);right:var(--sp-3);bottom:var(--sp-3);display:flex;flex-direction:column}
 .cell__name{font-family:var(--font-display);font-weight:700;font-size:var(--fs-md);letter-spacing:-.02em;line-height:1.1}
 .cell__type{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--muted);margin-top:.35em}
 .cell.active .cell__type{color:var(--sage)}
 @media (prefers-reduced-motion:reduce){
-  /* no slide — keep the numeral visible, just reveal the arrow softly */
+  /* no slide: keep the numeral visible, just reveal the arrow softly */
   .cell:hover .cell__num{transform:none;opacity:1}
   .cell__arrow{transform:none}
 }
@@ -370,7 +370,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .ns-projects a + a{margin-left:0}
 
 /* ============================================================
-   LIGHTBOX  (full-size screenshot preview — the pane shots are previews)
+   LIGHTBOX  (full-size screenshot preview: the pane shots are previews)
    ============================================================ */
 /* the image does a shared-element FLIP zoom from its spot in the pane (JS drives
    the transform); the backdrop + chrome fade independently via the .shown class. */
@@ -424,7 +424,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .writeup__related-label{font-family:var(--font-mono);font-size:var(--fs-xs);letter-spacing:.1em;
   text-transform:uppercase;color:var(--muted);margin-bottom:var(--sp-2)}
 
-/* showcase responsive — stack the pane, drop to a 2-wide grid */
+/* showcase responsive: stack the pane, drop to a 2-wide grid */
 @media (max-width:860px){
   /* every pane stacks to one column on small screens */
   .detail,.detail--wide,.detail--mobile{grid-template-columns:1fr;height:auto}
@@ -536,7 +536,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 }
 .foot__inner{
   display:flex;flex-direction:column;align-items:center;gap:var(--sp-3);max-width:640px;
-  /* dissolves in as it scrolls into view — mirrors the hero's exit mask, driven by --ff in JS */
+  /* dissolves in as it scrolls into view: mirrors the hero's exit mask, driven by --ff in JS */
   --ff:0%;
   -webkit-mask-image:linear-gradient(to bottom, transparent calc(var(--ff) - 28%), #000 var(--ff));
   mask-image:linear-gradient(to bottom, transparent calc(var(--ff) - 28%), #000 var(--ff));
@@ -574,7 +574,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 .reveal-stagger.in>*:nth-child(6){transition-delay:.40s}
 
 /* ============================================================
-   RESPONSIVE  (mobile: drop the two-col, stack cleanly — BUILD.md §8)
+   RESPONSIVE  (mobile: drop the two-col, stack cleanly; BUILD.md §8)
    ============================================================ */
 @media (max-width:780px){
   .intro__grid{grid-template-columns:1fr;gap:var(--sp-4)}
@@ -584,7 +584,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
 }
 
 /* ============================================================
-   REDUCED MOTION  (kill all motion, content visible — BUILD.md §8)
+   REDUCED MOTION  (kill all motion, content visible; BUILD.md §8)
    ============================================================ */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -705,6 +705,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
     <style>.showcase__top,#grid{display:none}</style>
     <ul class="ns-projects">
       <li><b>SanctumPDF</b><span>Web app</span><a href="https://sanctumpdf.com" target="_blank" rel="noopener noreferrer">Visit</a></li>
+      <li><b>larsh.dev v2</b><span>Portfolio</span><a href="experiment/">View it</a></li>
       <li><b>MetaStrip</b><span>Web app</span><a href="https://metastrip.app" target="_blank" rel="noopener noreferrer">Visit</a> · <a href="https://github.com/lars-1987/metastrip" target="_blank" rel="noopener noreferrer">Source</a></li>
       <li><b>Fenced</b><span>Web app</span><a href="https://fenced.dev" target="_blank" rel="noopener noreferrer">Visit</a> · <a href="https://github.com/lars-1987/fenced" target="_blank" rel="noopener noreferrer">Source</a></li>
       <li><b>Renew</b><span>Mobile app</span><a href="https://getrenew.app" target="_blank" rel="noopener noreferrer">Visit</a> · <a href="https://apps.apple.com/us/app/renew-skincare-tracker/id6758534567" target="_blank" rel="noopener noreferrer">App Store</a></li>
@@ -803,7 +804,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
       <div class="lab-row__items">
         <div class="lab-row__item"><b>Unifi</b><span class="sep">·</span>managed network + segmentation</div>
         <div class="lab-row__item"><b>Caddy</b><span class="sep">·</span>reverse proxy, automatic TLS</div>
-        <div class="lab-row__item"><b>PiHole + Unbound</b><span class="sep">·</span>DNS filtering with recursive resolution — no upstream resolver</div>
+        <div class="lab-row__item"><b>PiHole + Unbound</b><span class="sep">·</span>DNS filtering with recursive resolution, no upstream resolver</div>
         <div class="lab-row__item"><b>Tailscale</b><span class="sep">·</span>WireGuard-based secure remote access</div>
       </div>
     </div>
@@ -880,7 +881,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
   // year
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // email — assembled client-side so the literal address never appears in the source
+  // email: assembled client-side so the literal address never appears in the source
   document.querySelectorAll('.js-mail').forEach(function(a){
     var addr = a.getAttribute('data-u') + '@' + a.getAttribute('data-d');
     a.setAttribute('href', 'mailto:' + addr);
@@ -906,7 +907,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
   }
 
   // nav: full-width bar at the very top, detaches into a floating pill early in the
-  // scroll — before the hero content rises into it.
+  // scroll, before the hero content rises into it.
   var nav = document.getElementById('nav');
 
   // scroll progress pill (replaces the hidden scrollbar) + bouncing hero cue + nav pill
@@ -954,7 +955,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
   }
 
   // ============================================================
-  // PROJECT SHOWCASE — filter pills + a fixed-height detail pane that
+  // PROJECT SHOWCASE: filter pills + a fixed-height detail pane that
   // swaps in place, a minimal grid, a screenshot lightbox, and a
   // full-write-up popup. Replaces the old accordion + carousels.
   // ============================================================
@@ -963,30 +964,40 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
      lede:'Privacy-first PDF &amp; financial-file conversion, all in the browser.',
      tech:'Next.js · Tailwind · Supabase · Stripe · Vercel · Wasm: pdf-lib / pdf.js / QPDF',
      points:['<strong>Client-heavy, server-light.</strong> Wasm does the PDF work in-browser; the server only handles auth, payments and licence checks. Files live in memory and vanish on tab close.',
-       '<strong>Avoided the AGPL trap.</strong> Chose pdf-lib + QPDF Wasm over Ghostscript/MuPDF — cut the Wasm payload ~7&times; (&asymp;4MB &rarr; &asymp;580KB compressed) and removed a licensing landmine.',
+       '<strong>Avoided the AGPL trap.</strong> Chose pdf-lib + QPDF Wasm over Ghostscript/MuPDF, which cut the Wasm payload ~7&times; (&asymp;4MB &rarr; &asymp;580KB compressed) and removed a licensing landmine.',
        '<strong>14-locale i18n.</strong> SEO-driven internationalisation expanded the indexed surface from ~36 to 335+ pages.'],
      card:['<strong>Client-heavy, server-light.</strong> Wasm runs the PDF work in-browser; files live in memory and vanish on tab close.',
        '<strong>Avoided the AGPL trap.</strong> pdf-lib + QPDF Wasm cut the payload ~7&times; and removed a licensing landmine.'],
      links:[{t:'Visit site',h:'https://sanctumpdf.com',i:'i-globe'}],
      shots:['sanctumpdf1.webp','sanctumpdf2.webp','sanctumpdf3.webp','sanctumpdf4.webp']},
+    {id:'larshdev',name:'larsh.dev v2',type:'web',typeLabel:'Portfolio',status:'experiment',
+     lede:'A front-end-heavy alternative take on this very site, built to show a different approach.',
+     tech:'GSAP · Lenis · three.js · Archivo variable · self-hosted, no build step',
+     points:['<strong>Motion as the medium.</strong> A GSAP and Lenis composition: a counter preloader, headline reveals animated character by character, a work gallery that scrolls sideways, and a marquee that reacts to scroll velocity, all on smooth scroll.',
+       '<strong>An interactive three.js hero.</strong> A warm point-field wave that ripples under the cursor, held to a single low-power draw and thinned on small screens so the whole page stays light.',
+       '<strong>One typeface, nothing left to chance.</strong> Archivo carries every weight from hairline to black against a single peach accent; fonts and libraries are self-hosted, so the page makes zero third-party calls and still honours <code>prefers-reduced-motion</code>.'],
+     card:['<strong>Motion as the medium.</strong> A GSAP and Lenis composition on smooth scroll: counter preloader, character-by-character headline reveals, a sideways work gallery, a velocity-reactive marquee.',
+       '<strong>Interactive three.js hero</strong> over one self-hosted typeface and a single accent; zero third-party calls, and it still honours <code>prefers-reduced-motion</code>.'],
+     links:[{t:'View it',h:'experiment/',i:'i-globe'}],
+     shots:['larshdev.webp']},
     {id:'metastrip',name:'MetaStrip',type:'web',typeLabel:'Web app',status:'shipped · open source',
-     lede:'Browser-based metadata removal — fully client-side, open source.',
+     lede:'Browser-based metadata removal: fully client-side, open source.',
      tech:'Next.js · 100% client-side · MIT · piexifjs / pdf-lib / jszip + custom binary parsers',
-     points:['<strong>Custom equal-size replacement for audio &amp; video.</strong> Hand-wrote an in-browser MP4 atom walker that swaps metadata atoms for <code>free</code> atoms of identical size — plus custom ID3/Vorbis/RIFF parsers replacing blocks with equal-length <code>PADDING</code>/<code>JUNK</code>. No length recomputation, no broken offset chains, playback never breaks.',
-       '<strong>Structural privacy, not a promise.</strong> Zero upload, zero server, zero cache — verifiable in the Network tab. The guarantee is the architecture.',
+     points:['<strong>Custom equal-size replacement for audio &amp; video.</strong> Hand-wrote an in-browser MP4 atom walker that swaps metadata atoms for <code>free</code> atoms of identical size, plus custom ID3/Vorbis/RIFF parsers replacing blocks with equal-length <code>PADDING</code>/<code>JUNK</code>. No length recomputation, no broken offset chains, playback never breaks.',
+       '<strong>Structural privacy, not a promise.</strong> Zero upload, zero server, zero cache: verifiable in the Network tab. The guarantee is the architecture.',
        '<strong>Deliberate library-vs-custom split.</strong> Mature libs for the well-trodden image/PDF/Office paths; bespoke parsers only where byte-level control was required.'],
      card:['<strong>Equal-size metadata replacement.</strong> Hand-written MP4/ID3/Vorbis/RIFF parsers swap metadata for identical-length padding, so playback never breaks.',
-       '<strong>Structural privacy, not a promise.</strong> Zero upload, zero server, zero cache — verifiable in the Network tab.'],
+       '<strong>Structural privacy, not a promise.</strong> Zero upload, zero server, zero cache: verifiable in the Network tab.'],
      post:{t:'The Bug That Only Existed in Spanish',h:'blog/the-bug-that-only-existed-in-spanish.html'},
      links:[{t:'Visit site',h:'https://metastrip.app',i:'i-globe'},{t:'Source',h:'https://github.com/lars-1987/metastrip',i:'i-github'}],
      shots:['metastrip1.webp','metastrip2.webp']},
     {id:'fenced',name:'Fenced',type:'web',typeLabel:'Web app',status:'shipped · open source',
-     lede:'Markdown to self-contained HTML — fully client-side, open source.',
+     lede:'Markdown to self-contained HTML: fully client-side, open source.',
      tech:'Vite + TypeScript · 100% client-side · MIT · markdown-it / Shiki (fine-grained, JS regex engine)',
      points:['<strong>Decoration that survives the clipboard.</strong> Syntax tokens render as inline styles and the window chrome runs on CSS custom properties, so every fenced block is portable, self-contained HTML. Copy one into a CMS or IDE and it keeps its look with zero stylesheet, no class names to carry along.',
        '<strong>Theme-aware terminals via <code>color-mix</code>.</strong> Each block derives its bar, border, and line-number shades from the chosen Shiki theme&rsquo;s own background and foreground, so a dark Catppuccin window stays correct on a light page. The same CSS is the single source shared by the live preview and the export.',
        '<strong>Lean by construction.</strong> Fine-grained Shiki imports plus the JavaScript regex engine drop the WASM blob and every unused grammar. Client-side throughout, nothing uploaded, cookieless analytics gated on DNT and GPC.'],
-     card:['<strong>Decoration that survives the clipboard.</strong> Tokens as inline styles, chrome on CSS variables — portable, self-contained HTML.',
+     card:['<strong>Decoration that survives the clipboard.</strong> Tokens as inline styles, chrome on CSS variables: portable, self-contained HTML.',
        '<strong>Theme-aware terminals via <code>color-mix</code>.</strong> Each block derives its shades from the chosen theme, so dark windows stay right on a light page.'],
      post:{t:'I built a whole tool to avoid formatting code blocks',h:'blog/i-built-a-whole-tool-to-avoid-formatting-code-blocks.html'},
      links:[{t:'Visit site',h:'https://fenced.dev',i:'i-globe'},{t:'Source',h:'https://github.com/lars-1987/fenced',i:'i-github'}],
@@ -996,7 +1007,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
      tech:'React Native · Expo · WatermelonDB · Supabase · OCR + Gemini',
      points:['<strong>OCR &rarr; Gemini extraction pipeline.</strong> Point the camera at a product; OCR lifts the text, Gemini parses it into structured INCI / brand / product data and translates Korean &amp; Japanese labels into a normalised, searchable form.',
        '<strong>Analytics as the differentiator.</strong> Skin-score trending, ingredient-conflict detection, and time-lagged correlation linking a breakout to something used days earlier.',
-       '<strong>Offline-first by architecture.</strong> Longitudinal skin data lives in a local <strong>WatermelonDB</strong> — reactive, lazily-loaded, SQLite-backed — so logging is instant and works with no signal, then syncs to a Supabase backend as the cross-device source of truth.'],
+       '<strong>Offline-first by architecture.</strong> Longitudinal skin data lives in a local <strong>WatermelonDB</strong>, reactive, lazily-loaded, SQLite-backed, so logging is instant and works with no signal, then syncs to a Supabase backend as the cross-device source of truth.'],
      card:['<strong>OCR &rarr; Gemini extraction pipeline.</strong> Point the camera at a product; OCR and Gemini turn the label into structured INCI data, translating Korean &amp; Japanese into a searchable form.',
        '<strong>Offline-first by architecture.</strong> A local WatermelonDB makes logging instant with no signal, then syncs to Supabase as the source of truth.'],
      links:[{t:'Visit site',h:'https://getrenew.app',i:'i-globe'},{t:'App Store',h:'https://apps.apple.com/us/app/renew-skincare-tracker/id6758534567',i:'i-apple'}],
@@ -1004,26 +1015,26 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
     {id:'vesper',name:'Vesper',type:'mobile',typeLabel:'Mobile app',status:'shipped',
      lede:'Multilingual scripture app with a dynamic time-of-day sky system.',
      tech:'Expo · React Native · on-device SQLite · RevenueCat · no backend',
-     points:['<strong>Two-database design.</strong> A read-only content DB (~94MB, four translations) cleanly separated from a user-data DB — shippable content distinct from user state.',
+     points:['<strong>Two-database design.</strong> A read-only content DB (~94MB, four translations) cleanly separated from a user-data DB: shippable content distinct from user state.',
        '<strong>No backend, by design.</strong> Privacy plus zero infra cost, consistent across the portfolio.',
-       '<strong>Dynamic sky system.</strong> Seven time-of-day phases cycle through the day — atmosphere and craft without a server.'],
+       '<strong>Dynamic sky system.</strong> Seven time-of-day phases cycle through the day: atmosphere and craft without a server.'],
      card:['<strong>Two-database design.</strong> A read-only ~94MB content DB (four translations) cleanly separated from a user-data DB.',
-       '<strong>Dynamic sky system, no backend.</strong> Seven time-of-day phases cycle through the day — atmosphere and craft without a server.'],
+       '<strong>Dynamic sky system, no backend.</strong> Seven time-of-day phases cycle through the day: atmosphere and craft without a server.'],
      links:[{t:'Visit site',h:'https://tryvesper.app',i:'i-globe'},{t:'App Store',h:'https://apps.apple.com/us/app/vesper-daily-scripture/id6764037293',i:'i-apple'}],
      shots:['vesper1.webp','vesper2.webp','vesper3.webp','vesper4.webp']},
     {id:'virtus',name:'Virtus',type:'mobile',typeLabel:'Mobile app',status:'shipped',
-     lede:'Stoic daily-wisdom and journaling — 150 passages, fully on-device.',
+     lede:'Stoic daily-wisdom and journaling: 150 passages, fully on-device.',
      tech:'Expo · React Native · RevenueCat · PostHog (cookieless) · no backend',
      points:['<strong>On-device content pipeline.</strong> A curated passage set with journaling prompts, shipped without any server dependency.',
-       '<strong>Shared design system.</strong> The same architecture cleanly reskins into sibling apps — systematised, not copy-pasted.'],
+       '<strong>Shared design system.</strong> The same architecture cleanly reskins into sibling apps: systematised, not copy-pasted.'],
      card:['<strong>On-device content pipeline.</strong> A curated passage set with journaling prompts, shipped with no server dependency.',
-       '<strong>Shared design system.</strong> The same architecture cleanly reskins into sibling apps — systematised, not copy-pasted.'],
+       '<strong>Shared design system.</strong> The same architecture cleanly reskins into sibling apps: systematised, not copy-pasted.'],
      links:[{t:'Visit site',h:'https://getvirtus.app',i:'i-globe'},{t:'App Store',h:'https://apps.apple.com/au/app/virtus-stoic-wisdom-journal/id6761154032',i:'i-apple'}],
      shots:['virtus1.webp','virtus2.webp','virtus3.webp']},
     {id:'bedcheck',name:'Bedcheck',type:'mobile',typeLabel:'Mobile app',status:'in development',wip:true,
      lede:'An iOS accountability app for your bedtime, not your wake time.',
      tech:'Swift 6 (strict concurrency) · iOS 26 · SwiftUI + @Observable · SwiftData · AlarmKit · ActivityKit · WidgetKit · HealthKit · AppIntents',
-     points:['<strong>Built against AlarmKit on day one — before the docs existed.</strong> Read the <code>.swiftinterface</code> directly to verify API shapes; found Xcode silently drops <code>NSAlarmKitUsageDescription</code>, that <code>stopButton</code> was deprecated in 26.1, and that a missing Live Activity widget leaves alarms stuck as an empty Dynamic Island — all from device dogfooding.',
+     points:['<strong>Built against AlarmKit on day one, before the docs existed.</strong> Read the <code>.swiftinterface</code> directly to verify API shapes; found Xcode silently drops <code>NSAlarmKitUsageDescription</code>, that <code>stopButton</code> was deprecated in 26.1, and that a missing Live Activity widget leaves alarms stuck as an empty Dynamic Island: all from device dogfooding.',
        '<strong>Three-rail reliability for the load-bearing feature.</strong> Local notifications + system-scheduled AlarmKit + a best-effort Live Activity. Each rail can fail without breaking the safety net; a documented "independence invariant" keeps any server roundtrip out of the alarm\'s critical path.',
        '<strong>Known limitations treated as decisions.</strong> A ~7,000-line spec before code, deviations tracked in a log, every accepted MVP failure mode documented with why it\'s acceptable and what fixes it in v1.1.'],
      card:['<strong>Built against AlarmKit before the docs existed.</strong> Read the <code>.swiftinterface</code> directly and surfaced silent Xcode bugs through device dogfooding.',
@@ -1033,11 +1044,11 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
     {id:'helio',name:'Helio',type:'desktop',typeLabel:'Native macOS app',status:'in development',wip:true,
      lede:'A native macOS app for people juggling multiple long-running projects.',
      tech:'SwiftUI · SwiftData · CloudKit · Swift 6 (strict concurrency) · EventKit · macOS 14+',
-     points:['<strong>The unit of work is the project, not the task.</strong> Task-first tools break for people running several long-running projects in parallel — the failure isn\'t forgetting a task, it\'s neglecting a whole project for weeks because re-loading the context feels insurmountable.',
-       '<strong>A forced wind-down ritual closes every session.</strong> Structured capture of what got done, what\'s unfinished, and what\'s next — auto-loaded when you start the next session for that project.',
+     points:['<strong>The unit of work is the project, not the task.</strong> Task-first tools break for people running several long-running projects in parallel: the failure isn\'t forgetting a task, it\'s neglecting a whole project for weeks because re-loading the context feels insurmountable.',
+       '<strong>A forced wind-down ritual closes every session.</strong> Structured capture of what got done, what\'s unfinished, and what\'s next, auto-loaded when you start the next session for that project.',
        '<strong>Getting the carry-forward chain right under CloudKit needed a non-obvious data model.</strong> A JSON blob breaks under last-write-per-field merge; the fix decomposes it into individual <code>PendingTask</code> CloudKit records, each with its own merge resolution, materialised atomically on next start.'],
      card:['<strong>The unit of work is the project, not the task.</strong> For people who lose weeks to a neglected project, not a forgotten task.',
-       '<strong>A wind-down ritual ends every session.</strong> Captures done, unfinished, and next — auto-loaded when you resume.'],
+       '<strong>A wind-down ritual ends every session.</strong> Captures done, unfinished, and next, auto-loaded when you resume.'],
      links:[{t:'Download · coming soon',i:'i-globe',d:true},{t:'App Store · coming soon',i:'i-apple',d:true}],
      shots:['helio1.webp','helio2.webp','helio3.webp']}
   ];
@@ -1081,7 +1092,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
         '<button class="detail__more" type="button">Full write-up '+svg('i-arrow-ur')+'</button>'+
         '<div class="detail__cta">'+ctas+'</div>'+
       '</div>';
-    // carousel — cross-fade, auto-advance unless reduced motion
+    // carousel: cross-fade, auto-advance unless reduced motion
     var slides = detail.querySelectorAll('.detail__shot img');
     var dotEls = detail.querySelectorAll('.detail__dots button');
     if(slides.length>1){
@@ -1126,7 +1137,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
     }, 1100);
   }
 
-  // segmented-control thumb — slides + resizes under the active filter
+  // segmented-control thumb: slides + resizes under the active filter
   var fThumb = filters.querySelector('.filters__thumb');
   function moveThumb(btn, animate){
     if(!btn || !fThumb) return;
@@ -1156,7 +1167,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ syncThumb(false); });
   window.addEventListener('resize', function(){ syncThumb(false); }, {passive:true});
 
-  // screenshot lightbox — opens with a shared-element zoom from the pane shot
+  // screenshot lightbox: opens with a shared-element zoom from the pane shot
   var lb = document.getElementById('lightbox'), lbImg = document.getElementById('lb-img'),
       lbDots = document.getElementById('lb-dots'), lbShots = [], lbIdx = 0, lbOrigin = null;
   function lbShow(){
@@ -1164,7 +1175,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
     lbDots.innerHTML = lbShots.length>1 ? lbShots.map(function(_,i){ return '<button type="button" class="'+(i===lbIdx?'on':'')+'" data-i="'+i+'"></button>'; }).join('') : '';
     lbDots.querySelectorAll('button').forEach(function(b){ b.addEventListener('click',function(e){ e.stopPropagation(); lbIdx=+b.dataset.i; lbShow(); }); });
   }
-  // the displayed (object-fit:contain) rect of an image inside its box — so the
+  // the displayed (object-fit:contain) rect of an image inside its box, so the
   // zoom matches the visible picture, not the letterboxed container.
   function contentRect(img){
     var r = img.getBoundingClientRect(), nw = img.naturalWidth, nh = img.naturalHeight;
@@ -1268,7 +1279,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
     gridIO.observe(grid);
   }
 
-  // active section highlight — uses a thin band at the viewport centre so it works
+  // active section highlight: uses a thin band at the viewport centre so it works
   // regardless of section height.
   var order = ['projects','skills','homelab'];
   var navLinks = {projects:document.querySelector('[data-nav="projects"]'),
