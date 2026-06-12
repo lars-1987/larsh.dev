@@ -1,15 +1,13 @@
 <!doctype html>
 <!--
-  EXPERIMENT v2.1, warm edition.
-  Awwwards-minimal on a warm espresso canvas: cream type, peach and dusty
-  pink accents in milligrams, no hard frames; content lives in space.
-  One grotesque superfamily (Archivo: thin lowercase vs heavy caps does the
-  editorial work) plus Martian Mono garnish. No serifs, no italics.
-  Lenis smooth scroll, GSAP choreography, pinned horizontal work gallery,
-  an interactive three.js point-wave in the hero, link-only cursor effects,
-  magnetic CTA. Single static file; assets from ../assets/.
-  Degrades to a clean static page with JS off; respects reduced motion.
-  Debug: append ?static=1 to force the no-motion path.
+  Hi!
+
+  This site is a single static file.
+
+  Source:  https://github.com/lars-1987/larsh.dev
+  Contact: the email button on the page (assembled client-side to keep it off scrapers ;))
+
+  Lars
 -->
 <html lang="en">
 <head>
@@ -37,6 +35,7 @@
   --soft:rgba(38,32,26,.05);      /* the softest possible separation */
   --acc:#C58455;         /* toasted peach */
   --acc-2:#C49A92;       /* dusty pink, used even more rarely */
+  --ok:#4E9B68;          /* muted green, availability only */
   --grot:"Archivo",ui-sans-serif,system-ui,sans-serif;
   --mono:"Martian Mono",ui-monospace,monospace;
   --gut:clamp(24px,5vw,96px);
@@ -139,9 +138,59 @@ html.reduce .cur__ring{display:none}
 .nav__links a{font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);transition:color .25s}
 .nav__links a:hover{color:var(--ink)}
 .nav__avail{display:flex;align-items:center;gap:.55em}
-.nav__avail i{width:6px;height:6px;border-radius:50%;background:var(--acc);animation:pulse 2.2s ease-in-out infinite}
+.nav__avail i{width:6px;height:6px;border-radius:50%;background:var(--ok);animation:pulse 2.2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
 @media (max-width:760px){.nav__links{display:none}}
+
+/* hamburger, mobile only; two bars morph to an X */
+.nav__burger{
+  display:none;position:relative;z-index:5;
+  width:30px;height:14px;flex-direction:column;justify-content:space-between;
+  background:none;border:0;padding:0;cursor:pointer;
+}
+.nav__burger span{display:block;height:2px;width:100%;background:var(--ink);border-radius:2px;
+  transition:transform .45s var(--ease),opacity .3s var(--ease);transform-origin:center}
+.menu-open .nav__burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.menu-open .nav__burger span:nth-child(2){transform:translateY(-6px) rotate(-45deg)}
+
+/* full-screen mobile menu */
+.menu{
+  position:fixed;inset:0;z-index:90;background:var(--bg);
+  display:flex;flex-direction:column;justify-content:center;gap:2.5rem;
+  padding:7rem var(--gut) 3rem;
+  opacity:0;visibility:hidden;
+  transition:opacity .5s var(--ease),visibility 0s linear .5s;
+}
+.menu-open .menu{opacity:1;visibility:visible;transition:opacity .5s var(--ease)}
+.menu__list{list-style:none;display:flex;flex-direction:column;gap:.18em}
+.menu__list li{overflow:hidden;padding:.06em 0}
+.menu__list a{
+  display:flex;align-items:baseline;gap:.7em;
+  font-weight:800;font-stretch:112%;text-transform:uppercase;letter-spacing:-.01em;
+  font-size:clamp(1.9rem,8.5vw,2.9rem);line-height:1.05;color:var(--ink);
+  transform:translateY(110%);transition:transform .65s var(--ease),color .3s;
+}
+.menu__list a .menu__n{font-family:var(--mono);font-size:.55rem;font-weight:400;letter-spacing:.1em;color:var(--acc);transform:translateY(-.9em)}
+.menu__list a:active{color:var(--acc)}
+.menu-open .menu__list a{transform:translateY(0)}
+.menu-open .menu__list li:nth-child(1) a{transition-delay:.10s}
+.menu-open .menu__list li:nth-child(2) a{transition-delay:.16s}
+.menu-open .menu__list li:nth-child(3) a{transition-delay:.22s}
+.menu-open .menu__list li:nth-child(4) a{transition-delay:.28s}
+.menu-open .menu__list li:nth-child(5) a{transition-delay:.34s}
+.menu__foot{opacity:0;transform:translateY(10px);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.menu-open .menu__foot{opacity:1;transform:none;transition:opacity .5s var(--ease) .42s,transform .5s var(--ease) .42s}
+.menu__avail{display:flex;align-items:center;gap:.55em}
+.menu__avail i{width:6px;height:6px;border-radius:50%;background:var(--ok);animation:pulse 2.2s ease-in-out infinite}
+.menu-open{overflow:hidden}
+@media (max-width:760px){
+  .nav__burger{display:flex}
+  .nav__avail{display:none}                 /* moves into the menu foot */
+  .menu-open .nav{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+}
+@media (min-width:761px){.menu{display:none}}
+html.reduce .menu,html.reduce .menu__list a,html.reduce .menu__foot{transition-duration:.01s!important;transition-delay:0s!important}
+html.reduce .menu__list a{transform:none}
 
 /* ============================================================
    HERO
@@ -149,14 +198,11 @@ html.reduce .cur__ring{display:none}
 .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
 #field{position:absolute;inset:0;z-index:0}
 .hero__inner{position:relative;z-index:1;padding-bottom:max(4.5vh,2rem)}
-.hero__top{
-  position:absolute;top:0;left:0;right:0;z-index:1;
-  display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;
-  padding:5.6rem var(--gut) 0;
-}
-.hero__h1{font-size:clamp(2.8rem,9.6vw,10.5rem);white-space:nowrap}
+.hero__h1{font-size:clamp(2rem,9.6vw,11rem);white-space:nowrap}
 .hero__h1 .l2{display:flex;align-items:center;gap:clamp(.8rem,2.5vw,2rem)}
+/* the thin line drops to ~.55em so it can carry a full sentence under the name */
 .hero__h1 .l3{
+  font-size:.5em;line-height:1.15;margin-top:.18em;
   font-weight:200;font-stretch:96%;text-transform:lowercase;letter-spacing:.01em;
   color:var(--acc);
 }
@@ -166,22 +212,16 @@ html.reduce .cur__ring{display:none}
   flex:none;
 }
 .hero__row{
-  display:flex;justify-content:space-between;align-items:flex-end;gap:2.5rem;flex-wrap:wrap;
+  display:flex;justify-content:flex-end;align-items:flex-end;
   margin-top:clamp(2rem,5vh,3.6rem);
 }
-@media (max-width:640px){
-  .hero__top{gap:1.5rem}
-  .hero__top .mono{font-size:.55rem;letter-spacing:.1em}
-}
-.hero__brief{max-width:40ch;font-size:clamp(.95rem,1.15vw,1.1rem);line-height:1.7;color:var(--mut);font-weight:500}
-.hero__brief strong{color:var(--ink);font-weight:600}
 .hero__scroll{display:flex;align-items:center;gap:1em}
 .hero__scroll svg{width:14px;height:14px;color:var(--acc);animation:dip 2.2s var(--ease) infinite}
 @keyframes dip{0%,100%{transform:translateY(-3px)}50%{transform:translateY(3px)}}
 html.reduce .hero__scroll svg{animation:none}
 
-/* char animation prep, JS only */
-.js .ch{display:inline-block;transform:translateY(118%);will-change:transform}
+/* char animation prep, JS only; pre keeps space characters from collapsing */
+.js .ch{display:inline-block;white-space:pre;transform:translateY(118%);will-change:transform}
 .js .l2 .hero__portrait{opacity:0;transform:scaleX(0);transform-origin:left center}
 .ln{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
 .l2.ln{display:flex}
@@ -195,11 +235,14 @@ html.reduce .hero__scroll svg{animation:none}
 .mq__seq span{
   font-weight:800;font-stretch:112%;text-transform:uppercase;letter-spacing:-.01em;
   font-size:clamp(1.2rem,2.4vw,1.9rem);padding:0 2.2rem;color:var(--dim);
+  transition:color .45s var(--ease);
 }
 .mq__seq span:nth-of-type(even){
   font-weight:200;font-stretch:96%;text-transform:lowercase;letter-spacing:.02em;
   color:var(--acc);
 }
+/* hover: the strip slows to a crawl (JS) and the dim words ink in */
+.mq:hover .mq__seq span:nth-of-type(odd){color:var(--ink)}
 .mq__seq i{font-style:normal;color:var(--acc-2);font-size:.55em}
 
 /* ============================================================
@@ -214,14 +257,22 @@ html.reduce .hero__scroll svg{animation:none}
 .about__txt .w{color:var(--dim);transition:color .35s linear}
 .about__txt .w.on{color:var(--ink)}
 .about__txt .w.hl.on{color:var(--acc)}
-.stats{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(2rem,4vw,4rem);
-  margin-top:clamp(4.5rem,11vh,8rem);
+
+/* ============================================================
+   MID-PAGE CTA, a quiet handshake between the work and the archive
+   ============================================================ */
+.midcta{
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.6rem;
+  padding-block:clamp(5rem,14vh,10rem);
 }
-.stat__n{font-weight:200;font-stretch:100%;font-size:clamp(3rem,6.5vw,5.8rem);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.stat__n i{font-style:normal;color:var(--acc)}
-.stat .mono{display:block;margin-top:1rem}
-@media (max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+.midcta__link{
+  display:inline-flex;align-items:baseline;gap:.35em;
+  font-size:clamp(2.2rem,6vw,5rem);color:var(--ink);
+  transition:color .3s;
+}
+.midcta__link svg{width:.45em;height:.45em;align-self:center;color:var(--acc);transition:transform .35s var(--ease)}
+.midcta__link:hover{color:var(--acc)}
+.midcta__link:hover svg{transform:translate(4px,-4px)}
 
 /* ============================================================
    WORK, pinned horizontal gallery, unframed
@@ -465,36 +516,44 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.ind
 <header class="nav">
   <a class="nav__logo" href="#top">LH<sup>©26</sup></a>
   <nav class="nav__links" aria-label="Site">
-    <a href="#work">Work</a>
+    <a href="#work">Recent work</a>
     <a href="#archive">Archive</a>
     <a href="#capabilities">Capabilities</a>
     <a href="#writing">Writing</a>
     <a href="#contact">Contact</a>
   </nav>
   <span class="mono nav__avail"><i></i>Open to product roles</span>
+  <button class="nav__burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+    <span></span><span></span>
+  </button>
 </header>
+
+<!-- mobile menu, opened by the hamburger -->
+<nav class="menu" id="menu" aria-label="Menu">
+  <ul class="menu__list">
+    <li><a href="#work"><span class="menu__n">01</span>Recent work</a></li>
+    <li><a href="#archive"><span class="menu__n">02</span>Archive</a></li>
+    <li><a href="#capabilities"><span class="menu__n">03</span>Capabilities</a></li>
+    <li><a href="#writing"><span class="menu__n">04</span>Writing</a></li>
+    <li><a href="#contact"><span class="menu__n">05</span>Contact</a></li>
+  </ul>
+  <div class="menu__foot">
+    <span class="mono menu__avail"><i></i>Open to product roles</span>
+  </div>
+</nav>
 
 <main id="top">
 
 <!-- ============================ HERO ============================ -->
 <section class="hero" aria-label="Introduction">
   <div id="field"></div>
-  <div class="hero__top">
-    <span class="mono">Melbourne, Australia<br/><span id="clock">··:··:··</span> AEST</span>
-    <span class="mono" style="text-align:right">Full-stack developer<br/>front-end first</span>
-  </div>
   <div class="hero__inner gx">
     <h1 class="hero__h1 disp">
-      <span class="ln" data-split>Builds</span>
-      <span class="ln l2"><span data-split>complete</span><img class="hero__portrait" src="../assets/portrait.JPG" alt="Portrait of Lars Holmström" /></span>
-      <span class="ln l3" data-split>products.</span>
+      <span class="ln" data-split>Lars</span>
+      <span class="ln l2"><span data-split>Holmström</span><img class="hero__portrait" src="../assets/portrait.JPG" alt="Portrait of Lars Holmström" /></span>
+      <span class="ln l3" data-split>i design &amp; build digital products, end to end.</span>
     </h1>
     <div class="hero__row">
-      <p class="hero__brief" data-rv>
-        Lars Holmström: <strong>eight products shipped solo</strong>, from first
-        sketch to App Store and production web. Interface to infrastructure,
-        with the obsession pointed at the front of the stack.
-      </p>
       <span class="hero__scroll mono" data-rv>Scroll
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16m0 0l-6-6m6 6l6-6"/></svg>
       </span>
@@ -507,35 +566,16 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.ind
   <div class="mq__track" id="mq-track">
     <div class="mq__seq">
       <span>Product builder</span><i>●</i><span>full-stack</span><i>●</i>
-      <span>Front-end first</span><i>●</i><span>ships solo</span><i>●</i>
+      <span>Front-end first</span><i>●</i><span>design to deploy</span><i>●</i>
     </div>
   </div>
 </div>
 
-<!-- ============================ ABOUT ============================ -->
-<section class="about gx" aria-label="About">
-  <div class="about__head">
-    <span class="mono"><b>01</b> · Profile</span>
-    <span class="mono">Cyber-security graduate</span>
-  </div>
-  <p class="about__txt" id="about-txt">
-    I design the interface, write the backend, wire the infrastructure and ship
-    the product: <em data-hl>alone</em>, <em data-hl>end to end</em>. Native iOS in Swift,
-    web in React and Next.js, and a homelab that runs like production.
-  </p>
-  <div class="stats" id="stats">
-    <div class="stat"><span class="stat__n"><span data-count="8">0</span><i>.</i></span><span class="mono">Products built</span></div>
-    <div class="stat"><span class="stat__n"><span data-count="6">0</span><i>.</i></span><span class="mono">Shipped &amp; live</span></div>
-    <div class="stat"><span class="stat__n"><span data-count="14">0</span><i>.</i></span><span class="mono">Locales served</span></div>
-    <div class="stat"><span class="stat__n"><span data-count="1">0</span><i>.</i></span><span class="mono">Person, all of it</span></div>
-  </div>
-</section>
-
 <!-- ============================ WORK ============================ -->
-<section class="work" id="work" aria-label="Selected work">
+<section class="work" id="work" aria-label="Recent work">
   <div class="work__intro gx">
-    <h2 class="disp" data-rv>Selected<br/><span class="lo">work</span></h2>
-    <span class="mono" data-rv><b>02</b> · The scroll travels sideways</span>
+    <h2 class="disp" data-rv>Recent <span class="lo">work</span></h2>
+    <span class="mono" data-rv><b>01</b> · The scroll travels sideways</span>
   </div>
   <div class="hwrap" id="hwrap">
     <div class="htrack" id="htrack">
@@ -631,11 +671,33 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.ind
   <div class="work__bar gx"><i id="work-progress"></i></div>
 </section>
 
+<!-- ============================ ABOUT ============================ -->
+<section class="about gx" aria-label="About">
+  <div class="about__head">
+    <span class="mono"><b>02</b> · Profile</span>
+    <span class="mono">Cyber-security graduate</span>
+  </div>
+  <p class="about__txt" id="about-txt">
+    I design the interface, write the backend, wire the infrastructure and ship
+    the product: <em data-hl>alone</em>, <em data-hl>end to end</em>. Native iOS in Swift,
+    web in React and Next.js, and a homelab that runs like production.
+  </p>
+</section>
+
+<!-- ============================ MID-PAGE CTA ============================ -->
+<section class="midcta gx" aria-label="Contact, quick">
+  <span class="mono" data-rv>Got a project or a role in mind?</span>
+  <a class="midcta__link disp js-mail" href="#" data-u="larsh.dev" data-d="proton.me" data-rv>
+    Say <span class="lo">hello</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+  </a>
+</section>
+
 <!-- ============================ ARCHIVE ============================ -->
 <section class="arch" id="archive" aria-label="All projects">
   <div class="arch__head gx">
-    <h2 class="disp" data-rv>Archive <span class="lo">of eight</span></h2>
-    <span class="mono" data-rv><b>03</b> · Everything, shipped solo</span>
+    <h2 class="disp" data-rv>Archive</h2>
+    <span class="mono" data-rv><b>03</b> · Selected projects</span>
   </div>
   <div id="arch-rows"></div>
 </section>
@@ -674,11 +736,14 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.ind
   </div>
 </section>
 
+<!-- future slot: a single full-width editorial pull-quote (testimonial) lives here
+     once a real quote exists. One or two quotes max, never a grid. -->
+
 <!-- ============================ WRITING ============================ -->
 <section class="wr gx" id="writing" aria-label="Writing">
   <div class="wr__head">
-    <h2 class="disp" data-rv>Notes <span class="lo">from the build</span></h2>
-    <span class="mono" data-rv><b>05</b> · Writing</span>
+    <h2 class="disp" data-rv>Writing <span class="lo">bugs and thoughts</span></h2>
+    <span class="mono" data-rv><b>05</b> · From the build</span>
   </div>
   <a class="wrow" href="../blog/the-vpn-post-nobody-paid-me-to-write.html">
     <span class="wrow__t">The VPN post nobody paid me to write</span>
@@ -708,7 +773,7 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.ind
     <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer">X · @larsitodev</a>
     <a href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer">GitHub · lars-1987</a>
     <a href="../blog/">Blog</a>
-    <span class="mono">© <span id="year"></span> · Melbourne · no framework, no tracking</span>
+    <span class="mono">© <span id="year"></span>·  made with <svg viewBox="0 0 256 256" fill="currentColor" aria-label="coffee" role="img" style="width:1.05em;height:1.05em;vertical-align:-.18em;margin:0 .15em"><path d="M208 80h-12.78A24 24 0 0 0 192 64H32a16 16 0 0 0-16 16v56a72.08 72.08 0 0 0 72 72h64a72.08 72.08 0 0 0 71.34-64H208a40 40 0 0 0 0-80zm-32 56a56.06 56.06 0 0 1-56 56H88a56.06 56.06 0 0 1-56-56V80h144zm32 8h-16V96h16a24 24 0 0 1 0 48z"/></svg> in Melbourne</span>
   </div>
   <div class="foot__name" aria-hidden="true">Holmström</div>
 </footer>
@@ -723,17 +788,16 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.ind
   var hasGsap = typeof gsap !== 'undefined';
   var fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
 
-  document.getElementById('year').textContent = new Date().getFullYear();
+  // for the people who open the console first. you know who you are.
+  try{
+    console.log(
+      '%cG’day.%c\n\nSince you’re here: the source is part of the portfolio.\nOne file, hand-written, self-hosted fonts and libs, no tracking, nothing to find.\n\nSay hello: larsh.dev' + '@' + 'proton.me',
+      'font:800 28px Archivo, sans-serif; color:#C58455;',
+      'font:12px/1.7 monospace; color:#7C7164;'
+    );
+  }catch(e){}
 
-  // clock
-  var clock = document.getElementById('clock');
-  function tick(){
-    try{
-      clock.textContent = new Intl.DateTimeFormat('en-AU',
-        {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZone:'Australia/Melbourne'}).format(new Date());
-    }catch(e){ clock.textContent=''; }
-  }
-  tick(); setInterval(tick,1000);
+  document.getElementById('year').textContent = new Date().getFullYear();
 
   // email, assembled client-side
   document.querySelectorAll('.js-mail').forEach(function(a){
@@ -864,6 +928,25 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.ind
   addEventListener('resize', onScrollUI, {passive:true});
   onScrollUI();
 
+  // mobile menu, works in every path (bound before the no-motion return below)
+  var burger = document.getElementById('burger');
+  var menuEl = document.getElementById('menu');
+  function setMenu(open){
+    document.documentElement.classList.toggle('menu-open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if(window.__lenis){ open ? window.__lenis.stop() : window.__lenis.start(); }
+  }
+  burger.addEventListener('click', function(){
+    setMenu(!document.documentElement.classList.contains('menu-open'));
+  });
+  // close on link tap; the anchor's own smooth-scroll handler still fires
+  menuEl.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ setMenu(false); });
+  });
+  addEventListener('keydown', function(e){ if(e.key === 'Escape') setMenu(false); });
+  matchMedia('(min-width:761px)').addEventListener('change', function(e){ if(e.matches) setMenu(false); });
+
   // hero char split
   document.querySelectorAll('[data-split]').forEach(function(el){
     var txt = el.textContent;
@@ -908,7 +991,6 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.ind
     if(pt){ pt.style.opacity='1'; pt.style.transform='none'; }
     document.querySelectorAll('[data-rv]').forEach(function(el){ el.style.opacity='1'; el.style.transform='none'; });
     words.forEach(function(w){ w.classList.add('on'); });
-    document.querySelectorAll('[data-count]').forEach(function(n){ n.textContent = n.getAttribute('data-count'); });
     var pre = document.getElementById('pre'); if(pre) pre.remove();
     return;
   }
@@ -924,15 +1006,24 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.ind
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
     a.addEventListener('click', function(e){
       var id = a.getAttribute('href');
-      if(id.length>1 && document.querySelector(id)){ e.preventDefault(); lenis.scrollTo(id,{offset:0}); }
+      if(id.length>1 && document.querySelector(id)){
+        e.preventDefault();
+        // re-measure first: the pinned gallery adds scroll distance after init,
+        // and a stale limit clamps the scroll short of late-page targets
+        lenis.resize();
+        lenis.scrollTo(id,{offset:0});
+      }
     });
   });
+  // keep Lenis's measurements in sync with pin spacers and late-loading images
+  addEventListener('load', function(){ ScrollTrigger.refresh(); lenis.resize(); });
+  ScrollTrigger.addEventListener('refresh', function(){ lenis.resize(); });
 
   // preloader into hero
   var pre = document.getElementById('pre');
   var count = {v:0};
   var heroIn = gsap.timeline({paused:true})
-    .to('.hero__h1 .ch',{y:0,duration:1.05,ease:'expo.out',stagger:.026},0)
+    .to('.hero__h1 .ch',{y:0,duration:1.05,ease:'expo.out',stagger:.013},0)
     .to('.hero__portrait',{opacity:1,scaleX:1,duration:.9,ease:'expo.out'},.55)
     .to('.hero [data-rv]',{opacity:1,y:0,duration:.9,ease:'expo.out',stagger:.08},.7);
 
@@ -944,45 +1035,9 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.ind
     .add(function(){ pre.classList.add('done'); heroIn.play(); },'-=.55')
     .set(pre,{display:'none'});
 
-  // scroll-driven reveals below the hero
-  gsap.utils.toArray('[data-rv]').forEach(function(el){
-    if(el.closest('.hero')) return;
-    gsap.to(el,{opacity:1,y:0,duration:1,ease:'expo.out',
-      scrollTrigger:{trigger:el,start:'top 88%'}});
-  });
-
-  // marquee: constant drift, scroll-velocity skew
-  var seqW = function(){ return mq.children[0].offsetWidth; };
-  var mqX = gsap.to(mq,{x:function(){return -seqW();},duration:26,ease:'none',repeat:-1,
-    modifiers:{x:function(x){ return (parseFloat(x) % seqW()) + 'px'; }}});
-  var skewSetter = gsap.quickTo('.mq__track','skewX',{duration:.4,ease:'power3'});
-  ScrollTrigger.create({
-    onUpdate:function(self){
-      var v = gsap.utils.clamp(-8,8,self.getVelocity()/-120);
-      skewSetter(v);
-      mqX.timeScale(gsap.utils.clamp(.5,3,1+Math.abs(self.getVelocity())/1500));
-    }
-  });
-
-  // about: word-by-word ink-in
-  ScrollTrigger.create({
-    trigger:aboutEl,start:'top 78%',end:'bottom 45%',scrub:.4,
-    onUpdate:function(self){
-      var n = Math.round(self.progress * words.length);
-      words.forEach(function(w,i){ w.classList.toggle('on', i<n); });
-    }
-  });
-
-  // stat counters
-  document.querySelectorAll('[data-count]').forEach(function(n){
-    var end = +n.getAttribute('data-count');
-    var o = {v:0};
-    gsap.to(o,{v:end,duration:1.6,ease:'expo.out',
-      scrollTrigger:{trigger:n,start:'top 88%'},
-      onUpdate:function(){ n.textContent = Math.round(o.v); }});
-  });
-
   // horizontal work gallery (900px and up)
+  // created FIRST: its pin spacer changes every position below it, so all
+  // later ScrollTriggers must measure after this one exists
   var mm = gsap.matchMedia();
   mm.add('(min-width:900px)', function(){
     var track = document.getElementById('htrack');
@@ -996,7 +1051,49 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.ind
           document.getElementById('work-progress').style.width = (self.progress*100) + '%';
         }
       }});
+    // depth: each shot drifts a touch slower than its panel during the travel
+    document.querySelectorAll('.panel__shot').forEach(function(shot){
+      gsap.fromTo(shot,{xPercent:-4},{xPercent:4,ease:'none',
+        scrollTrigger:{trigger:shot,containerAnimation:tween,
+          start:'left right',end:'right left',scrub:true}});
+    });
     return function(){ tween.scrollTrigger && tween.scrollTrigger.kill(); };
+  });
+
+  // scroll-driven reveals below the hero
+  gsap.utils.toArray('[data-rv]').forEach(function(el){
+    if(el.closest('.hero')) return;
+    gsap.to(el,{opacity:1,y:0,duration:1,ease:'expo.out',
+      scrollTrigger:{trigger:el,start:'top 88%'}});
+  });
+
+  // marquee: constant drift, scroll-velocity skew
+  var seqW = function(){ return mq.children[0].offsetWidth; };
+  var mqX = gsap.to(mq,{x:function(){return -seqW();},duration:26,ease:'none',repeat:-1,
+    modifiers:{x:function(x){ return (parseFloat(x) % seqW()) + 'px'; }}});
+  var skewSetter = gsap.quickTo('.mq__track','skewX',{duration:.4,ease:'power3'});
+  var mqHover = false;
+  ScrollTrigger.create({
+    onUpdate:function(self){
+      var v = gsap.utils.clamp(-8,8,self.getVelocity()/-120);
+      skewSetter(v);
+      if(!mqHover) mqX.timeScale(gsap.utils.clamp(.5,3,1+Math.abs(self.getVelocity())/1500));
+    }
+  });
+  // hover: slow the strip to a crawl while the words ink in (CSS)
+  if(fine){
+    var mqEl = document.querySelector('.mq');
+    mqEl.addEventListener('mouseenter', function(){ mqHover = true;  gsap.to(mqX,{timeScale:.15,duration:.5,overwrite:'auto'}); });
+    mqEl.addEventListener('mouseleave', function(){ mqHover = false; gsap.to(mqX,{timeScale:1,duration:.5,overwrite:'auto'}); });
+  }
+
+  // about: word-by-word ink-in
+  ScrollTrigger.create({
+    trigger:aboutEl,start:'top 78%',end:'bottom 45%',scrub:.4,
+    onUpdate:function(self){
+      var n = Math.round(self.progress * words.length);
+      words.forEach(function(w,i){ w.classList.toggle('on', i<n); });
+    }
   });
 
   // hero three.js point field, warm dust
@@ -1101,9 +1198,11 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches || location.search.ind
     mag.addEventListener('pointerleave', function(){ mx(0); my(0); });
   }
 
-  // footer name parallax
+  // footer name: parallax rise, then the outline fills with ink at the very end
   gsap.fromTo('.foot__name',{yPercent:30},{yPercent:0,ease:'none',
     scrollTrigger:{trigger:'.foot',start:'top bottom',end:'bottom bottom',scrub:.6}});
+  gsap.fromTo('.foot__name',{color:'rgba(38,32,26,0)'},{color:'rgba(38,32,26,1)',ease:'none',
+    scrollTrigger:{trigger:'.foot',start:'top 45%',end:'bottom bottom',scrub:.6}});
 })();
 </script>
 </body>
