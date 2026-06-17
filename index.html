@@ -706,6 +706,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
     <ul class="ns-projects">
       <li><b>SanctumPDF</b><span>Web app</span><a href="https://sanctumpdf.com" target="_blank" rel="noopener noreferrer">Visit</a></li>
       <li><b>larsh.dev v2</b><span>Portfolio</span><a href="experiment/">View it</a></li>
+      <li><b>Swatch</b><span>Web app</span><a href="https://tryswatch.com" target="_blank" rel="noopener noreferrer">Visit</a></li>
       <li><b>MetaStrip</b><span>Web app</span><a href="https://metastrip.app" target="_blank" rel="noopener noreferrer">Visit</a> · <a href="https://github.com/lars-1987/metastrip" target="_blank" rel="noopener noreferrer">Source</a></li>
       <li><b>Fenced</b><span>Web app</span><a href="https://fenced.dev" target="_blank" rel="noopener noreferrer">Visit</a> · <a href="https://github.com/lars-1987/fenced" target="_blank" rel="noopener noreferrer">Source</a></li>
       <li><b>Renew</b><span>Mobile app</span><a href="https://getrenew.app" target="_blank" rel="noopener noreferrer">Visit</a> · <a href="https://apps.apple.com/us/app/renew-skincare-tracker/id6758534567" target="_blank" rel="noopener noreferrer">App Store</a></li>
@@ -980,6 +981,16 @@ h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.04;letter
        '<strong>Interactive three.js hero</strong> over one self-hosted typeface and a single accent; zero third-party calls, and it still honours <code>prefers-reduced-motion</code>.'],
      links:[{t:'View it',h:'experiment/',i:'i-globe'}],
      shots:['larshdev-1.webp']},
+    {id:'swatch',name:'Swatch',type:'web',typeLabel:'Web app',status:'shipped',
+     lede:'A colour-palette studio: scroll a stack of bold palettes, then generate, check and export your own from any colour.',
+     tech:'GSAP · Lenis · three.js · Clash Display · self-hosted, no build step',
+     points:['<strong>A stack you scroll through.</strong> Each palette is a full, oversized card that slides up and stacks over the last, its title, swatches and description built right into the card. The reveal is scroll-driven (CSS sticky + GSAP ScrollTrigger on Lenis), so it flows smoothly in both directions with no crossfade.',
+       '<strong>Real colour, one click to copy.</strong> Every hex is selectable DOM text on a tile that animates internally only, never jumping the layout; a soft three.js wash of pastel light drifts behind the stack.',
+       '<strong>Degrades without apology.</strong> Reduced-motion and no-JS fall back to a clean, fully accessible list of every palette; fonts and libraries are self-hosted, so the page makes zero third-party calls.'],
+     card:['<strong>A stack you scroll through.</strong> Each palette is an oversized card that slides up and stacks over the last — title, swatches and copy built in — driven by CSS sticky + GSAP ScrollTrigger on Lenis, smooth both ways.',
+       '<strong>Real, copyable colour</strong> on tiles that animate internally only, over a soft three.js wash; falls back to a clean accessible list when motion is reduced.'],
+     links:[{t:'Visit site',h:'https://tryswatch.com',i:'i-globe'}],
+     shots:['swatch-1.webp','swatch-2.webp']},
     {id:'metastrip',name:'MetaStrip',type:'web',typeLabel:'Web app',status:'shipped · open source',
      lede:'Browser-based metadata removal: fully client-side, open source.',
      tech:'Next.js · 100% client-side · MIT · piexifjs / pdf-lib / jszip + custom binary parsers',
