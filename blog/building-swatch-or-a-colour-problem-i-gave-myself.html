@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Building Swatch, or: a colour problem I gave myself — Lars Holmström</title>
+<meta name="description" content="How a lapsed landscape-photography habit, a grudge against the Adobe subscription tax, and one app redesign turned into a free single-file palette tool." />
+<meta name="author" content="Lars Holmström" />
+<link rel="canonical" href="https://larsh.dev/blog/building-swatch-or-a-colour-problem-i-gave-myself.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Building Swatch, or: a colour problem I gave myself" />
+<meta property="og:description" content="How a lapsed landscape-photography habit, a grudge against the Adobe subscription tax, and one app redesign turned into a free single-file palette tool." />
+<meta property="og:url" content="https://larsh.dev/blog/building-swatch-or-a-colour-problem-i-gave-myself.html" />
+<meta property="og:site_name" content="Lars Holmström" />
+<meta property="og:image" content="https://larsh.dev/og.png" />
+<meta property="article:published_time" content="2026-06-24" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@larsitodev" />
+<meta name="twitter:image" content="https://larsh.dev/og.png" />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Building Swatch, or: a colour problem I gave myself", "description": "How a lapsed landscape-photography habit, a grudge against the Adobe subscription tax, and one app redesign turned into a free single-file palette tool.", "datePublished": "2026-06-24", "dateModified": "2026-06-24", "author": {"@type": "Person", "name": "Lars Holmström", "url": "https://larsh.dev/"}, "publisher": {"@type": "Person", "name": "Lars Holmström"}, "url": "https://larsh.dev/blog/building-swatch-or-a-colour-problem-i-gave-myself.html", "mainEntityOfPage": "https://larsh.dev/blog/building-swatch-or-a-colour-problem-i-gave-myself.html", "image": "https://larsh.dev/og.png", "keywords": "colour, design, photography, side-project, web"}</script>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#EAEDE0;--bg-warm:#F2F4EC;--bg-elevated:#E1E6D4;--bg-subtle:#D6DCC8;
+  --sage:#BFD0B3;--sage-mid:#7F9C86;--fg:#2F3E35;--muted:#566459;--muted-strong:#3b4a40;
+  --border:rgba(47,62,53,.16);--border-strong:rgba(47,62,53,.30);
+  --accent:#46624f;--accent-dim:rgba(127,156,134,.18);
+  --shadow-sm:0 10px 24px -14px rgba(47,62,53,.30);
+  --shadow-lg:0 40px 80px -34px rgba(47,62,53,.40);
+  --fs-sm:.9rem;--fs-base:1rem;--fs-md:1.18rem;--fs-lg:1.55rem;--fs-2xl:clamp(2rem,5vw,3.4rem);
+  --sp-1:.5rem;--sp-2:1rem;--sp-3:1.5rem;--sp-4:2rem;--sp-5:3rem;--sp-6:4rem;--sp-7:6rem;
+  --ease:cubic-bezier(.16,1,.3,1);--ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --radius:14px;--maxw:1080px;
+  --font:"Geist",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SFMono-Regular",monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:2rem;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:var(--fs-base);
+  line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(1200px 620px at 78% -12%,rgba(127,156,134,.18),transparent 60%),
+  radial-gradient(1000px 520px at -5% 102%,rgba(191,208,179,.42),transparent 55%)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--sp-4);position:relative;z-index:1}
+.mono{font-family:var(--mono)}
+
+/* back link */
+.back{display:inline-flex;align-items:center;gap:.5em;margin-top:var(--sp-5);
+  font-family:var(--mono);font-size:var(--fs-sm);color:var(--muted);
+  padding:.5em .9em;border-radius:10px;background:var(--bg-elevated);
+  transition:background .25s var(--ease),transform .25s var(--ease-spring),color .25s var(--ease)}
+.back:hover{color:var(--fg);transform:translateX(-3px)}
+
+/* post header */
+.post__head{padding:var(--sp-6) 0 var(--sp-5);max-width:820px}
+.post__meta{display:flex;align-items:center;gap:var(--sp-2);flex-wrap:wrap;margin-bottom:var(--sp-3);
+  font-family:var(--mono);font-size:var(--fs-sm);color:var(--muted)}
+.post__cat{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);
+  background:var(--accent-dim);padding:.3em .7em;border-radius:6px}
+.post__author{color:var(--accent);text-decoration:none}
+.post__author:hover{text-decoration:underline;text-underline-offset:3px}
+.post__title{font-weight:700;font-size:var(--fs-2xl);letter-spacing:-.035em;line-height:1.05}
+.post__sub{color:var(--muted-strong);font-size:var(--fs-md);margin-top:var(--sp-3);max-width:60ch}
+.post__tags{display:flex;gap:.5em;flex-wrap:wrap;margin-top:var(--sp-3)}
+.post__tags span{font-family:var(--mono);font-size:.72rem;color:var(--muted);
+  background:var(--bg-elevated);padding:.35em .7em;border-radius:6px}
+
+/* layout */
+.post__body{display:grid;grid-template-columns:200px 1fr;gap:var(--sp-6);align-items:start;
+  padding-bottom:var(--sp-7)}
+.toc{position:sticky;top:var(--sp-4);align-self:start}
+.toc__label{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:var(--sp-2)}
+.toc__list{list-style:none;display:flex;flex-direction:column}
+.toc__list a{display:block;padding:.4em 0 .4em var(--sp-2);font-size:var(--fs-sm);color:var(--muted);
+  border-left:2px solid var(--border);transition:color .2s var(--ease),border-color .2s var(--ease)}
+.toc__list a:hover{color:var(--fg)}
+.toc__list a.active{color:var(--fg);border-left-color:var(--accent);font-weight:500}
+
+/* prose */
+.prose{min-width:0}
+/* cap flowing text for readability, but let tables + code blocks use the full width */
+.prose>p,.prose>ul,.prose>ol,.prose>blockquote,.prose>h2,.prose>h3{max-width:70ch}
+.prose>p,.prose>ul,.prose>ol,.prose>blockquote,.prose .term{margin-bottom:var(--sp-3)}
+.prose h2{font-size:var(--fs-lg);font-weight:700;letter-spacing:-.02em;
+  margin:var(--sp-6) 0 var(--sp-3);scroll-margin-top:1.5rem}
+.prose h2:first-child{margin-top:0}
+.prose p{color:var(--muted-strong)}
+.prose a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:var(--sage-mid)}
+.prose a:hover{text-decoration-thickness:2px}
+.prose strong{color:var(--fg);font-weight:600}
+.prose em{font-style:italic}
+.prose ul,.prose ol{padding-left:1.3em;color:var(--muted-strong)}
+.prose li{margin-bottom:.5em}
+.prose li::marker{color:var(--sage-mid)}
+.prose blockquote{border-left:3px solid var(--accent);padding:.2em 0 .2em var(--sp-3);
+  color:var(--muted);font-style:italic}
+.prose blockquote p{color:var(--muted)}
+/* inline code */
+.prose :not(.term__code) > code{font-family:var(--mono);font-size:.86em;
+  background:var(--bg-elevated);color:var(--accent);padding:.15em .4em;border-radius:6px;
+  white-space:nowrap}
+
+/* figures — screenshots run wider than the prose column, with an italic caption */
+.prose .fig{margin:0}
+.prose>.fig,.prose>.figpair{margin:var(--sp-4) 0}
+.prose .fig img{display:block;width:100%;height:auto;border-radius:12px;
+  border:1px solid var(--border);box-shadow:var(--shadow-sm);background:var(--bg-warm)}
+.prose figcaption{margin-top:.7em;font-size:var(--fs-sm);color:var(--muted);
+  font-style:italic;text-align:center;max-width:70ch;margin-left:auto;margin-right:auto}
+.prose .figpair{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3);align-items:start}
+@media (max-width:620px){.prose .figpair{grid-template-columns:1fr}}
+
+/* tables — wide comparisons get a bordered, striped, horizontally-scrollable layout */
+.prose__table{overflow-x:auto;margin:var(--sp-4) 0;border:1px solid var(--border);
+  border-radius:12px;-webkit-overflow-scrolling:touch}
+.prose table{width:100%;min-width:720px;border-collapse:collapse;font-size:.85rem;line-height:1.45}
+.prose thead th{text-align:left;vertical-align:bottom;font-weight:600;color:var(--fg);
+  background:var(--bg-elevated);padding:.7em .85em;border-bottom:1px solid var(--border-strong)}
+.prose tbody td{vertical-align:top;padding:.62em .85em;color:var(--muted-strong);
+  border-bottom:1px solid var(--border)}
+.prose tbody tr:last-child td{border-bottom:0}
+.prose tbody tr:nth-child(even){background:var(--bg-warm)}
+.prose th:first-child,.prose td:first-child{color:var(--fg);font-weight:600;white-space:nowrap}
+
+/* terminal code block */
+.term{border-radius:14px;overflow:hidden;background:#1e1e2e;border:1px solid #11111b;
+  box-shadow:var(--shadow-lg)}
+.term__bar{display:flex;align-items:center;gap:.7em;padding:.65em .9em;background:#181825;
+  border-bottom:1px solid #11111b}
+.term__dots{display:inline-flex;gap:.45em}
+.term__dots i{width:11px;height:11px;border-radius:50%;background:#45475a}
+.term__dots i:nth-child(1){background:#f38ba8}
+.term__dots i:nth-child(2){background:#f9e2af}
+.term__dots i:nth-child(3){background:#a6e3a1}
+.term__lang{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:#6c7086;margin-left:auto}
+.term__code{margin:0;padding:1.1em 1.2em;overflow-x:auto;font-family:var(--mono);
+  font-size:.84rem;line-height:1.7;color:#cdd6f4;tab-size:2}
+.term__code code{font-family:inherit;background:none;padding:0;color:inherit;white-space:pre}
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.term__code .hll { background-color: #ffffcc }
+.term__code { background: #1e1e2e; color: #CDD6F4 }
+.term__code .c { color: #6C7086; font-style: italic } /* Comment */
+.term__code .err { color: #F38BA8 } /* Error */
+.term__code .k { color: #CBA6F7 } /* Keyword */
+.term__code .l { color: #CDD6F4 } /* Literal */
+.term__code .n { color: #CDD6F4 } /* Name */
+.term__code .o { color: #89DCEB } /* Operator */
+.term__code .p { color: #9399B2 } /* Punctuation */
+.term__code .ch { color: #6C7086; font-style: italic } /* Comment.Hashbang */
+.term__code .cm { color: #6C7086; font-style: italic } /* Comment.Multiline */
+.term__code .cp { color: #F5C2E7; font-style: italic } /* Comment.Preproc */
+.term__code .cpf { color: #6C7086; font-style: italic } /* Comment.PreprocFile */
+.term__code .c1 { color: #6C7086; font-style: italic } /* Comment.Single */
+.term__code .cs { color: #6C7086; font-style: italic } /* Comment.Special */
+.term__code .gd { color: #F38BA8 } /* Generic.Deleted */
+.term__code .ge { font-style: italic } /* Generic.Emph */
+.term__code .gh { color: #89B4FA } /* Generic.Heading */
+.term__code .gi { color: #A6E3A1 } /* Generic.Inserted */
+.term__code .gs { font-weight: bold } /* Generic.Strong */
+.term__code .kc { color: #FAB387 } /* Keyword.Constant */
+.term__code .kd { color: #CBA6F7 } /* Keyword.Declaration */
+.term__code .kn { color: #CBA6F7 } /* Keyword.Namespace */
+.term__code .kp { color: #CBA6F7 } /* Keyword.Pseudo */
+.term__code .kr { color: #CBA6F7 } /* Keyword.Reserved */
+.term__code .kt { color: #F9E2AF } /* Keyword.Type */
+.term__code .ld { color: #CDD6F4 } /* Literal.Date */
+.term__code .m { color: #FAB387 } /* Literal.Number */
+.term__code .s { color: #A6E3A1 } /* Literal.String */
+.term__code .na { color: #89B4FA } /* Name.Attribute */
+.term__code .nb { color: #F38BA8 } /* Name.Builtin */
+.term__code .nc { color: #F9E2AF } /* Name.Class */
+.term__code .no { color: #FAB387 } /* Name.Constant */
+.term__code .nd { color: #F9E2AF } /* Name.Decorator */
+.term__code .ni { color: #CDD6F4 } /* Name.Entity */
+.term__code .ne { color: #CDD6F4 } /* Name.Exception */
+.term__code .nf { color: #89B4FA } /* Name.Function */
+.term__code .nl { color: #CDD6F4 } /* Name.Label */
+.term__code .nn { color: #F9E2AF } /* Name.Namespace */
+.term__code .nx { color: #CDD6F4 } /* Name.Other */
+.term__code .py { color: #CDD6F4 } /* Name.Property */
+.term__code .nt { color: #CBA6F7 } /* Name.Tag */
+.term__code .nv { color: #CDD6F4 } /* Name.Variable */
+.term__code .ow { color: #CBA6F7 } /* Operator.Word */
+.term__code .pm { color: #9399B2 } /* Punctuation.Marker */
+.term__code .w { color: #CDD6F4 } /* Text.Whitespace */
+.term__code .mb { color: #FAB387 } /* Literal.Number.Bin */
+.term__code .mf { color: #FAB387 } /* Literal.Number.Float */
+.term__code .mh { color: #FAB387 } /* Literal.Number.Hex */
+.term__code .mi { color: #FAB387 } /* Literal.Number.Integer */
+.term__code .mo { color: #FAB387 } /* Literal.Number.Oct */
+.term__code .sa { color: #A6E3A1 } /* Literal.String.Affix */
+.term__code .sb { color: #A6E3A1 } /* Literal.String.Backtick */
+.term__code .sc { color: #A6E3A1 } /* Literal.String.Char */
+.term__code .dl { color: #A6E3A1 } /* Literal.String.Delimiter */
+.term__code .sd { color: #A6E3A1 } /* Literal.String.Doc */
+.term__code .s2 { color: #A6E3A1 } /* Literal.String.Double */
+.term__code .se { color: #F5C2E7 } /* Literal.String.Escape */
+.term__code .sh { color: #A6E3A1 } /* Literal.String.Heredoc */
+.term__code .si { color: #F5C2E7 } /* Literal.String.Interpol */
+.term__code .sx { color: #A6E3A1 } /* Literal.String.Other */
+.term__code .sr { color: #FAB387 } /* Literal.String.Regex */
+.term__code .s1 { color: #A6E3A1 } /* Literal.String.Single */
+.term__code .ss { color: #A6E3A1 } /* Literal.String.Symbol */
+.term__code .bp { color: #F38BA8 } /* Name.Builtin.Pseudo */
+.term__code .fm { color: #89B4FA } /* Name.Function.Magic */
+.term__code .vc { color: #CDD6F4 } /* Name.Variable.Class */
+.term__code .vg { color: #CDD6F4 } /* Name.Variable.Global */
+.term__code .vi { color: #F38BA8 } /* Name.Variable.Instance */
+.term__code .vm { color: #CDD6F4 } /* Name.Variable.Magic */
+.term__code .il { color: #FAB387 } /* Literal.Number.Integer.Long */
+
+/* post footer */
+.post__foot{border-top:1px solid var(--border);padding:var(--sp-5) 0 var(--sp-7);
+  display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);flex-wrap:wrap;
+  font-size:var(--fs-sm);color:var(--muted)}
+.post__foot a{color:var(--accent)}
+
+/* blog index */
+.blog-head{padding:var(--sp-6) 0 var(--sp-5);max-width:680px}
+.blog-eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:var(--sp-2)}
+.blog-title{font-weight:700;font-size:var(--fs-2xl);letter-spacing:-.035em;line-height:1.05}
+.blog-intro{color:var(--muted-strong);font-size:var(--fs-md);margin-top:var(--sp-3)}
+.posts{list-style:none;max-width:820px;padding-bottom:var(--sp-7)}
+.posts li{border-top:1px solid var(--border)}
+.post-row{display:block;padding:var(--sp-4) var(--sp-2);border-radius:14px;
+  transition:background .3s var(--ease),transform .3s var(--ease-spring)}
+.post-row:hover{background:var(--bg-elevated);transform:translateX(4px)}
+.post-row__meta{font-family:var(--mono);font-size:.78rem;color:var(--muted);
+  display:flex;gap:var(--sp-2);flex-wrap:wrap;margin-bottom:.5em}
+.post-row__title{font-size:var(--fs-lg);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.post-row__sub{color:var(--muted);font-size:var(--fs-sm);margin-top:.5em;max-width:62ch}
+
+@media (max-width:820px){
+  .post__body{grid-template-columns:1fr;gap:var(--sp-4)}
+  .toc{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">&larr; All notes</a>
+  <header class="post__head">
+    <div class="post__meta"><span class="post__cat">COLOUR</span> <span>2026-06-24 &middot; 7 min read &middot; by <a class="post__author" href="../">Lars Holmstr&ouml;m</a></span></div>
+    <h1 class="post__title">Building Swatch, or: a colour problem I gave myself</h1>
+    <p class="post__sub">How a lapsed landscape-photography habit, a grudge against the Adobe subscription tax, and one app redesign turned into a free single-file palette tool.</p>
+    <div class="post__tags"><span>colour</span><span>design</span><span>photography</span><span>side-project</span><span>web</span></div>
+  </header>
+  <div class="post__body">
+    <aside class="toc"><p class="toc__label">On this page</p><ul class="toc__list"><li><a href="#the-bill-that-pushed-me-over-the-edge">The bill that pushed me over the edge</a></li><li><a href="#so-i-built-the-palette-tool">So I built the palette tool</a></li><li><a href="#the-first-time-it-earned-its-keep">The first time it earned its keep</a></li><li><a href="#the-boring-decisions-i-am-quietly-proud-of">The boring decisions I am quietly proud of</a></li><li><a href="#was-it-worth-it">Was it worth it</a></li></ul></aside>
+    <article class="prose"><p>I used to take landscape photos. For a few years I took it fairly seriously: standing in cold places before sunrise, then spending an even more disproportionate amount of time back home pushing the same five sliders around in Lightroom, convinced that this time the greens were finally right. They were never finally right.</p>
+<p>These days the camera mostly gathers dust. The hobby went quiet, the way hobbies do, and I shoot maybe a handful of times a year now. But the part that stuck, the part that turned out to be load-bearing, was the colour.</p>
+<p>Somewhere along the way the editing had stopped being about fixing photos and started being about colour for its own sake. I got into grading. Proper grading, the kind where you stop trusting the auto white balance and start building your own looks, then baking them into LUTs so you can apply the same mood across a whole set without redoing the work. It was a deeply satisfying hobby and a completely irrational one, because the audience for "I shifted the shadows two degrees toward teal" is exactly one person, and he already knows.</p>
+<p>The thing nobody warns you about is that once you start thinking in looks, you start seeing palettes everywhere. A roasted-clay cliff face at golden hour stops being a cliff and becomes four warm neutrals and one accent you will think about for a week. I started keeping colours. Screenshots, hex codes in notes, little swatch files. The photography eventually trailed off. The habit of hoarding colour did not, and that is the bit that quietly suggests you should build a tool, which is the most dangerous suggestion a programmer can hear.</p>
+<h2 id="the-bill-that-pushed-me-over-the-edge">The bill that pushed me over the edge</h2>
+<p>Here is the part where I get to be unfair to Adobe.</p>
+<p>For years I paid the tax. Lightroom and Photoshop, every month, forever, in exchange for software I mostly used to do about six things. The price went up. It always goes up. You are not buying a tool, you are renting a hostage situation, and the hostage is your own back catalogue of edits. The day I realised I was paying an annual sum that could have bought a very nice lens, purely so I could occasionally heal out a stray tourist, I started looking for the exit. The more I shot, the less the maths bothered me. The less I shot, the more galling it got, which is a special kind of insult: paying full rent on a tool you have half stopped using.</p>
+<p>The exit, it turns out, was Apple. I moved my grading over to Pixelmator Pro and my photo editing to Photomator. Pay once, or near enough, and own the thing. They are fast, they are native, they do not nag me to upgrade my plan, and the colour tools are genuinely good. Is it a perfect one-to-one replacement for two decades of Adobe muscle memory? No. Did I miss the subscription? Reader, I did not.</p>
+<p>What surprised me was how much the switch changed how I thought about colour. Stripped of the Adobe machinery I was used to, I started paying more attention to the actual relationships between colours rather than the panel I happened to be dragging them in. Which brings us, finally, to the irrational tool.</p>
+<h2 id="so-i-built-the-palette-tool">So I built the palette tool</h2>
+<p>Swatch is the tool that leftover habit eventually demanded. You pick a base, choose a colour-theory harmony, and it builds you a usable set. You can lock a swatch you like and let the rest re-harmonise around it, which is the digital version of keeping one colour and changing your mind about everything else. Every hex is real, selectable text. Click it, it copies. There is a live WCAG contrast checker, because a palette that looks gorgeous and fails accessibility is just a nice way to fail accessibility.</p>
+<p>Under the hood it is less mystical than the phrase "colour theory" makes it sound. Each harmony is just a small table of offsets in HSL space, applied to whatever base you hand it. If you have ever built a LUT, nudging hue and luminance until a look finally holds together, this will feel suspiciously familiar:</p>
+<div class="term"><div class="term__bar" aria-hidden="true"><span class="term__dots"><i></i><i></i><i></i></span><span class="term__lang">javascript</span></div><pre class="term__code"><code><span class="c1">// each harmony is five swatches as [hueOffset, satOffset, lightOffset] from the base,</span>
+<span class="c1">// shaped to land a deep anchor, the base, the theory accents, and a light tint.</span>
+<span class="c1">// every harmony keeps a [0,0,0] swatch so the chosen base colour always appears exactly.</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">HARMONIES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">monochrome</span><span class="o">:</span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="s1">&#39;Mono&#39;</span><span class="p">,</span><span class="w">       </span><span class="nx">sw</span><span class="o">:</span><span class="p">[[</span><span class="mf">0</span><span class="p">,</span><span class="mf">6</span><span class="p">,</span><span class="o">-</span><span class="mf">42</span><span class="p">],[</span><span class="mf">0</span><span class="p">,</span><span class="mf">2</span><span class="p">,</span><span class="o">-</span><span class="mf">22</span><span class="p">],[</span><span class="mf">0</span><span class="p">,</span><span class="mf">0</span><span class="p">,</span><span class="mf">0</span><span class="p">],[</span><span class="mf">0</span><span class="p">,</span><span class="o">-</span><span class="mf">12</span><span class="p">,</span><span class="mf">18</span><span class="p">],[</span><span class="mf">0</span><span class="p">,</span><span class="o">-</span><span class="mf">24</span><span class="p">,</span><span class="mf">33</span><span class="p">]]</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">analogous</span><span class="o">:</span><span class="w">     </span><span class="p">{</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="s1">&#39;Analogous&#39;</span><span class="p">,</span><span class="w">  </span><span class="nx">sw</span><span class="o">:</span><span class="p">[[</span><span class="o">-</span><span class="mf">46</span><span class="p">,</span><span class="mf">6</span><span class="p">,</span><span class="o">-</span><span class="mf">34</span><span class="p">],[</span><span class="o">-</span><span class="mf">22</span><span class="p">,</span><span class="mf">1</span><span class="p">,</span><span class="o">-</span><span class="mf">9</span><span class="p">],[</span><span class="mf">0</span><span class="p">,</span><span class="mf">0</span><span class="p">,</span><span class="mf">0</span><span class="p">],[</span><span class="mf">24</span><span class="p">,</span><span class="o">-</span><span class="mf">5</span><span class="p">,</span><span class="mf">13</span><span class="p">],[</span><span class="mf">46</span><span class="p">,</span><span class="o">-</span><span class="mf">15</span><span class="p">,</span><span class="mf">27</span><span class="p">]]</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">complementary</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="s1">&#39;Complement&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">sw</span><span class="o">:</span><span class="p">[[</span><span class="mf">0</span><span class="p">,</span><span class="mf">6</span><span class="p">,</span><span class="o">-</span><span class="mf">36</span><span class="p">],[</span><span class="mf">0</span><span class="p">,</span><span class="mf">1</span><span class="p">,</span><span class="o">-</span><span class="mf">8</span><span class="p">],[</span><span class="mf">0</span><span class="p">,</span><span class="mf">0</span><span class="p">,</span><span class="mf">0</span><span class="p">],[</span><span class="mf">180</span><span class="p">,</span><span class="mf">0</span><span class="p">,</span><span class="o">-</span><span class="mf">2</span><span class="p">],[</span><span class="mf">180</span><span class="p">,</span><span class="o">-</span><span class="mf">16</span><span class="p">,</span><span class="mf">28</span><span class="p">]]</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">split</span><span class="o">:</span><span class="w">         </span><span class="p">{</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="s1">&#39;Split&#39;</span><span class="p">,</span><span class="w">      </span><span class="nx">sw</span><span class="o">:</span><span class="p">[[</span><span class="mf">0</span><span class="p">,</span><span class="mf">6</span><span class="p">,</span><span class="o">-</span><span class="mf">34</span><span class="p">],[</span><span class="mf">0</span><span class="p">,</span><span class="mf">0</span><span class="p">,</span><span class="mf">0</span><span class="p">],[</span><span class="mf">150</span><span class="p">,</span><span class="o">-</span><span class="mf">2</span><span class="p">,</span><span class="mf">5</span><span class="p">],[</span><span class="mf">210</span><span class="p">,</span><span class="o">-</span><span class="mf">3</span><span class="p">,</span><span class="o">-</span><span class="mf">4</span><span class="p">],[</span><span class="mf">0</span><span class="p">,</span><span class="o">-</span><span class="mf">20</span><span class="p">,</span><span class="mf">30</span><span class="p">]]</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">triad</span><span class="o">:</span><span class="w">         </span><span class="p">{</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="s1">&#39;Triad&#39;</span><span class="p">,</span><span class="w">      </span><span class="nx">sw</span><span class="o">:</span><span class="p">[[</span><span class="mf">0</span><span class="p">,</span><span class="mf">6</span><span class="p">,</span><span class="o">-</span><span class="mf">36</span><span class="p">],[</span><span class="mf">0</span><span class="p">,</span><span class="mf">0</span><span class="p">,</span><span class="mf">0</span><span class="p">],[</span><span class="mf">120</span><span class="p">,</span><span class="o">-</span><span class="mf">4</span><span class="p">,</span><span class="mf">2</span><span class="p">],[</span><span class="mf">240</span><span class="p">,</span><span class="o">-</span><span class="mf">6</span><span class="p">,</span><span class="o">-</span><span class="mf">3</span><span class="p">],[</span><span class="mf">0</span><span class="p">,</span><span class="o">-</span><span class="mf">22</span><span class="p">,</span><span class="mf">32</span><span class="p">]]</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nx">square</span><span class="o">:</span><span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="s1">&#39;Square&#39;</span><span class="p">,</span><span class="w">     </span><span class="nx">sw</span><span class="o">:</span><span class="p">[[</span><span class="mf">0</span><span class="p">,</span><span class="mf">0</span><span class="p">,</span><span class="mf">0</span><span class="p">],[</span><span class="mf">90</span><span class="p">,</span><span class="o">-</span><span class="mf">6</span><span class="p">,</span><span class="mf">5</span><span class="p">],[</span><span class="mf">180</span><span class="p">,</span><span class="o">-</span><span class="mf">8</span><span class="p">,</span><span class="o">-</span><span class="mf">2</span><span class="p">],[</span><span class="mf">270</span><span class="p">,</span><span class="o">-</span><span class="mf">6</span><span class="p">,</span><span class="mf">5</span><span class="p">],[</span><span class="mf">0</span><span class="p">,</span><span class="mf">8</span><span class="p">,</span><span class="o">-</span><span class="mf">38</span><span class="p">]]</span><span class="w"> </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+<p>That <code>[0,0,0]</code> row in every harmony is the one rule I refused to break: the exact colour you picked always survives, untouched. The rest just orbit it.</p>
+<figure class="fig"><img alt="The builder, mid-tweak: five generated swatches with two locked, a harmony selected, sliders below" src="../assets/swatch-blog-1.webp" /><figcaption>The builder, mid-tweak: five generated swatches with two locked, a harmony selected, sliders below</figcaption></figure>
+<p>The contrast checker is the unglamorous half, and the half I actually care about. No magic, just the WCAG relative-luminance maths, doing the thing browsers should arguably do for you:</p>
+<div class="term"><div class="term__bar" aria-hidden="true"><span class="term__dots"><i></i><i></i><i></i></span><span class="term__lang">javascript</span></div><pre class="term__code"><code><span class="kd">function</span><span class="w"> </span><span class="nx">relLum</span><span class="p">(</span><span class="nx">hex</span><span class="p">){</span>
+<span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">h</span><span class="p">){</span><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">h</span><span class="p">,</span><span class="w"> </span><span class="mf">16</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">255</span><span class="p">;</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">v</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">0.03928</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">v</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">12.92</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">((</span><span class="nx">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.055</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1.055</span><span class="p">,</span><span class="w"> </span><span class="mf">2.4</span><span class="p">);</span><span class="w"> </span><span class="p">};</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mf">0.2126</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">f</span><span class="p">(</span><span class="nx">hex</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="mf">2</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.7152</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">f</span><span class="p">(</span><span class="nx">hex</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mf">3</span><span class="p">,</span><span class="mf">2</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.0722</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">f</span><span class="p">(</span><span class="nx">hex</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mf">5</span><span class="p">,</span><span class="mf">2</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">contrastRatio</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">){</span><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nx">l1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">relLum</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span><span class="w"> </span><span class="nx">l2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">relLum</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.05</span><span class="p">;</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">l1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nx">l2</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">l1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">l2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">l2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">l1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<figure class="fig"><img alt="Pairing two swatches and watching the AA/AAA marks light up" src="../assets/swatch-blog-2.webp" /><figcaption>Pairing two swatches and watching the AA/AAA marks light up</figcaption></figure>
+<p>When you have something you like, you can export it as a PNG or SVG card, or as Tailwind config, JSON tokens, or an Adobe <code>.ase</code> file, which I include partly out of usefulness and partly out of spite.</p>
+<figure class="fig"><img alt="An exported palette card" src="../assets/swatch-blog-3.webp" /><figcaption>An exported palette card</figcaption></figure>
+<p>It also ships with twelve palettes I hand-tuned, which is a polite way of saying I spent far too long arguing with myself about whether "Saffron Static" needed to be one notch warmer. It did.</p>
+<h2 id="the-first-time-it-earned-its-keep">The first time it earned its keep</h2>
+<p>For all the photography origin story, the first time Swatch did real work had nothing to do with a camera. I used it to rebuild the entire colour system for <a href="https://metastrip.app">Metastrip</a>, a small app of mine that needed its palette dragged into something coherent.</p>
+<p>The process was almost embarrassingly quick. I picked a base, locked the one brand colour I was not willing to lose, let the harmonies do the arguing, and ran every text-on-background pairing through the contrast checker before any of it went near production. What used to be an afternoon of nudging hex codes in a spreadsheet and squinting was about five minutes, most of which was me deciding I liked it. The greens, for once, were finally right.</p>
+<div class="figpair"><figure class="fig"><img alt="Metastrip's homepage, running on the new palette" src="../assets/swatch-blog-4.webp" /><figcaption>Metastrip's homepage, running on the new palette</figcaption></figure><figure class="fig"><img alt="The Swatch palette I built it from" src="../assets/swatch-blog-5.webp" /><figcaption>The Swatch palette I built it from</figcaption></figure></div>
+<h2 id="the-boring-decisions-i-am-quietly-proud-of">The boring decisions I am quietly proud of</h2>
+<p>The whole thing is a single HTML file. No build step, no framework, no node_modules quietly metastasising in a folder. Fonts and libraries are self-hosted, so the page makes essentially no third-party calls. It works with JavaScript turned off, it respects reduced-motion, and it targets WCAG AA, because a colour tool that ignores accessibility would be embarrassing in a specific and deserved way.</p>
+<p>There is some quiet showing off. A soft three.js wash drifting behind everything, a faint paper grain, a spring easing curve on every transition that I will not be talking anyone out of. The wordmark is set in Clash Display because some days you just want an oversized full stop.</p>
+<p>On the matter of tracking: there is analytics, but it is cookieless, it stores nothing on your device, and if your browser says Do Not Track it loads precisely nothing. Not "loads, then politely opts out". It never downloads in the first place:</p>
+<div class="term"><div class="term__bar" aria-hidden="true"><span class="term__dots"><i></i><i></i><i></i></span><span class="term__lang">javascript</span></div><pre class="term__code"><code><span class="c1">// Honour Do Not Track: if it is set, the analytics script is never loaded or fetched.</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">dnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">doNotTrack</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">doNotTrack</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">msDoNotTrack</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">dnt</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">dnt</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;yes&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">dnt</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+</code></pre></div>
+<p>I wanted to know if anyone used the thing without becoming the kind of website I close immediately.</p>
+<h2 id="was-it-worth-it">Was it worth it</h2>
+<p>Probably not, by any sensible measure. I built a free colour tool to solve a problem that mostly affects me and a handful of other people who think in palettes. But it is fast, it is mine, it does not charge rent, it has already rebuilt one app's entire colour system, and it scratched the exact itch that a now-dormant photography hobby and one too many Adobe invoices left behind.</p>
+<p>If you design things, build sites, or just like staring at colours that get along, have a play. It is free, there are no accounts, and nothing about your visit follows you home.</p>
+<p>You can find it at <a href="https://tryswatch.com">tryswatch.com</a>. The camera is still in the drawer. The colours, at least, are finally sorted.</p></article>
+  </div>
+  <footer class="post__foot">
+    <a class="back" href="index.html">&larr; All notes</a>
+    <span>&copy; <span>2026</span> Lars Holmstr&ouml;m &middot; <a href="../">larsh.dev</a></span>
+  </footer>
+</div>
+<script>
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var links = {};
+  document.querySelectorAll('.toc__list a').forEach(function(a){
+    links[a.getAttribute('href').slice(1)] = a;
+  });
+  var visible = {};
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ visible[e.target.id] = e.isIntersecting; });
+    var ids = Object.keys(links);
+    var active = ids.filter(function(id){ return visible[id]; })[0] || null;
+    ids.forEach(function(id){ links[id] && links[id].classList.toggle('active', id===active); });
+  }, {rootMargin:'-10% 0px -75% 0px', threshold:0});
+  document.querySelectorAll('.prose h2[id]').forEach(function(h){ io.observe(h); });
+})();
+</script>
+</body>
+</html>

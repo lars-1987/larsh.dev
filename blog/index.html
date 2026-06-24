@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://larsh.dev/blog/" />
 <meta property="og:image" content="https://larsh.dev/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Blog", "name": "Notes — Lars Holmström", "description": "Engineering write-ups and debugging war stories by Lars Holmström — how the privacy-first tools on larsh.dev actually got built.", "url": "https://larsh.dev/blog/", "author": {"@type": "Person", "name": "Lars Holmström", "url": "https://larsh.dev/"}, "blogPost": [{"@type": "BlogPosting", "headline": "The VPN Post Nobody Paid Me to Write", "url": "https://larsh.dev/blog/the-vpn-post-nobody-paid-me-to-write.html", "datePublished": "2026-06-09"}, {"@type": "BlogPosting", "headline": "I built a whole tool to avoid formatting code blocks", "url": "https://larsh.dev/blog/i-built-a-whole-tool-to-avoid-formatting-code-blocks.html", "datePublished": "2026-06-06"}, {"@type": "BlogPosting", "headline": "The Bug That Only Existed in Spanish", "url": "https://larsh.dev/blog/the-bug-that-only-existed-in-spanish.html", "datePublished": "2026-06-02"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Blog", "name": "Notes — Lars Holmström", "description": "Engineering write-ups and debugging war stories by Lars Holmström — how the privacy-first tools on larsh.dev actually got built.", "url": "https://larsh.dev/blog/", "author": {"@type": "Person", "name": "Lars Holmström", "url": "https://larsh.dev/"}, "blogPost": [{"@type": "BlogPosting", "headline": "Building Swatch, or: a colour problem I gave myself", "url": "https://larsh.dev/blog/building-swatch-or-a-colour-problem-i-gave-myself.html", "datePublished": "2026-06-24"}, {"@type": "BlogPosting", "headline": "The VPN Post Nobody Paid Me to Write", "url": "https://larsh.dev/blog/the-vpn-post-nobody-paid-me-to-write.html", "datePublished": "2026-06-09"}, {"@type": "BlogPosting", "headline": "I built a whole tool to avoid formatting code blocks", "url": "https://larsh.dev/blog/i-built-a-whole-tool-to-avoid-formatting-code-blocks.html", "datePublished": "2026-06-06"}, {"@type": "BlogPosting", "headline": "The Bug That Only Existed in Spanish", "url": "https://larsh.dev/blog/the-bug-that-only-existed-in-spanish.html", "datePublished": "2026-06-02"}]}</script>
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -102,6 +102,16 @@ a{color:inherit;text-decoration:none}
 .prose :not(.term__code) > code{font-family:var(--mono);font-size:.86em;
   background:var(--bg-elevated);color:var(--accent);padding:.15em .4em;border-radius:6px;
   white-space:nowrap}
+
+/* figures — screenshots run wider than the prose column, with an italic caption */
+.prose .fig{margin:0}
+.prose>.fig,.prose>.figpair{margin:var(--sp-4) 0}
+.prose .fig img{display:block;width:100%;height:auto;border-radius:12px;
+  border:1px solid var(--border);box-shadow:var(--shadow-sm);background:var(--bg-warm)}
+.prose figcaption{margin-top:.7em;font-size:var(--fs-sm);color:var(--muted);
+  font-style:italic;text-align:center;max-width:70ch;margin-left:auto;margin-right:auto}
+.prose .figpair{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3);align-items:start}
+@media (max-width:620px){.prose .figpair{grid-template-columns:1fr}}
 
 /* tables — wide comparisons get a bordered, striped, horizontally-scrollable layout */
 .prose__table{overflow-x:auto;margin:var(--sp-4) 0;border:1px solid var(--border);
@@ -246,7 +256,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <h1 class="blog-title">Writing &amp; war stories.</h1>
     <p class="blog-intro">How the things on the front page actually got built — and the bugs that fought back. Optional reading.</p>
   </header>
-  <ul class="posts"><li><a class="post-row" href="the-vpn-post-nobody-paid-me-to-write.html">
+  <ul class="posts"><li><a class="post-row" href="building-swatch-or-a-colour-problem-i-gave-myself.html">
+      <div class="post-row__meta"><span>2026-06-24</span><span>7 min</span><span>colour &middot; design &middot; photography</span></div>
+      <div class="post-row__title">Building Swatch, or: a colour problem I gave myself</div>
+      <p class="post-row__sub">How a lapsed landscape-photography habit, a grudge against the Adobe subscription tax, and one app redesign turned into a free single-file palette tool.</p>
+    </a></li><li><a class="post-row" href="the-vpn-post-nobody-paid-me-to-write.html">
       <div class="post-row__meta"><span>2026-06-09</span><span>13 min</span><span>privacy &middot; vpn &middot; security</span></div>
       <div class="post-row__title">The VPN Post Nobody Paid Me to Write</div>
       <p class="post-row__sub">No affiliate links, no &#x27;top pick&#x27; that mysteriously pays the highest commission. Just what these things actually do, what they don&#x27;t, and whether you need one.</p>

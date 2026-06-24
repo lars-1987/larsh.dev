@@ -120,6 +120,18 @@ def terminal(lang, code):
         '</div>'
     )
 
+def figures(content):
+    # turn image-only paragraphs into captioned <figure>s; a paragraph holding two
+    # images becomes a side-by-side pair (used for the "cause and effect" shots).
+    def repl(m):
+        imgs = re.findall(r'<img[^>]*>', m.group(1))
+        def cap(img):
+            a = re.search(r'alt="([^"]*)"', img)
+            return f'<figcaption>{a.group(1)}</figcaption>' if a and a.group(1) else ''
+        cells = ''.join(f'<figure class="fig">{img}{cap(img)}</figure>' for img in imgs)
+        return f'<div class="figpair">{cells}</div>' if len(imgs) > 1 else cells
+    return re.sub(r'<p>((?:\s*<img[^>]*>\s*)+)</p>', repl, content)
+
 def render_post_html(meta, body):
     # 1. pull fenced code blocks out before markdown sees them
     blocks = []
@@ -138,7 +150,10 @@ def render_post_html(meta, body):
         content = content.replace(f'<p>XCODEBLOCKX{i}X</p>', term)
         content = content.replace(f'XCODEBLOCKX{i}X', term)
 
-    # 3. wrap tables in a scroll container so wide comparisons never crush
+    # 3. promote image paragraphs to captioned figures
+    content = figures(content)
+
+    # 4. wrap tables in a scroll container so wide comparisons never crush
     content = re.sub(r'(<table>.*?</table>)',
                      r'<div class="prose__table">\1</div>', content, flags=re.S)
 
@@ -232,6 +247,16 @@ a{color:inherit;text-decoration:none}
 .prose :not(.term__code) > code{font-family:var(--mono);font-size:.86em;
   background:var(--bg-elevated);color:var(--accent);padding:.15em .4em;border-radius:6px;
   white-space:nowrap}
+
+/* figures — screenshots run wider than the prose column, with an italic caption */
+.prose .fig{margin:0}
+.prose>.fig,.prose>.figpair{margin:var(--sp-4) 0}
+.prose .fig img{display:block;width:100%;height:auto;border-radius:12px;
+  border:1px solid var(--border);box-shadow:var(--shadow-sm);background:var(--bg-warm)}
+.prose figcaption{margin-top:.7em;font-size:var(--fs-sm);color:var(--muted);
+  font-style:italic;text-align:center;max-width:70ch;margin-left:auto;margin-right:auto}
+.prose .figpair{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3);align-items:start}
+@media (max-width:620px){.prose .figpair{grid-template-columns:1fr}}
 
 /* tables — wide comparisons get a bordered, striped, horizontally-scrollable layout */
 .prose__table{overflow-x:auto;margin:var(--sp-4) 0;border:1px solid var(--border);
