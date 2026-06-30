@@ -1,0 +1,150 @@
+{
+  "business": {
+    "name": "Brighton",
+    "name_full": "Brighton Aesthetic Dentistry",
+    "tagline": "Aesthetic Dentistry",
+    "suburb": "Brighton",
+    "city": "Melbourne",
+    "region": "Victoria",
+    "street": "118 Bay Street",
+    "postcode": "3186",
+    "email": "hello@brightonaesthetic.com.au",
+    "phone_display": "(03) 9500 0000",
+    "phone_link": "+61395000000",
+    "rating": "4.9",
+    "rating_count": "164",
+    "url": "https://larsh.dev/brighton"
+  },
+  "hours": [
+    {"days": "Monday to Thursday", "time": "9:00am to 6:00pm"},
+    {"days": "Friday", "time": "9:00am to 5:00pm"},
+    {"days": "Saturday", "time": "By appointment"},
+    {"days": "Sunday", "time": "Closed"}
+  ],
+  "nav": [
+    {"label": "Results", "href": "#results"},
+    {"label": "Treatments", "href": "#treatments"},
+    {"label": "Journey", "href": "#journey"},
+    {"label": "About", "href": "#about"},
+    {"label": "FAQ", "href": "#faq"}
+  ],
+  "hero": {
+    "eyebrow": "Cosmetic Dentistry · Brighton",
+    "title_lines": ["Smile design", "without the guesswork."],
+    "supporting": "Boutique cosmetic dentistry, veneers and Invisalign in the heart of Brighton. Natural results, exceptional care.",
+    "cta_primary": "Book Consultation",
+    "cta_secondary": "Explore Treatments",
+    "trust": [
+      {"title": "Personalised Care", "body": "One patient at a time", "icon": "heart"},
+      {"title": "Premium Materials", "body": "Quality you can trust", "icon": "gem"},
+      {"title": "Natural Results", "body": "Enhance, never overdo", "icon": "leaf"},
+      {"title": "Advanced Technology", "body": "See it before you begin", "icon": "scan"}
+    ]
+  },
+  "results": {
+    "heading": "Results you'll notice every day.",
+    "supporting": "Beautiful smiles shouldn't look artificial. Our approach focuses on balance, harmony and natural-looking results that feel unmistakably like you.",
+    "cases": [
+      {"treatment": "Veneers", "slug": "veneers", "body": "Custom porcelain veneers designed to enhance shape, symmetry and colour while keeping a natural look."},
+      {"treatment": "Invisalign", "slug": "invisalign", "body": "Discreet, comfortable aligners that gently straighten teeth without disrupting daily life."},
+      {"treatment": "Composite Bonding", "slug": "bonding", "body": "A minimally invasive way to refine your smile and repair chips, often in a single appointment."}
+    ]
+  },
+  "editorial": {
+    "title_lines": ["Natural.", "Balanced.", "Beautiful."],
+    "body": "Every smile is unique. Our focus is on creating natural-looking results that enhance your features and quietly boost your confidence."
+  },
+  "treatments": {
+    "heading": "Treatments designed around you.",
+    "supporting": "Considered options to help you find the right starting point. Every plan begins with a conversation, never a hard sell.",
+    "items": [
+      {"no": "01", "name": "Veneers", "body": "Natural smile enhancement using ultra-thin, custom-crafted porcelain."},
+      {"no": "02", "name": "Invisalign", "body": "Discreet teeth straightening with clear, removable aligners."},
+      {"no": "03", "name": "Composite Bonding", "body": "Conservative cosmetic improvements that protect your natural teeth."},
+      {"no": "04", "name": "Whitening", "body": "Professional whitening for a brighter, even tone in a single visit."},
+      {"no": "05", "name": "Smile Design", "body": "Comprehensive treatment planning that maps your full smile, end to end."}
+    ]
+  },
+  "why": {
+    "heading": "Exceptional results start with exceptional care.",
+    "supporting": "The difference is in the detail: how closely we listen, how carefully we plan, and how naturally the result sits with your face.",
+    "image": "treatment",
+    "image_alt": "Brighton Aesthetic Dentistry treatment room, warm and minimal",
+    "features": [
+      {"title": "Natural-Looking Results", "body": "We enhance, never overdo. The goal is a smile that looks like it was always meant to be yours."},
+      {"title": "One Patient At A Time", "body": "Personalised treatment from consultation to completion, never rushed and never on a conveyor belt."},
+      {"title": "Advanced Digital Planning", "body": "See your outcome before treatment begins, so every decision is made with confidence."},
+      {"title": "Experienced Cosmetic Team", "body": "Focused exclusively on cosmetic dentistry, with an eye trained on aesthetics and proportion."}
+    ]
+  },
+  "technology": {
+    "eyebrow": "Digital Smile Design",
+    "heading": "Technology and planning.",
+    "supporting": "We combine advanced digital technology with expert planning to design a smile that's tailored to you, before we even begin.",
+    "image": "technology",
+    "image_alt": "Dentist and patient reviewing a digital smile design on screen",
+    "points": [
+      {"title": "3D Scanning", "body": "High-resolution digital scans for exceptional accuracy and comfort."},
+      {"title": "Smile Design", "body": "We digitally design your new smile and preview your potential results."},
+      {"title": "Precise Planning", "body": "Custom treatment plans designed for predictable, natural-looking outcomes."},
+      {"title": "Confidence & Clarity", "body": "See the plan, understand the process, and feel confident in your decision."}
+    ]
+  },
+  "about": {
+    "eyebrow": "Meet your dentist",
+    "heading": "Meet Dr Emily Hart.",
+    "image": "portrait",
+    "image_alt": "Dr Emily Hart, cosmetic dentist at Brighton Aesthetic Dentistry",
+    "paragraphs": [
+      "I founded Brighton Aesthetic Dentistry on a simple belief: a beautiful smile should look completely natural, and getting there should feel calm and considered.",
+      "I work with one patient at a time, taking the space to understand what you want before we plan a single step. No pressure, no jargon, just honest guidance and meticulous attention to detail.",
+      "For me, the most rewarding moment is the reveal: when someone sees their new smile and recognises themselves, only more confident."
+    ],
+    "signature": "Dr Emily Hart",
+    "credential": "Founder & Principal Cosmetic Dentist"
+  },
+  "journey": {
+    "heading": "A clear process. No surprises.",
+    "supporting": "From first conversation to final reveal, you'll always know exactly where you are and what comes next.",
+    "steps": [
+      {"no": "01", "title": "Consultation", "body": "We discuss your goals and concerns, and listen before we recommend anything."},
+      {"no": "02", "title": "Planning", "body": "Digital scans and smile design let you preview the outcome before treatment starts."},
+      {"no": "03", "title": "Treatment", "body": "Your plan is carried out carefully and comfortably, at a pace that suits you."},
+      {"no": "04", "title": "Reveal", "body": "Enjoy your new smile with confidence, and the natural results that come with it."}
+    ]
+  },
+  "testimonials": {
+    "heading": "Trusted by patients across Melbourne.",
+    "items": [
+      {"quote": "I finally feel confident smiling in photos. The result looks completely natural, exactly what I hoped for.", "name": "Sarah", "place": "Brighton"},
+      {"quote": "The entire process felt calm, professional and personalised. I never once felt like a number.", "name": "Michael", "place": "Elwood"},
+      {"quote": "The results exceeded my expectations while still looking completely natural. I couldn't recommend them more.", "name": "Emma", "place": "Hampton"}
+    ]
+  },
+  "faq": {
+    "heading": "Questions. Answered.",
+    "items": [
+      {"q": "How much do veneers cost?", "a": "Veneers are tailored to each patient, so the investment depends on the number of teeth and the materials used. We'll give you a clear, fixed quote at your consultation, with no obligation to proceed."},
+      {"q": "Is Invisalign painful?", "a": "Most patients describe mild pressure for a day or two when starting a new set of aligners, rather than pain. It settles quickly, and because the aligners are smooth and removable, day-to-day life carries on as normal."},
+      {"q": "How long does treatment take?", "a": "It varies by treatment: whitening and bonding are often a single visit, veneers usually take two to three appointments, and Invisalign typically runs from six to eighteen months. We'll map your timeline at the planning stage."},
+      {"q": "Can I finance my treatment?", "a": "Yes. We offer interest-free payment plans on most cosmetic treatments so you can spread the cost comfortably. We're happy to walk through the options at your consultation."},
+      {"q": "Which treatment is right for me?", "a": "That's exactly what your consultation is for. We assess your smile, listen to your goals, and use digital planning to show you the options, so the decision is informed and entirely yours."}
+    ]
+  },
+  "consultation": {
+    "heading": "Let's discuss your smile goals.",
+    "supporting": "Tell us a little about what you're looking for. We'll be in touch to arrange a relaxed, no-pressure consultation.",
+    "treatment_options": ["Veneers", "Invisalign", "Composite Bonding", "Whitening", "Smile Design", "Not sure yet"],
+    "submit": "Request Consultation",
+    "reassurance": "No obligation · Private consultation · Honest, considered advice"
+  },
+  "final_cta": {
+    "title_lines": ["Your new smile starts", "with a conversation."],
+    "supporting": "Book a consultation and discover what's possible.",
+    "cta": "Book Consultation"
+  },
+  "footer": {
+    "blurb": "Boutique cosmetic dentistry in Brighton. Veneers, Invisalign and smile design, with a focus on natural results and considered, personal care.",
+    "legal": "Brighton Aesthetic Dentistry is a fictional brand created as a design & front-end portfolio piece."
+  }
+}

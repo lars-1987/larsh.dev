@@ -1,0 +1,142 @@
+{
+  "business": {
+    "name": "Summit",
+    "name_full": "Summit Bicycle Workshop",
+    "tagline": "Bicycle Workshop",
+    "city": "Melbourne",
+    "region": "Victoria",
+    "country": "Australia",
+    "street": "42 Smith Street",
+    "suburb": "Fitzroy",
+    "postcode": "3065",
+    "email": "hello@summitbicycleworkshop.com",
+    "phone_display": "(03) 9000 0000",
+    "phone_link": "+61390000000",
+    "area_served": "Inner-north Melbourne: Fitzroy, Collingwood, Carlton, Brunswick & Richmond",
+    "rating": "4.9",
+    "rating_count": "287",
+    "url": "https://larsh.dev/summit"
+  },
+  "hours": [
+    {"days": "Monday – Friday", "time": "8:00am – 6:00pm"},
+    {"days": "Saturday", "time": "9:00am – 3:00pm"},
+    {"days": "Sunday", "time": "Closed"}
+  ],
+  "nav": [
+    {"label": "Services", "href": "#services"},
+    {"label": "Workshop", "href": "#workshop"},
+    {"label": "Process", "href": "#process"},
+    {"label": "Reviews", "href": "#reviews"},
+    {"label": "FAQ", "href": "#faq"}
+  ],
+  "hero": {
+    "eyebrow": "Melbourne · Est. 2014",
+    "title_lines": ["Precision.", "Performance.", "Passion."],
+    "supporting": "Professional bicycle servicing, wheel builds and performance upgrades from Melbourne's premium workshop.",
+    "cta_primary": "Book a Service",
+    "cta_secondary": "View Services",
+    "trust": [
+      {"value": "4.9", "label": "Google rating", "stars": true},
+      {"value": "48hr", "label": "Turnaround"},
+      {"value": "Shimano · SRAM", "label": "Specialists"}
+    ]
+  },
+  "why": {
+    "eyebrow": "Why riders choose Summit",
+    "title": "Built on trust, not upsells.",
+    "cards": [
+      {"no": "01", "title": "Expert Mechanics", "body": "Years of hands-on experience across road, gravel and mountain bikes; every job done by a qualified mechanic, never a trainee."},
+      {"no": "02", "title": "Fast Turnaround", "body": "Most standard services are completed and back on the road within 48 hours, without cutting a single corner."},
+      {"no": "03", "title": "Premium Components", "body": "We fit components and consumables we'd trust on our own bikes: genuine Shimano, SRAM and quality parts only."},
+      {"no": "04", "title": "Transparent Pricing", "body": "Clear recommendations and a fixed quote before we start. No surprise invoices, no work you didn't approve."}
+    ]
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "Servicing for every kind of rider.",
+    "intro": "Fixed-price packages, clearly scoped. Not sure which one you need? Book an inspection and we'll point you the right way.",
+    "items": [
+      {"name": "General Service", "price": "$150", "unit": "", "body": "Safety inspection, drivetrain clean, brake adjustment and full tune-up to keep your bike running sweetly.", "features": ["Full safety inspection", "Drivetrain clean & lube", "Brake & gear adjustment", "Tyre & bolt-torque check"], "featured": false},
+      {"name": "Performance Tune", "price": "$250", "unit": "", "body": "Our complete service: everything in a General Service plus wheel truing, drivetrain optimisation and a detailed component report.", "features": ["Everything in General", "Wheel truing front & rear", "Drivetrain optimisation", "Detailed condition report"], "featured": true},
+      {"name": "Wheel Building", "price": "From $300", "unit": "per wheel", "body": "Hand-built wheels tensioned and trued to your weight, terrain and riding goals, built to outlast the bike.", "features": ["Hand-tensioned by spec", "Rider-matched build", "Premium hubs & spokes", "Trued to ±0.2mm"], "featured": false},
+      {"name": "Bike Fit", "price": "$220", "unit": "90 min", "body": "A measured fit session to improve comfort, efficiency and long-distance performance, and end the niggles.", "features": ["Body & flexibility assessment", "Cleat & saddle setup", "Cockpit adjustment", "Written fit summary"], "featured": false}
+    ],
+    "footer_prompt": "Not sure what you need?",
+    "footer_body": "Book a $40 inspection, fully credited to any service you book on the day.",
+    "footer_cta": "Book an Inspection"
+  },
+  "gallery": {
+    "eyebrow": "The Workshop",
+    "title": "Built around quality.",
+    "body": "Every bike that enters our workshop receives the same level of attention we'd expect for our own. No production line, no rush jobs: just careful work in a space built for it.",
+    "images": [
+      {"src": "workshop", "alt": "Summit workshop interior with tool wall and repair stand"},
+      {"src": "mechanic", "alt": "Summit mechanic servicing a green gravel bike's drivetrain"},
+      {"src": "drivetrain", "alt": "Close-up of a SRAM Force rear derailleur and cassette"},
+      {"src": "stand", "alt": "Premium green Summit gravel bike on a workshop repair stand"}
+    ]
+  },
+  "process": {
+    "eyebrow": "How it works",
+    "title": "Four steps, zero uncertainty.",
+    "steps": [
+      {"no": "01", "title": "Drop Off", "body": "Tell us what's happening and how you ride. Book online or roll in, no appointment needed for a chat."},
+      {"no": "02", "title": "Inspection", "body": "We assess the bike and contact you with clear recommendations and a fixed quote before any work begins."},
+      {"no": "03", "title": "Service", "body": "Repairs, maintenance and tuning completed to specification by a qualified mechanic, usually within 48 hours."},
+      {"no": "04", "title": "Ride", "body": "Collect your bike, fully checked and road-tested, and feel the difference expert attention makes."}
+    ]
+  },
+  "featured": {
+    "eyebrow": "Built for performance",
+    "title": "Every great ride starts with a great bike.",
+    "body": "Whether you're racing, commuting or exploring gravel roads, the way your bike feels comes down to how well it's maintained. Precision servicing helps you ride further, faster and with greater confidence, every time you clip in.",
+    "cta": "Book a Service",
+    "image": "finished-bike",
+    "alt": "Summit green gravel bike, fully serviced, shot in profile"
+  },
+  "testimonials": {
+    "eyebrow": "Reviews",
+    "title": "Riders don't come back by accident.",
+    "items": [
+      {"quote": "Best service I've had in Melbourne. Fast turnaround, clear communication and the bike felt incredible afterwards, like a different machine.", "name": "James", "place": "Fitzroy", "rating": 5},
+      {"quote": "The attention to detail was outstanding. They explained everything, showed me the worn parts, and never once tried to upsell me.", "name": "Sarah", "place": "Richmond", "rating": 5},
+      {"quote": "Dropped my gravel bike off on Monday and had it back ready for the weekend. Couldn't be happier with the work or the price.", "name": "Michael", "place": "Brunswick", "rating": 5}
+    ]
+  },
+  "faq": {
+    "eyebrow": "Good to know",
+    "title": "Questions, answered.",
+    "items": [
+      {"q": "Do I need to book in advance?", "a": "Booking ahead guarantees your spot and the fastest turnaround, but you're welcome to drop in during opening hours for a quick assessment. Busy weeks fill up, so online booking is the safest bet."},
+      {"q": "Which brands and groupsets do you service?", "a": "All of them. We're Shimano and SRAM specialists and service everything from entry-level commuters to high-end road, gravel and mountain bikes: mechanical and electronic (Di2 / AXS) included."},
+      {"q": "How long will my service take?", "a": "Most standard services are completed within 48 hours. Wheel builds and bike fits are booked by appointment. If a job needs ordered-in parts we'll let you know the timeline upfront."},
+      {"q": "Will you contact me before doing extra work?", "a": "Always. You'll get a fixed quote after inspection and we never carry out work you haven't approved. No surprises on the invoice, ever."},
+      {"q": "Do you offer a warranty on your work?", "a": "Yes. All labour is covered by a 30-day workmanship guarantee, and fitted parts carry their manufacturer's warranty. If something isn't right, bring it back and we'll sort it."},
+      {"q": "How do I pay, and can I get a quote first?", "a": "We accept card, tap-to-pay and bank transfer. Every job over a basic tune starts with a free quote after inspection, so you'll know the cost before we begin."}
+    ]
+  },
+  "booking": {
+    "eyebrow": "Book a service",
+    "title": "Let's get your bike running like new.",
+    "body": "Tell us a little about your bike and when suits you. We'll confirm your booking and a fixed quote, usually within one business day.",
+    "service_options": ["General Service: $150", "Performance Tune: $250", "Wheel Building: from $300", "Bike Fit: $220", "Inspection: $40", "Not sure, recommend for me"],
+    "bike_options": ["Road", "Gravel / CX", "Mountain", "Commuter / Hybrid", "E-bike", "Other"],
+    "submit": "Request Booking",
+    "reassurance": "No payment now · Fixed quote before any work · 48-hour turnaround on most services"
+  },
+  "final_cta": {
+    "eyebrow": "Ready for your next ride?",
+    "title": "Book your service today.",
+    "body": "Experience the difference expert attention makes. Your best ride is one booking away.",
+    "cta": "Book a Service"
+  },
+  "footer": {
+    "blurb": "Melbourne's premium bicycle workshop. Precision servicing, hand-built wheels and performance fits for riders who care about their bikes.",
+    "columns": [
+      {"title": "Visit", "type": "address"},
+      {"title": "Hours", "type": "hours"},
+      {"title": "Explore", "type": "nav"}
+    ],
+    "legal": "Summit Bicycle Workshop is a fictional brand created as a design & front-end portfolio piece."
+  }
+}

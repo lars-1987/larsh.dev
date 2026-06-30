@@ -6,3 +6,17 @@ BUILD.md
 
 # macOS
 .DS_Store
+
+# Portfolio POC source material — local only.
+# The built sites only need the optimized webp in each <project>/site/assets;
+# these are the large source images + design mockups used to generate them.
+summit/*.png
+brighton/*.png
+hawthorne/*.png
+atelier/*.png
+
+# Portfolio POC build / spec docs — local only.
+summit/Summit_Bicycle_Workshop_Site_Plan.md
+brighton/Brighton_Aesthetic_Desntistry_Site_Plan
+hawthorne/hawthorne-build-plan.md
+atelier/Atelier_Architecture_Build_Spec_v2.md

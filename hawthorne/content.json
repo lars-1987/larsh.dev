@@ -1,0 +1,157 @@
+{
+  "business": {
+    "name": "Hawthorne",
+    "name_full": "Hawthorne Property Group",
+    "tagline": "Property Group",
+    "suburb": "Hawthorn",
+    "city": "Melbourne",
+    "region": "Victoria",
+    "street": "Level 1, 654 Glenferrie Road",
+    "postcode": "3122",
+    "email": "hello@hawthorneproperty.com.au",
+    "phone_display": "(03) 9818 0000",
+    "phone_link": "+61398180000",
+    "url": "https://larsh.dev/hawthorne"
+  },
+  "hours": [
+    {"days": "Monday to Friday", "time": "9:00am to 5:30pm"},
+    {"days": "Saturday", "time": "By appointment"},
+    {"days": "Sunday", "time": "Closed"}
+  ],
+  "nav": [
+    {"label": "Properties", "href": "#properties"},
+    {"label": "Approach", "href": "#approach"},
+    {"label": "Results", "href": "#results"},
+    {"label": "Team", "href": "#team"},
+    {"label": "FAQ", "href": "#faq"}
+  ],
+  "hero": {
+    "title_lines": ["Exceptional homes.", "Extraordinary results."],
+    "supporting": "Boutique real estate specialising in Melbourne's most desirable homes. Personal service, market expertise and outstanding outcomes.",
+    "cta_primary": "Book Appraisal",
+    "cta_secondary": "View Properties",
+    "stats": [
+      {"value": "$750M+", "label": "Property Sold"},
+      {"value": "500+", "label": "Successful Campaigns"},
+      {"value": "20", "label": "Years Experience"},
+      {"value": "5★", "label": "Client Reviews"}
+    ]
+  },
+  "properties": {
+    "heading": "Properties that speak for themselves.",
+    "supporting": "A considered selection of homes currently represented by Hawthorne across Melbourne's inner east.",
+    "items": [
+      {"image": "property-1", "status": "For Sale", "price": "$4,250,000", "suburb": "Hawthorn", "specs": "5 Bed · 3 Bath · 2 Car", "body": "A contemporary family home of generous proportion, with a warm material palette and seamless indoor-outdoor living.", "alt": "Contemporary family home facade at dusk, Hawthorn"},
+      {"image": "property-2", "status": "For Sale", "price": "$3,400,000", "suburb": "East Melbourne", "specs": "3 Bed · 2 Bath · 2 Car", "body": "A refined apartment residence framing uninterrupted city and parkland views through floor-to-ceiling glass.", "alt": "Luxury apartment interior with Melbourne skyline view"},
+      {"image": "property-3", "status": "Expressions of Interest", "price": "$7,500,000", "suburb": "Toorak", "specs": "5 Bed · 4 Bath · 3 Car", "body": "An architect-designed statement residence, where natural stone, light and proportion meet at the highest level.", "alt": "Architect-designed stone residence at dusk, Toorak"}
+    ]
+  },
+  "approach": {
+    "heading": "A more personal approach.",
+    "supporting": "We take on fewer campaigns by choice, so every home receives the focus, strategy and presentation it deserves.",
+    "image": "consult",
+    "image_alt": "Hawthorne agent presenting a campaign to clients",
+    "features": [
+      {"title": "Boutique Service", "body": "Direct access to a senior agent from first appraisal to final settlement. No handovers, no junior teams."},
+      {"title": "Strategic Marketing", "body": "Tailored campaigns across digital, print and our private buyer network, presented to magazine standard."},
+      {"title": "Local Expertise", "body": "Two decades of inner-Melbourne knowledge, street by street, buyer by buyer."},
+      {"title": "Exceptional Negotiation", "body": "Calm, considered and relentless on your behalf, with a track record of results above reserve."}
+    ]
+  },
+  "lifestyle": {
+    "title_lines": ["More than a property.", "A way of life."],
+    "supporting": "The best homes are inseparable from where they sit: leafy streets, a favourite café, a school you trust, the city minutes away. We sell the life, not just the floor plan.",
+    "images": [
+      {"src": "lifestyle-1", "alt": "Tree-lined Melbourne street in golden light"},
+      {"src": "lifestyle-2", "alt": "Premium Melbourne laneway café scene"}
+    ]
+  },
+  "team": {
+    "heading": "Meet the people behind the results.",
+    "image": "agent",
+    "image_alt": "Julian Brooke, Director and Lead Agent at Hawthorne Property Group",
+    "name": "Julian Brooke",
+    "role": "Director & Lead Agent",
+    "paragraphs": [
+      "I started Hawthorne with a simple conviction: selling a home is personal, and it should feel that way from the first conversation to the moment the contract is signed.",
+      "Over twenty years across Melbourne's inner east, I've learned that the best results come from preparation, presentation and genuine negotiation, not pressure or promises.",
+      "I take on a deliberately small number of campaigns each season, because the home you're trusting me with deserves my full attention."
+    ],
+    "track": [
+      {"value": "$750M+", "label": "Career sales"},
+      {"value": "94%", "label": "Auction clearance"},
+      {"value": "20 yrs", "label": "Inner-east focus"}
+    ]
+  },
+  "process": {
+    "heading": "A clear strategy. From day one.",
+    "supporting": "A transparent, four-step path designed to position your home for its best possible result.",
+    "steps": [
+      {"no": "01", "title": "Property Appraisal", "body": "An honest, evidence-based assessment of your home's value and its position in today's market."},
+      {"no": "02", "title": "Campaign Planning", "body": "A tailored marketing and presentation strategy built around your home and your timeline."},
+      {"no": "03", "title": "Launch & Marketing", "body": "A polished campaign across every channel, reaching the right buyers from the first weekend."},
+      {"no": "04", "title": "Negotiation & Sale", "body": "Skilled negotiation to convert genuine interest into the strongest possible result."}
+    ]
+  },
+  "results": {
+    "heading": "Results that matter.",
+    "supporting": "The numbers behind the campaigns, and one recent result we're proud of.",
+    "stats": [
+      {"value": "21", "label": "Avg. days on market"},
+      {"value": "94%", "label": "Auction clearance rate"},
+      {"value": "89%", "label": "Sold above reserve"},
+      {"value": "4.9★", "label": "Client rating"}
+    ],
+    "recent_sale": {
+      "label": "Recent Sale",
+      "address": "18 Arthur Street, Prahran",
+      "price": "$4,650,000",
+      "specs": "4 Bed · 3 Bath · 2 Car",
+      "image": "recent-sale",
+      "alt": "Recently sold luxury home with pool in Prahran",
+      "body": "A bespoke campaign, premium presentation and an extensive buyer network delivered an exceptional result in a competitive market.",
+      "points": [
+        {"title": "High Demand", "body": "Strong buyer enquiry and multiple competitive offers."},
+        {"title": "Premium Exposure", "body": "A marketing strategy across digital, print and database."},
+        {"title": "Strategic Result", "body": "Achieved an outstanding price, well above reserve."},
+        {"title": "Happy Clients", "body": "Another outstanding outcome for valued vendors."}
+      ],
+      "quote": "Professional, strategic and impressive from start to finish.",
+      "quote_by": "Vendor, Prahran"
+    }
+  },
+  "testimonials": {
+    "heading": "Trusted by Melbourne homeowners.",
+    "items": [
+      {"quote": "Julian achieved a result we genuinely didn't think was possible. Every step felt considered, calm and completely in our corner.", "name": "The Whitmore Family", "place": "Kew"},
+      {"quote": "The marketing was exceptional and the communication constant. It felt less like a sale and more like a carefully run campaign.", "name": "Andrea & Paul", "place": "Armadale"},
+      {"quote": "Boutique in the truest sense. We had one senior agent who knew our home and our street better than we did.", "name": "Richard T.", "place": "Malvern"}
+    ]
+  },
+  "faq": {
+    "heading": "Questions. Answered.",
+    "items": [
+      {"q": "How much is my property worth?", "a": "Value comes down to your home's position, presentation and the current market, not a single online estimate. We provide a considered, evidence-based appraisal drawn from comparable local sales and live buyer demand, with no obligation."},
+      {"q": "How long does a campaign take?", "a": "A typical campaign runs three to four weeks from launch to sale, plus a short preparation period beforehand. We'll recommend the timing and method, whether auction, private sale or expressions of interest, that best suits your home."},
+      {"q": "What are your fees?", "a": "Our fee is a transparent percentage of the sale price, agreed in writing upfront with no hidden costs. Marketing is quoted separately and tailored to your campaign, so you only invest in what will move the result."},
+      {"q": "When should I sell?", "a": "The best time depends on your circumstances and the market, not just the calendar. Spring and autumn are traditionally strong, but well-presented homes sell well year-round. We're happy to advise honestly on timing at your appraisal."}
+    ]
+  },
+  "appraisal": {
+    "heading": "Let's discuss your property.",
+    "supporting": "Request a private, no-obligation appraisal. We'll be in touch to arrange a time that suits you.",
+    "value_options": ["Under $1.5M", "$1.5M to $2.5M", "$2.5M to $4M", "$4M to $6M", "$6M+", "Not sure"],
+    "submit": "Request Appraisal",
+    "reassurance": "Private & confidential · No obligation · A considered, honest assessment"
+  },
+  "final_cta": {
+    "title_lines": ["The right sale starts", "with the right strategy."],
+    "supporting": "Book a private appraisal and let's talk about what your home could achieve.",
+    "cta": "Book Your Appraisal",
+    "image": "final"
+  },
+  "footer": {
+    "blurb": "Boutique residential real estate for Melbourne's inner east. Personal service, editorial-grade marketing and a track record of results above reserve.",
+    "legal": "Hawthorne Property Group is a fictional brand created as a design & front-end portfolio piece."
+  }
+}

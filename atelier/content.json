@@ -1,0 +1,107 @@
+{
+  "studio": {
+    "name": "Atelier",
+    "name_full": "Atelier Architecture",
+    "tagline": "Architecture",
+    "discipline": "Residential Architecture",
+    "city": "Melbourne",
+    "email": "studio@atelierarchitecture.com.au",
+    "phone_display": "+61 3 9000 0000",
+    "phone_link": "+61390000000",
+    "street": "Studio 4, 12 Curtain Lane",
+    "suburb": "Fitzroy North",
+    "region": "Victoria 3068",
+    "url": "https://larsh.dev/atelier"
+  },
+  "nav": [
+    {"label": "Work", "href": "#work"},
+    {"label": "Materiality", "href": "#materiality"},
+    {"label": "Studio", "href": "#studio"},
+    {"label": "Journal", "href": "#journal"},
+    {"label": "Contact", "href": "#contact"}
+  ],
+  "hero": {
+    "wordmark": "Atelier",
+    "statement": "Spaces designed to feel inevitable.",
+    "meta_left": "Residential Architecture",
+    "meta_right": "Melbourne",
+    "scroll": "Scroll",
+    "image": "showstopper",
+    "image_alt": "Travertine interior with an olive tree and curved furniture in soft light"
+  },
+  "work": {
+    "index": "Selected Work",
+    "years": "2022–2024",
+    "projects": [
+      {"no": "01", "name": "Stone Residence", "location": "Kew", "year": "2024", "image": "project-stone", "alt": "Contemporary travertine residence in warm afternoon light"},
+      {"no": "02", "name": "Courtyard House", "location": "Hawthorn", "year": "2023", "image": "project-courtyard", "alt": "Concrete courtyard with a single olive tree and gravel garden"},
+      {"no": "03", "name": "Travertine House", "location": "Toorak", "year": "2022", "image": "project-interior", "alt": "Minimal travertine living room with curved furniture and an olive tree"}
+    ]
+  },
+  "philosophy": {
+    "lines": [
+      "A house is not a collection of rooms.",
+      "It is a framework for living."
+    ]
+  },
+  "gallery": {
+    "label": "Selected Frames",
+    "images": [
+      {"src": "moment", "caption": "Stair and light, Courtyard House"},
+      {"src": "project-courtyard", "caption": "Courtyard House, Hawthorn"},
+      {"src": "concrete", "caption": "Light study, in concrete"},
+      {"src": "project-stone", "caption": "Stone Residence, Kew"},
+      {"src": "travertine", "caption": "Travertine, detail"},
+      {"src": "dusk", "caption": "House at dusk, Mount Macedon"}
+    ]
+  },
+  "materiality": {
+    "heading": "Material, first.",
+    "body": "A narrow palette, left to texture, weight and light.",
+    "materials": ["Travertine", "Concrete", "Timber", "Stone", "Steel", "Joinery"],
+    "images": [
+      {"src": "travertine", "alt": "Extreme close-up of a travertine edge in grazing light"},
+      {"src": "concrete", "alt": "Concrete surfaces and shadow play"}
+    ]
+  },
+  "transition": {
+    "src": "staircase",
+    "word": "Proportion",
+    "alt": "Sculptural concrete spiral staircase rising through light"
+  },
+  "studio_section": {
+    "label": "The Studio",
+    "heading": "One studio. A few projects at a time.",
+    "image": "portrait",
+    "image_alt": "Elias Wren, founding director, reviewing drawings inside a completed project",
+    "paragraphs": [
+      "A small practice working on a few houses at a time, directly with each client, from first sketch to final detail. No house style. Only patience, material, and light."
+    ],
+    "director": "Elias Wren",
+    "role": "Founding Director"
+  },
+  "journal": {
+    "label": "Journal",
+    "intro": "Notes, drawings and observations from the studio.",
+    "entries": [
+      {"no": "01", "title": "Drawing as thinking", "kind": "Process", "date": "March 2024", "image": "sketches", "alt": "Tracing paper, plans, hand sketches and material samples on a studio table"},
+      {"no": "02", "title": "The model as argument", "kind": "Process", "date": "January 2024", "image": "model", "alt": "Hands adjusting a physical architectural scale model beside drawings"},
+      {"no": "03", "title": "On the weight of light", "kind": "Observation", "date": "October 2023", "image": "concrete", "alt": "Shadow moving across a concrete wall"}
+    ]
+  },
+  "contact": {
+    "heading": "Begin a conversation.",
+    "body": "We take on a limited number of new projects each year. If you're considering a new home, a renovation or an interior, we'd be glad to hear from you.",
+    "project_types": ["New residence", "Renovation / extension", "Interior", "Other"],
+    "budget_ranges": ["Under $1M", "$1M to $2M", "$2M to $5M", "$5M+", "Prefer to discuss"],
+    "submit": "Send Enquiry"
+  },
+  "closing": {
+    "image": "dusk",
+    "alt": "Atmospheric residence at dusk with a softly glowing interior",
+    "line": "Quiet forms. Lasting places."
+  },
+  "footer": {
+    "legal": "Atelier Architecture is a fictional brand created as a design & front-end portfolio piece."
+  }
+}

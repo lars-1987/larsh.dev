@@ -1,0 +1,837 @@
+#!/usr/bin/env python3
+"""
+Brighton Aesthetic Dentistry: static site builder.
+
+Reads content.json (the single, structured, non-technical-editable source of
+truth) and renders site/index.html: one self-contained static file with inline
+CSS/JS, no framework, no runtime dependencies. Degrades cleanly with JS off and
+respects prefers-reduced-motion.
+
+Same pattern as the Summit build in this repo: content and markup are kept
+separate so the copy, prices and images are trivially swappable for a CMS later.
+
+Usage:  python3 build.py
+"""
+
+import json
+import html
+from pathlib import Path
+
+ROOT = Path(__file__).parent
+SITE = ROOT  # built files live at the project root (served at larsh.dev/brighton)
+
+
+def esc(s):
+    return html.escape(str(s), quote=True)
+
+
+# Eyebrows/kicker labels are intentionally off: the headlines carry their own weight.
+# Flip to True to bring back the small labels above headings (and the before/after tags).
+SHOW_EYEBROWS = False
+
+
+def eyebrow(text, line=True, center=False, cls=""):
+    if not SHOW_EYEBROWS:
+        return ""
+    classes = "eyebrow" + (" line" if line else "") + ((" " + cls) if cls else "")
+    style = ' style="justify-content:center"' if center else ""
+    return f'<span class="{classes}"{style}>{esc(text)}</span>'
+
+
+# --------------------------------------------------------------------------
+# CSS  (no Python interpolation in here, keep braces literal)
+# --------------------------------------------------------------------------
+CSS = r"""
+:root{
+  --bg:#F5F1EA;
+  --surface:#EEE7DD;
+  --surface-2:#E7DECF;
+  --ink:#2A2926;
+  --muted:#6E675E;
+  --faint:#9A9285;
+  --sage:#6F7D71;
+  --sage-hi:#5E6C61;
+  --bronze:#A88B65;
+  --bronze-hi:#8E744E;
+  --border:#DDD4C8;
+  --cream:#F1ECE2;
+
+  --maxw:1280px;
+  --read:700px;
+  --gut:clamp(20px,5vw,64px);
+  --section:clamp(72px,10.5vw,120px);
+  --r:12px;
+
+  --f-display:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --f-body:'Inter',system-ui,-apple-system,sans-serif;
+  --ease:cubic-bezier(.4,.02,.1,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--f-body);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--sage);color:#fff}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut)}
+section{position:relative}
+.section-pad{padding-block:var(--section)}
+
+/* ---- type ---- */
+.display{font-family:var(--f-display);font-weight:500;line-height:1.02;
+  letter-spacing:-.005em;color:var(--ink)}
+h1.display{font-size:clamp(3rem,7.4vw,5.8rem)}
+h2.display{font-size:clamp(2.4rem,5vw,3.9rem)}
+.h3{font-family:var(--f-display);font-weight:600;font-size:clamp(1.5rem,2.4vw,2rem);
+  line-height:1.1}
+.eyebrow{font-family:var(--f-body);font-size:.72rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--bronze);
+  display:inline-flex;align-items:center;gap:.7em}
+.eyebrow.line::before{content:"";width:24px;height:1px;background:var(--bronze)}
+.lead{color:var(--muted);font-size:clamp(1.05rem,1.5vw,1.2rem);line-height:1.7;
+  max-width:var(--read)}
+.sec-head{margin-bottom:clamp(40px,5.5vw,68px);max-width:760px}
+.sec-head.center{margin-inline:auto;text-align:center}
+.sec-head.center .eyebrow{justify-content:center}
+.sec-head .eyebrow{margin-bottom:20px}
+.sec-head h2{margin-bottom:22px}
+
+/* ---- buttons ---- */
+.btn{display:inline-flex;align-items:center;gap:.7em;cursor:pointer;
+  font-family:var(--f-body);font-weight:600;font-size:.78rem;letter-spacing:.08em;
+  text-transform:uppercase;padding:1.1em 1.9em;border-radius:var(--r);
+  border:1px solid transparent;transition:background .3s var(--ease),
+  border-color .3s var(--ease),color .3s var(--ease),transform .3s var(--ease)}
+.btn .arw{transition:transform .3s var(--ease)}
+.btn:hover .arw{transform:translateX(4px)}
+.btn-primary{background:var(--sage);color:#F7F4EE;border-color:var(--sage)}
+.btn-primary:hover{background:var(--sage-hi);border-color:var(--sage-hi)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--border)}
+.btn-ghost:hover{border-color:var(--ink)}
+.btn-block{width:100%;justify-content:center}
+.link-arrow{display:inline-flex;align-items:center;gap:.5em;color:var(--sage);
+  font-family:var(--f-body);font-weight:600;font-size:.74rem;letter-spacing:.08em;
+  text-transform:uppercase}
+.link-arrow .arw{transition:transform .3s var(--ease)}
+.link-arrow:hover{color:var(--sage-hi)}
+.link-arrow:hover .arw{transform:translateX(4px)}
+
+/* ============ header ============ */
+.skip{position:absolute;left:-999px;top:0;background:var(--sage);color:#fff;
+  padding:10px 16px;z-index:200;border-radius:0 0 var(--r) 0}
+.skip:focus{left:0}
+
+header.nav{position:fixed;inset:0 0 auto 0;z-index:100;
+  transition:background .4s var(--ease),border-color .4s var(--ease),
+  backdrop-filter .4s var(--ease);border-bottom:1px solid transparent;color:var(--cream)}
+header.nav.scrolled{background:rgba(245,241,234,.88);backdrop-filter:blur(16px) saturate(1.1);
+  border-bottom-color:var(--border);color:var(--ink)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;
+  height:80px;max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut)}
+.brand{display:flex;flex-direction:column;line-height:1;gap:5px}
+.brand .bt{font-family:var(--f-display);font-weight:600;font-size:1.4rem;
+  letter-spacing:.24em;text-transform:uppercase}
+.brand .bs{font-family:var(--f-body);font-size:.5rem;letter-spacing:.32em;
+  text-transform:uppercase;opacity:.72}
+.nav-links{display:flex;align-items:center;gap:36px}
+.nav-links a{font-size:.8rem;letter-spacing:.04em;opacity:.82;transition:opacity .2s;
+  position:relative;padding:5px 0}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-1px;width:0;height:1px;
+  background:var(--bronze);transition:width .3s var(--ease)}
+.nav-links a:hover,.nav-links a.active{opacity:1}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-cta{display:flex;align-items:center;gap:18px}
+.nav-cta .btn{padding:.85em 1.4em;font-size:.7rem}
+header.nav:not(.scrolled) .btn-primary{background:var(--sage);border-color:var(--sage);color:#F7F4EE}
+
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:0;
+  cursor:pointer;padding:8px;z-index:120}
+.burger span{width:24px;height:1.5px;background:currentColor;transition:.3s var(--ease)}
+.menu-open .burger span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.menu-open .burger span:nth-child(2){opacity:0}
+.menu-open .burger span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* ============ hero ============ */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;
+  justify-content:flex-end;overflow:hidden;isolation:isolate;color:var(--cream)}
+.hero-bg{position:absolute;inset:0;z-index:-2}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:60% 50%}
+.hero-bg::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(105deg,rgba(36,30,24,.72) 0%,rgba(40,34,26,.46) 42%,rgba(42,36,28,.18) 72%,rgba(42,36,28,.30) 100%),
+  linear-gradient(to top,rgba(30,25,20,.55),transparent 45%)}
+.hero-inner{width:100%;max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut);
+  padding-top:clamp(110px,16vh,150px);padding-bottom:clamp(34px,5vh,60px)}
+.hero .eyebrow{color:#E2C9A6;margin-bottom:26px}
+.hero h1{max-width:15ch;color:#F4EEE3}
+.hero h1 .l2{color:#EAD9C2}
+.hero-sub{margin-top:26px;max-width:50ch;color:#EAE3D7;font-size:clamp(1.05rem,1.6vw,1.25rem)}
+.hero-actions{margin-top:34px;display:flex;flex-wrap:wrap;gap:14px}
+.hero-actions .btn-ghost{color:#F4EEE3;border-color:rgba(244,238,227,.4)}
+.hero-actions .btn-ghost:hover{border-color:#F4EEE3;background:rgba(244,238,227,.08)}
+
+.trust{margin-top:clamp(40px,6vh,68px);display:grid;grid-template-columns:repeat(4,1fr);
+  gap:24px;padding-top:30px;border-top:1px solid rgba(244,238,227,.22)}
+.trust-item{display:flex;flex-direction:column;gap:10px}
+.trust-item .ic{width:26px;height:26px;color:#E2C9A6}
+.trust-item .tt{font-family:var(--f-display);font-weight:600;font-size:1.15rem;line-height:1}
+.trust-item .tb{font-size:.82rem;color:#D9D1C4}
+
+/* ============ results / before-after ============ */
+.cases{display:flex;flex-direction:column;gap:clamp(52px,7vw,92px)}
+.case-tag{display:block;margin-bottom:18px}
+.ba{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(10px,1.6vw,20px);
+  align-items:center}
+.ba-img{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:655/410;
+  background:var(--surface);border:1px solid var(--border)}
+.ba-img img{width:100%;height:100%;object-fit:cover}
+.ba-tag{position:absolute;bottom:12px;font-family:var(--f-body);font-size:.6rem;
+  font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);
+  background:rgba(245,241,234,.88);padding:5px 11px;border-radius:6px;backdrop-filter:blur(4px)}
+.ba-tag.l{left:12px}
+.ba-tag.r{right:12px}
+.ba-arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--bronze);
+  color:var(--bronze);display:flex;align-items:center;justify-content:center;flex:none;
+  background:var(--bg)}
+.case-cap{display:flex;align-items:baseline;justify-content:space-between;gap:30px;
+  margin-top:24px;flex-wrap:wrap}
+.case-cap .nm{font-family:var(--f-display);font-weight:600;font-size:clamp(1.6rem,2.5vw,2.1rem)}
+.case-cap p{color:var(--muted);font-size:.96rem;max-width:52ch}
+
+/* ============ editorial smile band ============ */
+.editorial{background:var(--surface)}
+.ed-grid{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;min-height:520px}
+.ed-img{position:relative}
+.ed-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ed-copy{display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(48px,7vw,96px)}
+.ed-copy h2{font-size:clamp(2.6rem,5vw,4.2rem);line-height:1.0}
+.ed-copy .l2{color:var(--bronze)}
+.ed-copy .l3{color:var(--sage)}
+.ed-copy p{margin-top:26px;color:var(--muted);max-width:42ch}
+
+/* ============ treatments ============ */
+.treat-list{border-top:1px solid var(--border)}
+.treat{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(20px,4vw,56px);
+  align-items:center;padding:clamp(26px,3vw,38px) 0;border-bottom:1px solid var(--border);
+  transition:padding-left .35s var(--ease)}
+.treat:hover{padding-left:14px}
+.treat .no{font-family:var(--f-body);font-size:.78rem;letter-spacing:.12em;color:var(--bronze);
+  font-weight:600}
+.treat .mid{display:flex;flex-direction:column;gap:8px}
+.treat .nm{font-family:var(--f-display);font-weight:600;font-size:clamp(1.7rem,3vw,2.4rem);
+  line-height:1}
+.treat .bd{color:var(--muted);font-size:.96rem;max-width:54ch}
+.treat .go{color:var(--bronze);opacity:0;transform:translateX(-6px);transition:.35s var(--ease)}
+.treat:hover .go{opacity:1;transform:none}
+
+/* ============ why ============ */
+.why-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(32px,5vw,72px);
+  align-items:center}
+.why-img{border-radius:var(--r);overflow:hidden;aspect-ratio:4/3;border:1px solid var(--border)}
+.why-img img{width:100%;height:100%;object-fit:cover}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px 36px}
+.feat .ft{font-family:var(--f-display);font-weight:600;font-size:1.3rem;margin-bottom:10px;
+  display:flex;align-items:center;gap:10px}
+.feat .ft::before{content:"";width:18px;height:1px;background:var(--bronze)}
+.feat p{color:var(--muted);font-size:.92rem}
+
+/* ============ technology ============ */
+.tech{background:var(--surface)}
+.tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,5vw,80px);align-items:center}
+.tech-img{border-radius:var(--r);overflow:hidden;aspect-ratio:886/1024;max-height:560px;
+  border:1px solid var(--border)}
+.tech-img img{width:100%;height:100%;object-fit:cover}
+.tech-points{margin-top:34px;display:flex;flex-direction:column}
+.tp{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:20px 0;
+  border-top:1px solid var(--border)}
+.tp:last-child{border-bottom:1px solid var(--border)}
+.tp .ic{width:26px;height:26px;color:var(--bronze)}
+.tp .tt{font-family:var(--f-body);font-weight:600;font-size:.92rem;margin-bottom:5px;
+  letter-spacing:.01em}
+.tp p{color:var(--muted);font-size:.9rem}
+
+/* ============ about ============ */
+.about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(36px,5vw,80px);
+  align-items:center}
+.about-img{border-radius:var(--r);overflow:hidden;aspect-ratio:4/5;border:1px solid var(--border)}
+.about-img img{width:100%;height:100%;object-fit:cover}
+.about-copy p{color:var(--muted);margin-bottom:18px;max-width:54ch}
+.about-copy p:first-of-type{font-family:var(--f-display);font-size:clamp(1.3rem,2vw,1.6rem);
+  line-height:1.4;color:var(--ink)}
+.sig{margin-top:30px;display:flex;flex-direction:column;gap:3px}
+.sig .nm{font-family:var(--f-display);font-weight:600;font-size:1.5rem}
+.sig .cr{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--bronze)}
+
+/* ============ journey ============ */
+.proc{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.proc::before{content:"";position:absolute;top:26px;left:9%;right:9%;height:1px;background:var(--border)}
+.step{padding:0 20px;position:relative}
+.step-no{width:54px;height:54px;border-radius:50%;background:var(--bg);
+  border:1px solid var(--bronze);display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-display);font-weight:600;font-size:1.2rem;color:var(--bronze);
+  position:relative;z-index:1;margin-bottom:24px}
+.step h3{font-family:var(--f-display);font-weight:600;font-size:1.4rem;margin-bottom:10px}
+.step p{color:var(--muted);font-size:.92rem}
+
+/* ============ testimonials ============ */
+.tst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.tst{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:38px 34px;display:flex;flex-direction:column;gap:20px}
+.tst .qm{font-family:var(--f-display);font-size:3rem;line-height:.4;color:var(--bronze);height:22px}
+.tst blockquote{font-family:var(--f-display);font-size:1.4rem;line-height:1.4;color:var(--ink)}
+.tst .who{margin-top:auto;font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted)}
+.tst .who b{color:var(--ink);font-weight:600}
+
+/* ============ faq ============ */
+.faq-wrap{max-width:840px;margin-inline:auto}
+.faq details{border-top:1px solid var(--border)}
+.faq details:last-of-type{border-bottom:1px solid var(--border)}
+.faq summary{list-style:none;cursor:pointer;padding:26px 0;display:flex;
+  align-items:center;justify-content:space-between;gap:24px;
+  font-family:var(--f-display);font-weight:600;font-size:clamp(1.25rem,2.2vw,1.6rem)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{color:var(--sage)}
+.faq .ic{flex:none;width:18px;height:18px;position:relative}
+.faq .ic::before,.faq .ic::after{content:"";position:absolute;background:var(--bronze);
+  transition:transform .3s var(--ease)}
+.faq .ic::before{top:8px;left:0;width:18px;height:1.5px}
+.faq .ic::after{top:0;left:8px;width:1.5px;height:18px}
+.faq details[open] .ic::after{transform:scaleY(0)}
+.faq .ans{color:var(--muted);font-size:1rem;line-height:1.7;padding:0 50px 28px 0;max-width:70ch}
+
+/* ============ consultation ============ */
+.cons-grid{display:grid;grid-template-columns:1.25fr .9fr;gap:clamp(30px,4vw,60px);align-items:start}
+.cons-form{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.field{display:flex;flex-direction:column;gap:8px}
+.field.full{grid-column:1/-1}
+.field label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  font-weight:600}
+.field label .req{color:var(--bronze)}
+.field input,.field select,.field textarea{background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r);color:var(--ink);font-family:var(--f-body);font-size:.96rem;
+  padding:14px 16px;transition:border-color .2s,box-shadow .2s;width:100%}
+.field textarea{resize:vertical;min-height:110px}
+.field input::placeholder,.field textarea::placeholder{color:var(--faint)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--sage);
+  box-shadow:0 0 0 3px rgba(111,125,113,.16)}
+.field select{appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236E675E' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 16px center;padding-right:40px}
+.cons-form .submit-row{grid-column:1/-1;display:flex;flex-direction:column;gap:14px}
+.reassure{font-size:.78rem;color:var(--faint);letter-spacing:.02em}
+.cons-success{display:none;background:var(--surface);border:1px solid var(--sage);
+  border-radius:var(--r);padding:40px;text-align:center}
+.cons-success.show{display:block}
+.cons-success .ic{display:block;width:46px;height:46px;color:var(--sage);margin:0 auto 18px}
+.cons-success h3{font-family:var(--f-display);font-weight:600;font-size:1.7rem;margin-bottom:10px}
+.cons-success p{color:var(--muted)}
+
+.info-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:clamp(28px,3vw,40px);display:flex;flex-direction:column;gap:28px}
+.info-block .ih{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze);
+  margin-bottom:12px;font-weight:600}
+.info-block p,.info-block a{color:var(--ink);font-size:.96rem;line-height:1.7}
+.info-block a:hover{color:var(--sage)}
+.hours-row{display:flex;justify-content:space-between;gap:16px;font-size:.92rem;padding:5px 0;
+  color:var(--ink)}
+.hours-row span:first-child{color:var(--muted)}
+
+/* ============ final cta ============ */
+.final{background:var(--sage);color:#F3F0E8;text-align:center}
+.final .wrap{padding-block:clamp(78px,11vw,140px)}
+.final h2{color:#F6F3EC;max-width:18ch;margin:0 auto 24px}
+.final p{color:#E4E5DC;font-size:1.15rem;margin-bottom:36px}
+.final .btn-primary{background:#F3F0E8;color:var(--sage);border-color:#F3F0E8}
+.final .btn-primary:hover{background:#fff;border-color:#fff}
+
+/* ============ footer ============ */
+footer{background:var(--bg);border-top:1px solid var(--border);
+  padding-block:clamp(56px,7vw,88px)}
+.foot-grid{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:40px}
+.foot-brand .brand{color:var(--ink);margin-bottom:20px}
+.foot-brand p{color:var(--muted);font-size:.92rem;max-width:36ch}
+.foot-col h4{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze);
+  margin-bottom:16px}
+.foot-col a,.foot-col p{color:var(--ink);font-size:.92rem;line-height:1.95;display:block}
+.foot-col a:hover{color:var(--sage)}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;gap:20px;
+  flex-wrap:wrap;margin-top:clamp(40px,5vw,64px);padding-top:26px;border-top:1px solid var(--border);
+  font-size:.74rem;color:var(--faint);letter-spacing:.02em}
+
+/* ============ mobile sticky cta ============ */
+.mobile-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:90;
+  padding:12px var(--gut) calc(12px + env(safe-area-inset-bottom));
+  background:rgba(245,241,234,.92);backdrop-filter:blur(14px);border-top:1px solid var(--border);
+  transform:translateY(120%);transition:transform .35s var(--ease)}
+.mobile-cta.show{transform:none}
+
+/* ============ reveal ============ */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============ responsive ============ */
+@media(max-width:960px){
+  .ed-grid{grid-template-columns:1fr}
+  .ed-img{min-height:340px;position:relative}
+  .why-grid,.tech-grid,.about-grid,.cons-grid{grid-template-columns:1fr;gap:36px}
+  .tech-img{max-height:none;aspect-ratio:16/10}
+  .about-img{aspect-ratio:4/3;max-width:520px}
+  .tst-grid{grid-template-columns:1fr}
+  .proc{grid-template-columns:repeat(2,1fr);gap:44px 0}
+  .proc::before{display:none}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .feat-grid{gap:26px 32px}
+}
+@media(max-width:720px){
+  .nav-links,.nav-cta .btn{display:none}
+  .burger{display:flex}
+  .nav-links{position:fixed;inset:80px 0 auto 0;flex-direction:column;gap:0;
+    background:rgba(245,241,234,.98);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);
+    padding:8px var(--gut) 24px;transform:translateY(-130%);transition:transform .4s var(--ease);
+    pointer-events:none;color:var(--ink)}
+  .menu-open .nav-links{transform:none;pointer-events:auto}
+  .nav-links a{padding:16px 0;font-size:1rem;border-bottom:1px solid var(--border);width:100%;opacity:1}
+  .mobile-cta{display:block}
+  .ba{grid-template-columns:1fr;gap:12px}
+  .ba-arrow{transform:rotate(90deg);margin:0 auto}
+  .feat-grid{grid-template-columns:1fr}
+  .treat{grid-template-columns:auto 1fr;gap:16px 24px}
+  .treat .go{display:none}
+  .cons-form{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+  .case-cap{gap:10px}
+}
+@media(max-height:760px) and (min-width:721px){
+  .hero h1{font-size:clamp(2.6rem,6vh,4.4rem)}
+  .hero-inner{padding-top:clamp(100px,14vh,130px)}
+  .hero-sub{margin-top:18px}
+  .hero-actions{margin-top:24px}
+  .trust{margin-top:30px;padding-top:22px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none;transition:none}
+}
+"""
+
+# --------------------------------------------------------------------------
+# JS
+# --------------------------------------------------------------------------
+JS = r"""
+(function(){
+  var header=document.querySelector('header.nav');
+  var body=document.body;
+  function onScroll(){
+    if(window.scrollY>40){header.classList.add('scrolled');}else{header.classList.remove('scrolled');}
+    var hero=document.querySelector('.hero');var mc=document.querySelector('.mobile-cta');
+    if(hero&&mc){if(window.scrollY>hero.offsetHeight*0.7){mc.classList.add('show');}else{mc.classList.remove('show');}}
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  var burger=document.querySelector('.burger');
+  if(burger){burger.addEventListener('click',function(){
+    body.classList.toggle('menu-open');
+    burger.setAttribute('aria-expanded',body.classList.contains('menu-open'));});}
+  document.querySelectorAll('.nav-links a').forEach(function(a){
+    a.addEventListener('click',function(){body.classList.remove('menu-open');});});
+
+  var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if(!reduce&&'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},
+      {threshold:0.12,rootMargin:'0px 0px -7% 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  }else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});}
+
+  var navmap={};
+  document.querySelectorAll('.nav-links a').forEach(function(a){navmap[a.getAttribute('href')]=a;});
+  if('IntersectionObserver' in window){
+    var so=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){var l=navmap['#'+e.target.id];
+        if(l){Object.keys(navmap).forEach(function(k){navmap[k].classList.remove('active');});l.classList.add('active');}}});},
+      {rootMargin:'-45% 0px -50% 0px'});
+    document.querySelectorAll('section[id]').forEach(function(s){so.observe(s);});
+  }
+
+  document.querySelectorAll('[data-treatment]').forEach(function(el){
+    el.addEventListener('click',function(){var v=el.getAttribute('data-treatment');
+      var sel=document.getElementById('f-treatment');
+      if(sel){for(var i=0;i<sel.options.length;i++){if(sel.options[i].value===v){sel.selectedIndex=i;break;}}}});});
+
+  var form=document.getElementById('cons-form');
+  if(form){form.addEventListener('submit',function(ev){ev.preventDefault();
+    if(!form.checkValidity()){form.reportValidity();return;}
+    form.style.display='none';var ok=document.getElementById('cons-success');
+    if(ok){ok.classList.add('show');ok.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});}});}
+})();
+"""
+
+# --------------------------------------------------------------------------
+# SVG
+# --------------------------------------------------------------------------
+def _svg(inner, vb="0 0 24 24"):
+    return (f'<svg viewBox="{vb}" fill="none" stroke="currentColor" stroke-width="1.4" '
+            f'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{inner}</svg>')
+
+ICONS = {
+    "heart": _svg('<path d="M12 20s-7-4.6-7-9.5A3.5 3.5 0 0 1 12 8a3.5 3.5 0 0 1 7 2.5C19 15.4 12 20 12 20z"/>'),
+    "gem": _svg('<path d="M5 8h14l-7 12L5 8z"/><path d="M5 8 8 4h8l3 4"/><path d="M9.5 8 12 20l2.5-12"/>'),
+    "leaf": _svg('<path d="M5 19c0-7 5-12 14-13 0 9-5 14-12 14a6 6 0 0 1-2-1z"/><path d="M9 15c2-3 4-4.5 7-5.5"/>'),
+    "scan": _svg('<path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M7 12h10"/>'),
+    "tooth": _svg('<path d="M12 4c-2.5 0-3-1-5 0-2.4 1.2-2 5-1 9 .6 2.4 1 5 2 5s1-3 2-3 1 3 2 3 1.4-2.6 2-5c1-4 1.4-7.8-1-9-2-1-2.5 0-5 0z"/>'),
+    "check": _svg('<path d="M5 12.5 10 17l9-10"/>'),
+}
+ARW = '<span class="arw" aria-hidden="true">&rarr;</span>'
+ARW_R = _svg('<path d="M5 12h14M13 6l6 6-6 6"/>')
+
+
+def render(c):
+    b = c["business"]
+
+    # ---- header ----
+    nav_links = "".join(f'<a href="{esc(n["href"])}">{esc(n["label"])}</a>' for n in c["nav"])
+    brand = (f'<span class="bt">{esc(b["name"])}</span>'
+             f'<span class="bs">{esc(b["tagline"])}</span>')
+    header = f"""
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="{esc(b['name_full'])} home">{brand}</a>
+    <nav class="nav-links" aria-label="Primary">{nav_links}</nav>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="#consult">{esc(c['hero']['cta_primary'])}</a>
+      <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>"""
+
+    # ---- hero ----
+    h = c["hero"]
+    lines = h["title_lines"]
+    title = f'<span>{esc(lines[0])}</span> <span class="l2">{esc(lines[1])}</span>'
+    trust = ""
+    for t in h["trust"]:
+        trust += (f'<div class="trust-item"><span class="ic">{ICONS.get(t["icon"],"")}</span>'
+                  f'<span class="tt">{esc(t["title"])}</span><span class="tb">{esc(t["body"])}</span></div>')
+    hero = f"""
+<section class="hero" id="top">
+  <div class="hero-bg"><picture>
+    <source type="image/webp" srcset="assets/hero-960.webp 960w, assets/hero.webp 1536w" sizes="100vw">
+    <img src="assets/hero.webp" alt="Warm, minimal reception area at Brighton Aesthetic Dentistry" width="1536" height="1024" fetchpriority="high" decoding="async"></picture>
+  </div>
+  <div class="hero-inner">
+    {eyebrow(h['eyebrow'])}
+    <h1 class="display">{title}</h1>
+    <p class="hero-sub">{esc(h['supporting'])}</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#consult">{esc(h['cta_primary'])} {ARW}</a>
+      <a class="btn btn-ghost" href="#treatments">{esc(h['cta_secondary'])}</a>
+    </div>
+    <div class="trust">{trust}</div>
+  </div>
+</section>"""
+
+    # ---- results ----
+    r = c["results"]
+    cases = ""
+    for cs in r["cases"]:
+        cases += f"""<article class="case reveal">
+      {eyebrow(cs['treatment'], line=False, cls='case-tag')}
+      <div class="ba">
+        <figure class="ba-img"><img src="assets/{cs['slug']}-before.webp" alt="{esc(cs['treatment'])} result, before" width="655" height="410" loading="lazy" decoding="async"><figcaption class="ba-tag l">Before</figcaption></figure>
+        <div class="ba-arrow">{ARW_R}</div>
+        <figure class="ba-img"><img src="assets/{cs['slug']}-after.webp" alt="{esc(cs['treatment'])} result, after" width="655" height="410" loading="lazy" decoding="async"><figcaption class="ba-tag r">After</figcaption></figure>
+      </div>
+      <div class="case-cap"><span class="nm">{esc(cs['treatment'])}</span><p>{esc(cs['body'])}</p></div>
+    </article>"""
+    results = f"""
+<section class="section-pad" id="results"><div class="wrap">
+  <div class="sec-head center reveal">
+    <h2 class="display">{esc(r['heading'])}</h2>
+    <p class="lead" style="margin-inline:auto">{esc(r['supporting'])}</p>
+  </div>
+  <div class="cases">{cases}</div>
+</div></section>"""
+
+    # ---- editorial band ----
+    e = c["editorial"]
+    ed_title = (f'<span>{esc(e["title_lines"][0])}</span><br>'
+                f'<span class="l2">{esc(e["title_lines"][1])}</span><br>'
+                f'<span class="l3">{esc(e["title_lines"][2])}</span>')
+    editorial = f"""
+<section class="editorial"><div class="ed-grid">
+  <div class="ed-img reveal"><img src="assets/smile.webp" alt="Close-up of a natural, balanced smile" width="900" height="1024" loading="lazy" decoding="async"></div>
+  <div class="ed-copy reveal"><h2 class="display">{ed_title}</h2><p>{esc(e['body'])}</p></div>
+</div></section>"""
+
+    # ---- treatments ----
+    tr = c["treatments"]
+    rows = ""
+    for it in tr["items"]:
+        rows += f"""<a class="treat" href="#consult" data-treatment="{esc(it['name'])}">
+      <span class="no">{esc(it['no'])}</span>
+      <span class="mid"><span class="nm">{esc(it['name'])}</span><span class="bd">{esc(it['body'])}</span></span>
+      <span class="go">{ARW_R}</span></a>"""
+    treatments = f"""
+<section class="section-pad" id="treatments"><div class="wrap">
+  <div class="sec-head reveal"><h2 class="display">{esc(tr['heading'])}</h2>
+    <p class="lead">{esc(tr['supporting'])}</p></div>
+  <div class="treat-list reveal">{rows}</div>
+</div></section>"""
+
+    # ---- why ----
+    w = c["why"]
+    feats = "".join(f'<div class="feat"><div class="ft">{esc(ft["title"])}</div><p>{esc(ft["body"])}</p></div>'
+                    for ft in w["features"])
+    why = f"""
+<section class="section-pad" id="why"><div class="wrap">
+  <div class="why-grid">
+    <div class="why-img reveal"><img src="assets/{w['image']}-800.webp" srcset="assets/{w['image']}-800.webp 800w, assets/{w['image']}.webp 1280w" sizes="(max-width:960px) 100vw, 45vw" alt="{esc(w['image_alt'])}" width="1280" height="853" loading="lazy" decoding="async"></div>
+    <div class="reveal">
+      <div class="sec-head" style="margin-bottom:30px"><h2 class="display">{esc(w['heading'])}</h2>
+        <p class="lead">{esc(w['supporting'])}</p></div>
+      <div class="feat-grid">{feats}</div>
+    </div>
+  </div>
+</div></section>"""
+
+    # ---- technology ----
+    tc = c["technology"]
+    points = ""
+    for pt in tc["points"]:
+        points += (f'<div class="tp"><span class="ic">{ICONS["tooth"]}</span>'
+                   f'<div><div class="tt">{esc(pt["title"])}</div><p>{esc(pt["body"])}</p></div></div>')
+    technology = f"""
+<section class="tech section-pad" id="technology"><div class="wrap">
+  <div class="tech-grid">
+    <div class="reveal">
+      {eyebrow(tc['eyebrow'])}
+      <h2 class="display" style="margin-bottom:20px">{esc(tc['heading'])}</h2>
+      <p class="lead">{esc(tc['supporting'])}</p>
+      <div class="tech-points">{points}</div>
+    </div>
+    <div class="tech-img reveal"><img src="assets/{tc['image']}.webp" alt="{esc(tc['image_alt'])}" width="886" height="1024" loading="lazy" decoding="async"></div>
+  </div>
+</div></section>"""
+
+    # ---- about ----
+    a = c["about"]
+    paras = "".join(f"<p>{esc(p)}</p>" for p in a["paragraphs"])
+    about = f"""
+<section class="section-pad" id="about"><div class="wrap">
+  <div class="about-grid">
+    <div class="about-img reveal"><img src="assets/{a['image']}-800.webp" srcset="assets/{a['image']}-800.webp 800w, assets/{a['image']}.webp 1280w" sizes="(max-width:960px) 100vw, 40vw" alt="{esc(a['image_alt'])}" width="1280" height="853" loading="lazy" decoding="async"></div>
+    <div class="about-copy reveal">
+      {eyebrow(a['eyebrow'])}
+      <h2 class="display" style="margin-bottom:26px">{esc(a['heading'])}</h2>
+      {paras}
+      <div class="sig"><span class="nm">{esc(a['signature'])}</span><span class="cr">{esc(a['credential'])}</span></div>
+    </div>
+  </div>
+</div></section>"""
+
+    # ---- journey ----
+    j = c["journey"]
+    steps = "".join(f"""<div class="step reveal" style="transition-delay:{i*90}ms">
+      <div class="step-no">{esc(st['no'])}</div><h3>{esc(st['title'])}</h3><p>{esc(st['body'])}</p></div>"""
+                    for i, st in enumerate(j["steps"]))
+    journey = f"""
+<section class="section-pad" id="journey" style="background:var(--surface)"><div class="wrap">
+  <div class="sec-head center reveal"><h2 class="display">{esc(j['heading'])}</h2>
+    <p class="lead" style="margin-inline:auto">{esc(j['supporting'])}</p></div>
+  <div class="proc">{steps}</div>
+</div></section>"""
+
+    # ---- testimonials ----
+    ts = c["testimonials"]
+    cards = ""
+    for tm in ts["items"]:
+        cards += f"""<figure class="tst reveal"><div class="qm" aria-hidden="true">&ldquo;</div>
+      <blockquote>{esc(tm['quote'])}</blockquote>
+      <figcaption class="who"><b>{esc(tm['name'])}</b>, {esc(tm['place'])}</figcaption></figure>"""
+    testimonials = f"""
+<section class="section-pad" id="reviews"><div class="wrap">
+  <div class="sec-head center reveal"><h2 class="display">{esc(ts['heading'])}</h2></div>
+  <div class="tst-grid">{cards}</div>
+</div></section>"""
+
+    # ---- faq ----
+    fq = c["faq"]
+    items = "".join(f"""<details{' open' if i==0 else ''}><summary>{esc(it['q'])}<span class="ic" aria-hidden="true"></span></summary>
+      <div class="ans">{esc(it['a'])}</div></details>""" for i, it in enumerate(fq["items"]))
+    faq = f"""
+<section class="section-pad" id="faq"><div class="wrap">
+  <div class="sec-head center reveal"><h2 class="display">{esc(fq['heading'])}</h2></div>
+  <div class="faq faq-wrap reveal">{items}</div>
+</div></section>"""
+
+    # ---- consultation ----
+    cn = c["consultation"]
+    topts = "".join(f"<option>{esc(o)}</option>" for o in cn["treatment_options"])
+    hours_rows = "".join(f'<div class="hours-row"><span>{esc(hr["days"])}</span><span>{esc(hr["time"])}</span></div>'
+                         for hr in c["hours"])
+    consult = f"""
+<section class="section-pad" id="consult" style="background:var(--surface)"><div class="wrap">
+  <div class="sec-head reveal" style="max-width:620px"><h2 class="display">{esc(cn['heading'])}</h2>
+    <p class="lead">{esc(cn['supporting'])}</p></div>
+  <div class="cons-grid">
+    <div class="reveal">
+      <form class="cons-form" id="cons-form" novalidate>
+        <div class="field"><label for="f-name">Name <span class="req">*</span></label>
+          <input id="f-name" name="name" type="text" required placeholder="Your name"></div>
+        <div class="field"><label for="f-email">Email <span class="req">*</span></label>
+          <input id="f-email" name="email" type="email" required placeholder="you@email.com"></div>
+        <div class="field"><label for="f-phone">Phone</label>
+          <input id="f-phone" name="phone" type="tel" placeholder="04xx xxx xxx"></div>
+        <div class="field"><label for="f-treatment">Treatment interest</label>
+          <select id="f-treatment" name="treatment">{topts}</select></div>
+        <div class="field full"><label for="f-message">Message</label>
+          <textarea id="f-message" name="message" placeholder="Tell us a little about what you'd like to change…"></textarea></div>
+        <div class="submit-row">
+          <button class="btn btn-primary btn-block" type="submit">{esc(cn['submit'])} {ARW}</button>
+          <p class="reassure">{esc(cn['reassurance'])}</p>
+        </div>
+      </form>
+      <div class="cons-success" id="cons-success" role="status">
+        <span class="ic">{ICONS['check']}</span>
+        <h3>Thank you</h3>
+        <p>We've received your request and will be in touch shortly to arrange your consultation.</p>
+      </div>
+    </div>
+    <aside class="info-panel reveal">
+      <div class="info-block"><div class="ih">Visit us</div>
+        <p>{esc(b['street'])}<br>{esc(b['suburb'])}, {esc(b['region'])} {esc(b['postcode'])}</p></div>
+      <div class="info-block"><div class="ih">Get in touch</div>
+        <p><a href="tel:{esc(b['phone_link'])}">{esc(b['phone_display'])}</a><br>
+        <a href="mailto:{esc(b['email'])}">{esc(b['email'])}</a></p></div>
+      <div class="info-block"><div class="ih">Opening hours</div>{hours_rows}</div>
+    </aside>
+  </div>
+</div></section>"""
+
+    # ---- final cta ----
+    fc = c["final_cta"]
+    fc_title = f'{esc(fc["title_lines"][0])}<br>{esc(fc["title_lines"][1])}'
+    final = f"""
+<section class="final" id="final"><div class="wrap reveal">
+  <h2 class="display">{fc_title}</h2>
+  <p>{esc(fc['supporting'])}</p>
+  <a class="btn btn-primary" href="#consult">{esc(fc['cta'])} {ARW}</a>
+</div></section>"""
+
+    # ---- footer ----
+    ft = c["footer"]
+    foot_nav = "".join(f'<a href="{esc(n["href"])}">{esc(n["label"])}</a>' for n in c["nav"])
+    foot_hours = "".join(f'<p><span style="color:var(--muted)">{esc(hr["days"])}</span><br>{esc(hr["time"])}</p>'
+                         for hr in c["hours"])
+    footer = f"""
+<footer><div class="wrap">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="brand" href="#top">{brand}</a>
+      <p>{esc(ft['blurb'])}</p>
+    </div>
+    <div class="foot-col"><h4>Visit</h4>
+      <p>{esc(b['street'])}<br>{esc(b['suburb'])}, {esc(b['region'])} {esc(b['postcode'])}</p>
+      <a href="tel:{esc(b['phone_link'])}">{esc(b['phone_display'])}</a>
+      <a href="mailto:{esc(b['email'])}">{esc(b['email'])}</a>
+    </div>
+    <div class="foot-col"><h4>Hours</h4>{foot_hours}</div>
+    <div class="foot-col"><h4>Explore</h4>{foot_nav}</div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; 2026 {esc(b['name_full'])}. {esc(b['suburb'])}, {esc(b['city'])}.</span>
+    <span>{esc(ft['legal'])}</span>
+  </div>
+</div></footer>"""
+
+    mobile_cta = f'<div class="mobile-cta"><a class="btn btn-primary btn-block" href="#consult">{esc(c["hero"]["cta_primary"])} {ARW}</a></div>'
+
+    # ---- structured data ----
+    ld = {
+        "@context": "https://schema.org", "@type": "Dentist",
+        "name": b["name_full"], "image": b["url"] + "/assets/hero.webp", "url": b["url"],
+        "telephone": b["phone_display"], "email": b["email"], "priceRange": "$$$",
+        "medicalSpecialty": "CosmeticDentistry",
+        "address": {"@type": "PostalAddress", "streetAddress": b["street"],
+                    "addressLocality": b["suburb"], "addressRegion": "VIC",
+                    "postalCode": b["postcode"], "addressCountry": "AU"},
+        "aggregateRating": {"@type": "AggregateRating", "ratingValue": b["rating"],
+                            "reviewCount": b["rating_count"]},
+        "openingHoursSpecification": [
+            {"@type": "OpeningHoursSpecification",
+             "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"], "opens": "09:00", "closes": "18:00"},
+            {"@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "09:00", "closes": "17:00"},
+        ],
+        "availableService": [{"@type": "MedicalProcedure", "name": it["name"]} for it in c["treatments"]["items"]],
+    }
+    faq_ld = {"@context": "https://schema.org", "@type": "FAQPage",
+              "mainEntity": [{"@type": "Question", "name": it["q"],
+                              "acceptedAnswer": {"@type": "Answer", "text": it["a"]}} for it in c["faq"]["items"]]}
+    jsonld = (f'<script type="application/ld+json">{json.dumps(ld, separators=(",", ":"))}</script>\n'
+              f'<script type="application/ld+json">{json.dumps(faq_ld, separators=(",", ":"))}</script>')
+
+    body = (header + hero + results + editorial + treatments + why + technology
+            + about + journey + testimonials + faq + consult + final + footer + mobile_cta)
+
+    title_tag = f"{b['name_full']}: Cosmetic Dentistry in {b['suburb']}, {b['city']}"
+    desc = (f"Boutique cosmetic dentistry in {b['suburb']}: veneers, Invisalign and smile design "
+            "with natural results and considered, personal care. Book a consultation.")
+
+    return f"""<!doctype html>
+<!--
+  Brighton Aesthetic Dentistry: fictional brand, built as a design & front-end portfolio piece.
+  Single static file: inline CSS/JS, no framework, no runtime dependencies.
+  Content is generated from content.json (the CMS-editable source of truth) via build.py.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(title_tag)}</title>
+<meta name="description" content="{esc(desc)}">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F5F1EA">
+<link rel="canonical" href="{esc(b['url'])}/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{esc(b['name_full'])}">
+<meta property="og:title" content="{esc(title_tag)}">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:url" content="{esc(b['url'])}/">
+<meta property="og:image" content="{esc(b['url'])}/assets/hero.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%236F7D71'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='17' fill='%23F5F1EA' text-anchor='middle'%3EB%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+{CSS}
+</style>
+{jsonld}
+</head>
+<body>
+<a class="skip" href="#consult">Skip to booking</a>
+{body}
+<script>{JS}</script>
+</body>
+</html>"""
+
+
+def main():
+    content = json.loads((ROOT / "content.json").read_text())
+    SITE.mkdir(exist_ok=True)
+    out = SITE / "index.html"
+    out.write_text(render(content))
+    print(f"Built {out}  ({out.stat().st_size/1024:.1f} KB)")
+
+
+if __name__ == "__main__":
+    main()
