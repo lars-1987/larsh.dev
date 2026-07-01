@@ -5,6 +5,10 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://larsh.dev/resume/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://larsh.dev/blog/</loc>
     <priority>0.8</priority>
   </url>
