@@ -88,13 +88,16 @@ html.lift .stage{margin-bottom:var(--footerH,60vh)}
 /* ============================================================ NAV PILL (morphs bottom -> top) ============================================================ */
 .nav{
   position:fixed;left:50%;top:0;z-index:60;
-  transform:translate(-50%, var(--nav-y, 82vh));
-  transition:transform .8s var(--ease);
+  --nav-y:calc(100vh - 3.2rem - var(--gut) - 20px);
+  transform:translate(-50%, var(--nav-y));
+  transition:transform .7s var(--ease);
   display:flex;align-items:center;gap:.16rem;
   padding:.5rem;border-radius:var(--r-pill);
   background:rgba(255,251,244,.86);backdrop-filter:blur(14px) saturate(1.2);
   border:1px solid rgba(22,20,15,.10);box-shadow:0 16px 40px -18px rgba(0,0,0,.5);
 }
+@supports (height:100dvh){ .nav{--nav-y:calc(100dvh - 3.2rem - var(--gut) - 20px)} }
+.nav.is-top{--nav-y:var(--gut)}
 .nav__links{display:flex;align-items:center;gap:.16rem}
 .nav a{
   font-family:var(--grot);font-weight:600;font-size:clamp(.79rem,1.32vw,.95rem);
@@ -259,7 +262,7 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
   .grid3{grid-template-columns:1fr}
   .hero__note{display:none}
   .nav__links{display:none}
-  .nav{gap:0;padding:.35rem}
+  .nav{gap:0;padding:.35rem;top:var(--gut);left:auto;right:var(--gut);transform:none;transition:none}
   .nav__burger{display:inline-flex;align-items:center;gap:.55em;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-ink);padding:.6em 1em;background:none;border:0;cursor:pointer}
   .nav__burger b{display:block;width:20px;height:2px;background:var(--paper-ink);position:relative}
   .nav__burger b::before,.nav__burger b::after{content:"";position:absolute;left:0;width:20px;height:2px;background:var(--paper-ink)}
@@ -380,7 +383,7 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
         <a href="blog/"><span class="flabel">Blog</span><span class="farw">↗</span></a>
         <a href="resume/"><span class="flabel">Résumé</span><span class="farw">↗</span></a>
       </div>
-      <p class="footer__meta">Melbourne, Australia · <span id="year"></span><br>Built by hand and self-hosted. Cookieless analytics that respects Do Not Track.</p>
+      <p class="footer__meta">Melbourne, Australia · <span id="year"></span> · <a href="privacy/">Privacy</a><br>Built by hand and self-hosted. Cookieless analytics that respects Do Not Track.</p>
     </div>
   </div>
 </footer>
@@ -473,16 +476,6 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
 
   // ---------- NAV pill: resting Y + morph ----------
   var nav = document.getElementById('nav');
-  function restY(){
-    var hero = document.getElementById('top');
-    var r = hero.getBoundingClientRect();
-    // sit near the bottom edge of the hero card
-    return Math.max(0, r.bottom - nav.offsetHeight - 22);
-  }
-  function setNav(top){ nav.style.setProperty('--nav-y', (top ? Math.max(10, parseFloat(getComputedStyle(doc).getPropertyValue('--gut'))||16) : restY()) + 'px'); }
-  function placeNavResting(){ if(!nav.classList.contains('is-top')) setNav(false); }
-  setNav(false);
-  addEventListener('resize', placeNavResting);
 
   // active-section highlight
   var navA = {}; [].forEach.call(document.querySelectorAll('#navlinks a[data-nav]'), function(a){ navA[a.getAttribute('data-nav')] = a; });
@@ -507,7 +500,7 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
 
   // ---------- REDUCED / NO-GSAP path ----------
   if(reduce || !window.gsap){
-    nav.classList.add('is-top'); setNav(true);
+    nav.classList.add('is-top');
     addEventListener('scroll', updateActive, {passive:true}); updateActive();
     // static blob frame handled below; reveals already visible via CSS
     startBlob(true);
@@ -531,8 +524,8 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
   // enable the footer lift + measure
   doc.classList.add('lift');
   measureFooter();
-  addEventListener('load', function(){ measureFooter(); ScrollTrigger.refresh(); lenis.resize(); placeNavResting(); });
-  ScrollTrigger.addEventListener('refresh', function(){ lenis.resize(); measureFooter(); placeNavResting(); });
+  addEventListener('load', function(){ measureFooter(); ScrollTrigger.refresh(); lenis.resize(); });
+  ScrollTrigger.addEventListener('refresh', function(){ lenis.resize(); measureFooter(); });
 
   // hero headline: character split + reveal
   document.querySelectorAll('.hero__h1 [data-split]').forEach(function(el){
@@ -565,11 +558,9 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
   // nav morph: pop to top when Work enters
   ScrollTrigger.create({
     trigger:'#work', start:'top 78%',
-    onEnter:function(){ nav.classList.add('is-top'); setNav(true); },
-    onLeaveBack:function(){ nav.classList.remove('is-top'); setNav(false); }
+    onEnter:function(){ nav.classList.add('is-top'); },
+    onLeaveBack:function(){ nav.classList.remove('is-top'); }
   });
-  // keep resting Y correct while in hero
-  ScrollTrigger.create({ trigger:'#top', start:'top top', end:'bottom top', onUpdate:function(){ if(!nav.classList.contains('is-top')) setNav(false); }});
   // active nav follows the section under the viewport (Home on the hero)
   updateActive();
   addEventListener('load', updateActive);

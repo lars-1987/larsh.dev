@@ -435,7 +435,7 @@ def main():
   </div>
   <footer class="post__foot">
     <a class="back" href="index.html">&larr; All notes</a>
-    <span>&copy; <span>{date[:4]}</span> Lars Holmstr&ouml;m &middot; <a href="../">larsh.dev</a></span>
+    <span>&copy; <span>{date[:4]}</span> Lars Holmstr&ouml;m &middot; <a href="../">larsh.dev</a> &middot; <a href="../privacy/">Privacy</a></span>
   </footer>
 </div>"""
         title = meta.get('title', '')
@@ -483,6 +483,7 @@ def main():
     <p class="blog-intro">How the things on the front page actually got built — and the bugs that fought back. Optional reading.</p>
   </header>
   <ul class="posts">{rows}</ul>
+  <footer class="post__foot"><span>Lars Holmstr&ouml;m &middot; <a href="../">larsh.dev</a> &middot; <a href="../privacy/">Privacy</a></span></footer>
 </div>"""
     idx_desc = 'Engineering write-ups and debugging war stories by Lars Holmström — how the privacy-first tools on larsh.dev actually got built.'
     blog_ld = {"@context": "https://schema.org", "@type": "Blog",

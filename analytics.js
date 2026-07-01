@@ -1,10 +1,11 @@
-/* Cookieless product analytics (PostHog).
-   - persistence:'memory'  -> no cookies, nothing written to the device; each visit is a
-     fresh anonymous session.
+/* Privacy-first product analytics (PostHog) with session replay.
+   - Cookieless: sets no cookies. A single random, anonymous session id is kept in
+     localStorage so a visitor's journey across pages is one coherent replay.
    - Loads NOTHING at all if the visitor sends Do Not Track or Global Privacy Control.
-   - Session recording is off; just pageviews + autocaptured clicks.
-   NOTE: api_host is the US cloud. If this project lives on EU PostHog, change it to
-   'https://eu.i.posthog.com'. */
+   - Session replay is on with all inputs masked; plus pageviews + autocaptured clicks.
+   NOTE: api_host is the US cloud (change to 'https://eu.i.posthog.com' if the project is
+   EU). Session replay must ALSO be toggled on in the PostHog project settings
+   (Session Replay) for recordings to actually be captured. */
 (function () {
   var dnt = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
   if (dnt === '1' || dnt === 'yes' || navigator.globalPrivacyControl) return;
@@ -13,10 +14,11 @@
 
   posthog.init('phc_mUgyKu6Vhf3aGxamZccpkcwxvwigBu5vwdsq46XzP5D5', {
     api_host: 'https://us.i.posthog.com',
-    persistence: 'memory',
+    persistence: 'localStorage',
     autocapture: true,
     capture_pageview: true,
-    disable_session_recording: true,
+    disable_session_recording: false,
+    session_recording: { maskAllInputs: true },
     respect_dnt: true
   });
 })();
