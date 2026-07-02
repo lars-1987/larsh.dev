@@ -1,4 +1,4 @@
-/* Shared project data — the single source for the homepage Work grid (leads only)
+/* Shared project data: the single source for the homepage Work grid (leads only)
    and the Résumé page (full list). No build step: attaches to window.PROJECTS.
    Fields: id, name, type, typeLabel, status, wip, lede, tech, points[], card[],
    links[{t,h,i,d}], shots[], post{t,h}, lead (true = shown on the homepage). */
@@ -29,7 +29,7 @@ window.PROJECTS = [
    points:['<strong>A stack you scroll through.</strong> Each palette is a full, oversized card that slides up and stacks over the last, its title, swatches and description built right into the card. The reveal is scroll-driven (CSS sticky + GSAP ScrollTrigger on Lenis), so it flows smoothly in both directions with no crossfade.',
      '<strong>Real colour, one click to copy.</strong> Every hex is selectable DOM text on a tile that animates internally only, never jumping the layout; a soft three.js wash of pastel light drifts behind the stack.',
      '<strong>Degrades without apology.</strong> Reduced-motion and no-JS fall back to a clean, fully accessible list of every palette; fonts and libraries are self-hosted, so the page makes zero third-party calls.'],
-   card:['<strong>A stack you scroll through.</strong> Each palette is an oversized card that slides up and stacks over the last — title, swatches and copy built in — driven by CSS sticky + GSAP ScrollTrigger on Lenis, smooth both ways.',
+   card:['<strong>A stack you scroll through.</strong> Each palette is an oversized card that slides up and stacks over the last: title, swatches and copy built in, driven by CSS sticky + GSAP ScrollTrigger on Lenis, smooth both ways.',
      '<strong>Real, copyable colour</strong> on tiles that animate internally only, over a soft three.js wash; falls back to a clean accessible list when motion is reduced.'],
    post:{t:'Building Swatch, or: a colour problem I gave myself',h:'blog/building-swatch-or-a-colour-problem-i-gave-myself.html'},
    links:[{t:'Visit site',h:'https://tryswatch.com',i:'i-globe'}],

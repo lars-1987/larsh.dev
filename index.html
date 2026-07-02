@@ -167,30 +167,37 @@ html:not(.js) .intro__lead .w{color:var(--paper-ink)}
 .sec-top{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:clamp(28px,5vh,64px)}
 .sec-top h2{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:.9;font-size:clamp(2rem,6.5vw,5.5rem);font-stretch:106%}
 .sec-top .eyebrow{color:var(--mut-cream)}
-.seeall{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;gap:.5em;padding:.75em 1.2em;border-radius:var(--r-pill);background:var(--accent);color:var(--card);font-weight:400;transition:transform .4s var(--ease)}
-.seeall:hover{transform:translateX(3px)}
-.seeall svg{width:1em;height:1em}
+.work__more{display:flex;justify-content:center;margin-top:clamp(30px,5vh,60px)}
+.seeall{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;padding:.9em 1.6em;border-radius:var(--r-pill);background:var(--accent);color:var(--card);font-weight:400}
+.seeall .stxt{display:inline-block;transition:transform .4s var(--ease)}
+.seeall .sarw{display:inline-block;overflow:hidden;max-width:0;opacity:0;margin-left:0;transform:translateX(-.3em);transition:max-width .4s var(--ease),opacity .4s var(--ease),margin-left .4s var(--ease),transform .4s var(--ease)}
+.seeall:hover .stxt{transform:translateX(-.14em)}
+.seeall:hover .sarw{max-width:1.4em;opacity:1;margin-left:.5em;transform:translateX(0)}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,26px)}
 .pcard{display:flex;flex-direction:column;background:var(--card);color:var(--card-fg);border-radius:var(--r-card);overflow:hidden;padding:clamp(12px,1.1vw,18px);transition:transform .55s var(--ease),box-shadow .55s var(--ease)}
 .pcard:hover{transform:translateY(-8px);box-shadow:0 44px 72px -34px rgba(14,13,12,.6)}
 .pcard__shot{position:relative;aspect-ratio:4/3;background:var(--card-2);overflow:hidden;border:0;padding:0;cursor:zoom-in;width:100%;display:block;border-radius:calc(var(--r-card)*.6)}
 .pcard__shot img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
 .pcard:hover .pcard__shot img{transform:scale(1.04)}
+.pcard__shot[data-mobile="1"]{background:var(--card)}
 .pcard__shot[data-mobile="1"] img{object-fit:contain;padding:clamp(12px,2.2vw,26px)}
 .pcard__zoom{position:absolute;top:.7rem;right:.7rem;width:2rem;height:2rem;display:grid;place-items:center;border-radius:50%;background:rgba(243,238,227,.14);color:var(--card-fg);opacity:0;transition:opacity .4s var(--ease)}
 .pcard__shot:hover .pcard__zoom,.pcard__shot:focus-visible .pcard__zoom{opacity:1}
 .pcard__zoom svg{width:.9rem;height:.9rem}
 .pcard__body{padding:clamp(16px,1.4vw,22px) clamp(6px,.7vw,12px) clamp(8px,.6vw,12px);display:flex;flex-direction:column;gap:.7rem;flex:1}
-.pcard__meta{display:flex;align-items:center;gap:.6em;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut-card)}
-.pcard__meta .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.pcard__meta{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut-card)}
+.pcard__meta .pcard__type{color:var(--accent)}
 .pcard__name{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;font-size:clamp(1.3rem,2.2vw,1.9rem);line-height:.95;color:var(--card-fg)}
 .pcard__desc{font-size:.92rem;line-height:1.45;color:rgba(243,238,227,.72)}
 .pcard__desc strong{font-weight:700;color:var(--card-fg)}
 .pcard__foot{margin-top:auto;padding-top:.4rem;display:flex;gap:1.1rem;flex-wrap:wrap}
-.pcard__link{font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;gap:.45em;color:var(--card-fg);border-bottom:1px solid var(--line-card);padding-bottom:.15em;transition:border-color .3s var(--ease),color .3s var(--ease)}
-.pcard__link:hover{border-color:var(--accent);color:var(--accent)}
-.pcard__link svg{width:.9em;height:.9em}
-.pcard__link.is-off{opacity:.5;pointer-events:none;border-color:transparent}
+.pcard__link{font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;color:var(--card-fg);transition:color .3s var(--ease)}
+.pcard__link:hover{color:var(--accent)}
+.pcard__link .pltxt{display:inline-block;transition:transform .35s var(--ease)}
+.pcard__link .plarw{display:inline-block;overflow:hidden;max-width:0;opacity:0;margin-left:0;transform:translateX(-.3em);transition:max-width .35s var(--ease),opacity .35s var(--ease),margin-left .35s var(--ease),transform .35s var(--ease)}
+.pcard__link:hover .pltxt{transform:translateX(-.12em)}
+.pcard__link:hover .plarw{max-width:1.2em;opacity:1;margin-left:.4em;transform:translateX(0)}
+.pcard__link.is-off{opacity:.5;pointer-events:none}
 
 /* ============================================================ SERVICES ============================================================ */
 .services{padding:clamp(30px,6vh,80px) var(--gut) clamp(90px,16vh,190px);background:var(--paper-2)}
@@ -339,10 +346,10 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
   <!-- WORK -->
   <section class="work pad" id="work" aria-label="Selected work">
     <div class="sec-top" data-rv>
-      <div><p class="eyebrow">Selected work</p><h2>Work</h2></div>
-      <a class="seeall" href="resume/">See all <svg aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+      <div><h2>Work</h2></div>
     </div>
     <div class="grid3" id="work-grid"></div>
+    <div class="work__more" data-rv><a class="seeall" href="resume/"><span class="stxt">See all</span><span class="sarw">↗</span></a></div>
     <noscript>
       <ul style="list-style:none;display:grid;gap:.5rem;font-family:var(--mono);font-size:.86rem;line-height:1.5">
         <li><b>SanctumPDF</b> · Web app · <a href="https://sanctumpdf.com">sanctumpdf.com</a></li>
@@ -359,13 +366,13 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
   <!-- SERVICES -->
   <section class="services pad" id="services" aria-label="Services">
     <div class="sec-top" data-rv>
-      <div><p class="eyebrow">What I provide</p><h2>Services</h2></div>
+      <div><h2>Services</h2></div>
     </div>
     <div class="svc-grid" id="svc-grid">
-      <article class="svc" data-rv><span class="svc__n">01</span><h3 class="svc__t">Web Design</h3><p class="svc__d">Brand-led marketing sites and product UI with real taste, bespoke or on WordPress: typography, motion, and layout that read as premium, not templated.</p><div class="svc__tags"><span>UI / UX</span><span>WordPress / PHP</span><span>Motion</span></div></article>
-      <article class="svc" data-rv><span class="svc__n">02</span><h3 class="svc__t">Front-End Development</h3><p class="svc__d">Fast, accessible, hand-built front ends. React &amp; Next.js when it fits, or zero-dependency vanilla when it's lighter, with GSAP-grade motion.</p><div class="svc__tags"><span>React / Next.js</span><span>TypeScript</span><span>Accessibility</span></div></article>
-      <article class="svc" data-rv><span class="svc__n">03</span><h3 class="svc__t">Full-Stack Product</h3><p class="svc__d">Ship the whole thing: auth, payments, data, and infra. Next.js · Supabase · Stripe · Wasm, architected client-heavy and privacy-first.</p><div class="svc__tags"><span>Supabase / Postgres</span><span>Stripe</span><span>Wasm</span></div></article>
-      <article class="svc" data-rv><span class="svc__n">04</span><h3 class="svc__t">Native iOS</h3><p class="svc__d">Native Swift &amp; SwiftUI apps, offline-first and shipped to the App Store, with the design system and back-end plumbing to match.</p><div class="svc__tags"><span>Swift 6 / SwiftUI</span><span>SwiftData</span><span>App Store</span></div></article>
+      <article class="svc" data-rv><span class="svc__n">01</span><h3 class="svc__t">Product Design</h3><p class="svc__d">Design systems, interfaces and user experiences that feel considered, not assembled, from concept to production.</p><div class="svc__tags"><span>UI / UX</span><span>Design systems</span><span>Branding</span></div></article>
+      <article class="svc" data-rv><span class="svc__n">02</span><h3 class="svc__t">Web Experiences</h3><p class="svc__d">Marketing sites and landing pages with the typography, motion and pacing that make a brand feel expensive.</p><div class="svc__tags"><span>Marketing sites</span><span>Landing pages</span><span>Motion</span></div></article>
+      <article class="svc" data-rv><span class="svc__n">03</span><h3 class="svc__t">Full-Stack Engineering</h3><p class="svc__d">Auth, payments, data and infrastructure: the whole product, built to run quietly for years.</p><div class="svc__tags"><span>SaaS</span><span>E-commerce</span><span>Payments</span></div></article>
+      <article class="svc" data-rv><span class="svc__n">04</span><h3 class="svc__t">Mobile Products</h3><p class="svc__d">iOS and Android apps designed and built end-to-end, from first mockup to App Store.</p><div class="svc__tags"><span>iOS</span><span>Android</span><span>App Store</span></div></article>
     </div>
   </section>
 
@@ -429,8 +436,8 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
     galleries[p.id] = p.shots.map(function(s){ return 'assets/'+s; });
     var isMobile = (p.type === 'mobile');
     var links = p.links.map(function(l){
-      if(l.d) return '<span class="pcard__link is-off">'+l.t+'</span>';
-      return '<a class="pcard__link" href="'+l.h+'" target="_blank" rel="noopener noreferrer">'+l.t+' '+ICON('i-arrow-ur')+'</a>';
+      if(l.d) return '<span class="pcard__link is-off"><span class="pltxt">'+l.t+'</span></span>';
+      return '<a class="pcard__link" href="'+l.h+'" target="_blank" rel="noopener noreferrer"><span class="pltxt">'+l.t+'</span><span class="plarw">↗</span></a>';
     }).join('');
     var el = document.createElement('article');
     el.className = 'pcard'; el.setAttribute('data-rv','');
@@ -440,7 +447,7 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
         '<span class="pcard__zoom">'+ICON('i-zoom')+'</span>'+
       '</button>'+
       '<div class="pcard__body">'+
-        '<div class="pcard__meta"><span class="dot"></span>'+p.typeLabel+' · '+p.status+'</div>'+
+        '<div class="pcard__meta"><span class="pcard__type">'+p.typeLabel+'</span> · '+p.status+'</div>'+
         '<h3 class="pcard__name">'+p.name+'</h3>'+
         '<p class="pcard__desc">'+p.card[0]+'</p>'+
         '<div class="pcard__foot">'+links+'</div>'+
