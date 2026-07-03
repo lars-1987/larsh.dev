@@ -73,7 +73,9 @@ html.menu-open .menu{transform:none;visibility:visible}
 .summary b{font-weight:700}
 
 /* experience */
-.exp{display:grid;grid-template-columns:1fr;gap:.9rem;padding:clamp(24px,3.4vw,42px) 0;border-top:1px solid var(--line-cream)}
+.exp{display:grid;grid-template-columns:1fr;gap:.9rem;padding:clamp(24px,3.4vw,42px) 0;border-top:1px solid var(--line-cream);scroll-margin-top:6rem;transition:background .4s ease}
+.exp--target{animation:expFlash 1.6s ease}
+@keyframes expFlash{0%,100%{background:transparent}18%{background:rgba(227,154,99,.12)}}
 .exp:first-child{border-top:0;padding-top:0}
 .exp__head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap}
 .exp__name{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;font-size:clamp(1.4rem,3vw,2.3rem);line-height:.95}
@@ -307,7 +309,7 @@ html.menu-open .menu{transform:none;visibility:visible}
       return '<a href="'+href+'" target="_blank" rel="noopener noreferrer">'+l.t+' '+ICON('i-arrow-ur')+'</a>';
     }).join('');
     var pts=p.points.map(function(x){return '<li>'+x+'</li>';}).join('');
-    var el=document.createElement('article'); el.className='exp';
+    var el=document.createElement('article'); el.className='exp'; el.id=p.id;
     el.innerHTML=
       '<div class="exp__head"><h3 class="exp__name">'+p.name+'</h3>'+
         '<span class="exp__meta'+(p.wip?' wip':'')+'">'+p.typeLabel+' · '+p.status+'</span></div>'+
@@ -316,6 +318,8 @@ html.menu-open .menu{transform:none;visibility:visible}
       '<div class="exp__links">'+links+'</div>';
     list.appendChild(el);
   });
+  // jump to a project when arriving via #id from the Work grid's "Read more"
+  if(location.hash.length>1){ var tgt=document.getElementById(location.hash.slice(1)); if(tgt) setTimeout(function(){ tgt.scrollIntoView(); tgt.classList.add('exp--target'); },80); }
   var burger=document.getElementById('burger');
   if(burger){
     var setM=function(o){document.documentElement.classList.toggle('menu-open',o);burger.setAttribute('aria-expanded',o?'true':'false');};
