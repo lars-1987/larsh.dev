@@ -109,8 +109,10 @@ html.lift .stage{margin-bottom:var(--footerH,60vh)}
 
 /* ============================================================ SHARED SECTION FURNITURE ============================================================ */
 .pad{padding-left:var(--pad);padding-right:var(--pad)}
-.eyebrow{font-family:var(--mono);font-weight:400;font-size:clamp(.62rem,1vw,.72rem);letter-spacing:.2em;text-transform:uppercase}
 .disp{font-family:var(--grot);font-weight:800;text-transform:uppercase;line-height:.92;letter-spacing:-.02em;font-stretch:105%}
+/* dark chapter: sections that take over the viewport mid-scroll; cream-context vars invert in scope.
+   CSS default is the finished (full-bleed, unclipped) state — GSAP owns the pre-state. */
+.chapter-dark{background:var(--card);color:var(--card-fg);--paper-ink:var(--card-fg);--mut-cream:var(--mut-card);--line-cream:var(--line-card)}
 
 /* ============================================================ HERO CARD ============================================================ */
 .hero{
@@ -168,14 +170,31 @@ html:not(.js) .intro__lead .w{color:var(--paper-ink)}
 .work{padding:clamp(30px,6vh,80px) var(--gut) clamp(80px,14vh,160px)}
 .sec-top{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:clamp(28px,5vh,64px)}
 .sec-top h2{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:.9;font-size:clamp(2rem,6.5vw,5.5rem);font-stretch:106%}
-.sec-top .eyebrow{color:var(--mut-cream)}
-.work__more{display:flex;justify-content:center;margin-top:clamp(20px,3vh,44px)}
-.seeall{width:calc((100% - 2*clamp(14px,1.6vw,26px))/3);display:flex;align-items:center;justify-content:center;gap:.3em;padding:clamp(1.3rem,2.6vw,2.4rem) 1.5rem;border-radius:var(--r-card);background:var(--accent);color:var(--card);font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:1;font-size:clamp(1.5rem,3.2vw,2.9rem);font-stretch:104%}
+.sec-top--sm h2{font-size:clamp(1.6rem,3.6vw,2.8rem)}
+.work--more{padding-bottom:clamp(20px,4vh,60px)}
+.seeall{display:flex;align-items:center;justify-content:center;gap:.3em;padding:clamp(1.3rem,2.6vw,2.4rem) 1.5rem;border-radius:var(--r-card);background:var(--accent);color:var(--card);font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:1;font-size:clamp(1.5rem,3.2vw,2.9rem);font-stretch:104%}
 .seeall .stxt{display:inline-block;transition:transform .45s var(--ease)}
 .seeall .sarw{display:inline-block;overflow:hidden;max-width:0;opacity:0;transform:translateX(-.3em);transition:max-width .45s var(--ease),opacity .45s var(--ease),margin-left .45s var(--ease),transform .45s var(--ease)}
 .seeall:hover .stxt{transform:translateX(-.18em)}
 .seeall:hover .sarw{max-width:1.4em;opacity:1;margin-left:.15em;transform:translateX(0)}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,26px)}
+/* featured blocks: one project per screen-beat, alternating sides */
+.feat{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(28px,5vw,84px);align-items:center;padding-block:clamp(48px,9vh,120px)}
+.feat--flip .feat__media{order:2}
+.feat__media{border-radius:var(--r-card);overflow:hidden;background:var(--card);aspect-ratio:4/3;box-shadow:0 34px 90px -46px rgba(22,20,15,.35)}
+.feat__media img{width:100%;height:100%;object-fit:cover}
+.feat__name{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:.92;font-stretch:105%;font-size:clamp(2rem,5vw,4.4rem)}
+.feat__pos{margin-top:clamp(.9rem,2vh,1.4rem);font-weight:600;letter-spacing:-.01em;line-height:1.25;font-size:clamp(1.15rem,2.1vw,1.65rem)}
+.feat__story{margin-top:clamp(.8rem,1.8vh,1.2rem);color:var(--mut-cream);line-height:1.55;font-size:clamp(.95rem,1.3vw,1.1rem);max-width:52ch}
+.feat__tags{margin-top:clamp(1rem,2.2vh,1.6rem);display:flex;flex-wrap:wrap;gap:.5rem}
+.feat__tags span{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mut-cream);border:1px solid var(--line-cream);border-radius:var(--r-pill);padding:.4em .8em}
+.feat__links{margin-top:clamp(1.2rem,2.6vh,2rem);display:flex;align-items:center;gap:clamp(1rem,2.4vw,1.8rem);flex-wrap:wrap}
+.flink{font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;background:none;border:0;cursor:pointer;color:var(--paper-ink);display:inline-flex;align-items:center;transition:color .3s var(--ease)}
+.flink:hover{color:var(--accent-2)}
+.flink .pltxt{display:inline-block;transition:transform .35s var(--ease)}
+.flink .plarw{display:inline-block;overflow:hidden;max-width:0;opacity:0;margin-left:0;transform:translateX(-.3em);transition:max-width .35s var(--ease),opacity .35s var(--ease),margin-left .35s var(--ease),transform .35s var(--ease)}
+.flink:hover .pltxt{transform:translateX(-.12em)}
+.flink:hover .plarw{max-width:1.2em;opacity:1;margin-left:.4em;transform:translateX(0)}
 .pcard{container-type:inline-size;--pad:clamp(8px,1.65cqi,16.5px);--panel-pad:clamp(15px,3.4cqi,28px);--bar:clamp(3.6rem,13cqi,6.6rem);--rev-dur:.5s;--rev-ease:cubic-bezier(.65,0,.35,1);--rev-tdelay:.12s;position:relative;background-color:var(--card);color:var(--card-fg);border-radius:var(--r-card);overflow:hidden;padding:var(--pad);transition:background-color var(--rev-dur) var(--rev-ease)}
 .pcard:hover,.pcard.is-open{background:var(--accent)}
 /* screenshot */
@@ -219,42 +238,88 @@ html:not(.js) .intro__lead .w{color:var(--paper-ink)}
   .pcard,.pcard__panel,.pcard__cue,.pcard__reveal{transition:none}
 }
 
-/* ============================================================ SERVICES ============================================================ */
-.services{padding:clamp(30px,6vh,80px) var(--gut) clamp(90px,16vh,190px);background:var(--paper-2)}
-.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(14px,1.6vw,24px)}
-.svc{position:relative;background:var(--paper);border:1px solid var(--line-cream);border-radius:calc(var(--r-card)*.7);padding:clamp(22px,3vw,44px);overflow:hidden;transition:background .5s var(--ease),color .5s var(--ease)}
-.svc:hover{background:var(--card);color:var(--card-fg)}
-.svc__n{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--mut-cream);transition:color .5s var(--ease)}
-.svc:hover .svc__n{color:var(--accent)}
-.svc__t{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:.95;font-size:clamp(1.6rem,3.4vw,2.9rem);margin:clamp(20px,4vh,44px) 0 .6rem}
-.svc__d{font-size:1rem;line-height:1.5;color:var(--mut-cream);max-width:42ch;transition:color .5s var(--ease)}
-.svc:hover .svc__d{color:var(--mut-card)}
-.svc__tags{margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:.5rem}
-.svc__tags span{font-family:var(--mono);font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mut-cream);border:1px solid var(--line-cream);border-radius:var(--r-pill);padding:.4em .8em;transition:border-color .5s var(--ease),color .5s var(--ease)}
-.svc:hover .svc__tags span{color:var(--mut-card);border-color:var(--line-card)}
+/* ============================================================ SITES (dark chapter: the card grows to full-bleed on scroll) ============================================================ */
+.sites{padding:clamp(60px,12vh,150px) var(--gut);transform-origin:50% 0;will-change:transform}
+.sites__head{max-width:820px;margin-bottom:clamp(32px,6vh,72px)}
+.sites__head h2{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:.92;font-stretch:106%;font-size:clamp(1.9rem,5vw,4.2rem)}
+.sites__lead{margin-top:clamp(.9rem,2vh,1.3rem);color:var(--mut-card);font-weight:500;font-size:clamp(1rem,1.5vw,1.2rem);line-height:1.5;max-width:56ch}
+.sites__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,2.6vw,40px);align-items:start}
+/* cream tiles on the dark surface; literal ink values because the scope remaps the cream vars */
+.site{container-type:inline-size;display:block;background:var(--paper);color:#16140F;border-radius:var(--r-card);overflow:hidden;transition:background-color .5s var(--ease)}
+.site:nth-child(even){margin-top:clamp(28px,5vw,72px)} /* stagger via margin, NOT transform: GSAP reveals end at y:0 */
+.site:hover{background:var(--accent)}
+.site__chrome{display:flex;align-items:center;gap:.45em;padding:clamp(10px,2.6cqi,16px) clamp(14px,3.4cqi,22px)}
+.site__chrome i{width:.55em;height:.55em;border-radius:50%;background:rgba(22,20,15,.22);transition:background .5s var(--ease)}
+.site:hover .site__chrome i{background:rgba(14,13,12,.4)}
+.site__url{margin-left:auto;font-family:var(--mono);font-size:clamp(.6rem,2cqi,.72rem);letter-spacing:.08em;text-transform:uppercase;color:#6E655A;transition:color .5s var(--ease)}
+.site:hover .site__url{color:var(--card)}
+.site__shot{display:block;aspect-ratio:16/10;overflow:hidden}
+.site__shot img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .7s var(--ease)}
+.site:hover .site__shot img{transform:scale(1.03)}
+.site__cap{display:grid;gap:.3rem;padding:clamp(14px,3.4cqi,26px)}
+.site__name{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;font-size:clamp(1.2rem,4.6cqi,1.9rem);line-height:1}
+.site__niche{font-family:var(--mono);font-size:clamp(.6rem,2.2cqi,.72rem);letter-spacing:.08em;text-transform:uppercase;color:#6E655A;transition:color .5s var(--ease)}
+.site:hover .site__niche{color:rgba(14,13,12,.66)}
+.site__lede{font-size:clamp(.85rem,2.8cqi,1rem);line-height:1.45;color:#6E655A;transition:color .5s var(--ease)}
+.site:hover .site__lede{color:rgba(14,13,12,.78)}
+.site__go{font-family:var(--mono);font-size:clamp(.62rem,2.2cqi,.75rem);letter-spacing:.06em;text-transform:uppercase;margin-top:.5rem;display:inline-flex;align-items:center}
+.site__go .pltxt{display:inline-block;transition:transform .35s var(--ease)}
+.site__go .plarw{display:inline-block;overflow:hidden;max-width:0;opacity:0;margin-left:0;transform:translateX(-.3em);transition:max-width .35s var(--ease),opacity .35s var(--ease),margin-left .35s var(--ease),transform .35s var(--ease)}
+.site:hover .site__go .pltxt{transform:translateX(-.12em)}
+.site:hover .site__go .plarw{max-width:1.2em;opacity:1;margin-left:.4em;transform:translateX(0)}
 
-/* ============================================================ FOOTER (revealed by lift) ============================================================ */
-.footer{background:var(--card);color:var(--card-fg);padding:clamp(40px,8vh,90px) var(--pad) clamp(28px,5vh,48px)}
+/* ============================================================ PROOF ============================================================ */
+.proof{padding:clamp(50px,9vh,110px) var(--gut)}
+.proof__list{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2.4vw,32px)}
+.proof__list li{border-top:1px solid var(--line-cream);padding-top:clamp(14px,2.4vh,22px)}
+.proof__list b{display:block;font-family:var(--grot);font-weight:800;letter-spacing:-.02em;font-size:clamp(1.7rem,3.6vw,3rem);line-height:1}
+.proof__list span{display:block;margin-top:.55rem;font-family:var(--mono);font-weight:400;font-size:clamp(.62rem,1vw,.72rem);letter-spacing:.08em;text-transform:uppercase;color:var(--mut-cream)}
+
+/* ============================================================ SERVICES (dark chapter: the blob floods it on scroll) ============================================================ */
+.services{padding:clamp(60px,10vh,120px) var(--gut) clamp(90px,16vh,190px)}
+.svc-list{border-bottom:1px solid var(--line-card)}
+.svc{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(18px,4vw,80px);align-items:center;padding:clamp(26px,4.5vh,54px) clamp(16px,2.4vw,40px);border-top:1px solid var(--line-card);color:var(--card-fg);transition:color .5s var(--ease)}
+.svc::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);transform:translateY(101%);transition:transform .5s var(--ease)}
+.svc:hover{color:#16140F}
+.svc:hover::before{transform:none}
+.svc__l{display:flex;align-items:baseline;gap:clamp(1rem,2.4vw,2.2rem)}
+.svc__n{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--mut-card);transition:color .5s var(--ease)}
+.svc:hover .svc__n{color:var(--accent-2)}
+.svc__t{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:.95;font-size:clamp(1.7rem,4.4vw,3.8rem);font-stretch:105%}
+.svc__d{font-size:1rem;line-height:1.5;color:var(--mut-card);max-width:46ch;transition:color .5s var(--ease)}
+.svc:hover .svc__d{color:#6E655A}
+.svc__tags{margin-top:1rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.svc__tags span{font-family:var(--mono);font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mut-card);border:1px solid var(--line-card);border-radius:var(--r-pill);padding:.4em .8em;transition:border-color .5s var(--ease),color .5s var(--ease)}
+.svc:hover .svc__tags span{color:#6E655A;border-color:rgba(22,20,15,.2)}
+
+/* ============================================================ FOOTER (full-screen cream finale revealed by lift: the hero relationship, inverted) ============================================================ */
+.footer{background:var(--paper);color:var(--paper-ink);height:100svh;padding:clamp(24px,4vh,48px) var(--gut) 0;overflow:hidden}
 html.lift .footer{position:fixed;left:0;right:0;bottom:0;z-index:0}
-.footer__in{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(30px,6vh,60px)}
-.footer__cta{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.03em;line-height:.86;font-size:clamp(2.6rem,12vw,10rem);font-stretch:108%}
-.footer__cta a{display:inline-flex;align-items:baseline;gap:.1em;color:var(--card-fg);transition:color .4s var(--ease)}
-.footer__cta a:hover{color:var(--accent)}
+.footer__in{height:100%;display:flex;flex-direction:column;gap:clamp(18px,3vh,34px)}
+.footer__main{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.footer__cta{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.03em;line-height:.86;font-stretch:108%;font-size:clamp(2.6rem,min(11vw,18svh),11rem)}
+.footer__cta a{display:inline-flex;align-items:baseline;gap:.1em;color:var(--paper-ink);transition:color .4s var(--ease)}
+.footer__cta a:hover{color:var(--accent-2)}
 .footer__cta .txt{display:inline-block;transition:transform .5s var(--ease)}
 .footer__cta .arw{font-size:.6em;display:inline-block;opacity:0;transform:translateX(-.5em);transition:opacity .5s var(--ease),transform .5s var(--ease)}
 .footer__cta a:hover .txt{transform:translateX(-.14em)}
 .footer__cta a:hover .arw{opacity:1;transform:translateX(0)}
-.footer__row{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem 3rem;flex-wrap:wrap;border-top:1px solid var(--line-card);padding-top:clamp(20px,4vh,36px)}
-.footer__links{display:flex;gap:.6rem;flex-wrap:wrap}
-.footer__links a{display:inline-flex;align-items:center;gap:.5em;font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--card-fg);border:1px solid var(--line-card);border-radius:var(--r-pill);padding:.7em 1.1em;transition:border-color .3s var(--ease),color .3s var(--ease)}
-.footer__links a:hover{border-color:var(--accent);color:var(--accent)}
-.footer__links svg{width:1em;height:1em}
-.footer__links .flabel{display:inline-block;transition:transform .4s var(--ease)}
-.footer__links .farw{display:inline-block;overflow:hidden;max-width:0;opacity:0;margin-left:-.5em;transform:translateX(-.3em);transition:max-width .4s var(--ease),opacity .4s var(--ease),margin-left .4s var(--ease),transform .4s var(--ease)}
-.footer__links a:hover .flabel{transform:translateX(-.08em)}
-.footer__links a:hover .farw{max-width:1.4em;opacity:1;margin-left:0;transform:translateX(0)}
-.footer__meta{font-family:var(--mono);font-size:.68rem;letter-spacing:.03em;color:var(--mut-card);line-height:2}
-.footer__meta a{color:var(--card-fg);border-bottom:1px solid var(--line-card)}
+.footer__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,48px)}
+.footer__col:nth-child(2){text-align:center}
+.footer__col:nth-child(2) nav{align-items:center}
+.footer__col:nth-child(3){text-align:right}
+.footer__status p{justify-content:flex-end}
+.footer__label{display:block;font-family:var(--mono);font-weight:400;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut-cream);margin-bottom:clamp(.8rem,1.6vh,1.2rem)}
+.footer__col nav{display:flex;flex-direction:column;align-items:flex-start;gap:.55rem}
+.footer__col .flink svg{width:1em;height:1em;margin-right:.5em}
+.footer__status p{display:flex;align-items:center;gap:.55em;font-family:var(--mono);font-size:clamp(.68rem,1vw,.78rem);letter-spacing:.04em;color:var(--paper-ink)}
+.footer__status p + p{margin-top:.7rem;color:var(--mut-cream)}
+.footer__base{display:flex;justify-content:space-between;align-items:center;gap:1rem 2.5rem;flex-wrap:wrap}
+.footer__meta{font-family:var(--mono);font-size:.66rem;letter-spacing:.03em;color:var(--mut-cream);line-height:1.6}
+.footer__meta a{color:var(--paper-ink);border-bottom:1px solid var(--line-cream)}
+/* the sign-off: a full-bleed wordmark, baseline cropped off the bottom edge */
+.footer__mark{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.03em;font-stretch:108%;line-height:.72;height:.55em;font-size:min(18.4vw,26svh);white-space:nowrap;text-align:center;margin:clamp(4px,1vh,12px) calc(-1*var(--gut)) 0}
+.footer__mark i{font-style:normal;color:var(--accent-2)}
 
 /* ============================================================ LIGHTBOX ============================================================ */
 .lb{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:clamp(20px,5vw,80px);background:rgba(8,7,6,.92);backdrop-filter:blur(6px)}
@@ -283,14 +348,24 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
 /* ============================================================ RESPONSIVE ============================================================ */
 @media (max-width:1340px){
   .grid3{grid-template-columns:1fr 1fr}
-  .seeall{width:calc((100% - clamp(14px,1.6vw,26px))/2)}
 }
 @media (max-width:900px){
-  .svc-grid{grid-template-columns:1fr}
+  .feat{grid-template-columns:1fr;gap:clamp(20px,4vh,36px)}
+  .feat--flip .feat__media{order:0} /* image always above text when stacked */
+  .proof__list{grid-template-columns:repeat(2,1fr)}
+  .svc{grid-template-columns:1fr;align-items:start}
+  .svc__l{flex-direction:column;align-items:flex-start;gap:.6rem}
 }
 @media (max-width:680px){
   .grid3{grid-template-columns:1fr}
-  .seeall{width:100%}
+  .sites__grid{grid-template-columns:1fr}
+  .site:nth-child(even){margin-top:0}
+  .footer__grid{grid-template-columns:1fr 1fr}
+  .footer__status{grid-column:1/-1}
+  .footer__col:nth-child(2){text-align:left}
+  .footer__col:nth-child(2) nav{align-items:flex-start}
+  .footer__col:nth-child(3){text-align:left}
+  .footer__status p{justify-content:flex-start}
   .hero__note{display:none}
   .nav__links{display:none}
   .nav{gap:0;padding:.35rem;top:var(--gut);left:auto;right:var(--gut);transform:none;transition:none}
@@ -369,55 +444,173 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
     </div>
   </section>
 
-  <!-- WORK -->
+  <!-- WORK: three featured projects, one per screen-beat -->
   <section class="work pad" id="work" aria-label="Selected work">
     <div class="sec-top" data-rv>
       <div><h2>Work</h2></div>
     </div>
-    <div class="grid3" id="work-grid"></div>
-    <div class="work__more" data-rv><a class="seeall" href="resume/"><span class="stxt">See all</span><span class="sarw">↗</span></a></div>
+
+    <article class="feat" id="feat-sanctumpdf">
+      <div class="feat__media" data-rv>
+        <img src="assets/sanctum-preview.webp" alt="SanctumPDF screenshot" width="1440" height="1080" loading="lazy" />
+      </div>
+      <div class="feat__body">
+        <h3 class="feat__name" data-rv>SanctumPDF</h3>
+        <p class="feat__pos" data-rv>Convert PDFs and financial files without uploading a thing.</p>
+        <p class="feat__story" data-rv>Wasm does the heavy lifting in the browser; the server only handles auth, payments and licence checks. Files live in memory and vanish when the tab closes. Fourteen locales took the indexed surface from 36 pages to more than 335.</p>
+        <div class="feat__tags" data-rv><span>Next.js</span><span>Wasm</span><span>Supabase</span><span>Stripe</span></div>
+        <div class="feat__links" data-rv>
+          <a class="flink" href="https://sanctumpdf.com" target="_blank" rel="noopener noreferrer"><span class="pltxt">Visit site</span><span class="plarw">↗</span></a>
+          <a class="flink" href="resume/#sanctumpdf"><span class="pltxt">Read more</span><span class="plarw">↗</span></a>
+          <button class="flink feat__shots" type="button" data-id="sanctumpdf"><span class="pltxt">Screenshots</span><span class="plarw">↗</span></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="feat feat--flip" id="feat-metastrip">
+      <div class="feat__media" data-rv>
+        <img src="assets/metastrip-preview.webp" alt="MetaStrip screenshot" width="1440" height="1080" loading="lazy" />
+      </div>
+      <div class="feat__body">
+        <h3 class="feat__name" data-rv>MetaStrip</h3>
+        <p class="feat__pos" data-rv>Metadata removal that never touches a server.</p>
+        <p class="feat__story" data-rv>Hand-written MP4, ID3, Vorbis and RIFF parsers swap metadata for identical-length padding, so playback never breaks. Zero upload, zero server, zero cache: the guarantee is the architecture, and you can verify it in the Network tab.</p>
+        <div class="feat__tags" data-rv><span>Next.js</span><span>piexifjs</span><span>pdf-lib</span><span>Open source</span></div>
+        <div class="feat__links" data-rv>
+          <a class="flink" href="https://metastrip.app" target="_blank" rel="noopener noreferrer"><span class="pltxt">Visit site</span><span class="plarw">↗</span></a>
+          <a class="flink" href="https://github.com/lars-1987/metastrip" target="_blank" rel="noopener noreferrer"><span class="pltxt">Source</span><span class="plarw">↗</span></a>
+          <a class="flink" href="resume/#metastrip"><span class="pltxt">Read more</span><span class="plarw">↗</span></a>
+          <button class="flink feat__shots" type="button" data-id="metastrip"><span class="pltxt">Screenshots</span><span class="plarw">↗</span></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="feat" id="feat-renew">
+      <div class="feat__media" data-rv>
+        <img src="assets/renew-preview.webp" alt="Renew screenshot" width="1440" height="1080" loading="lazy" />
+      </div>
+      <div class="feat__body">
+        <h3 class="feat__name" data-rv>Renew</h3>
+        <p class="feat__pos" data-rv>Skincare tracking with real analytics, from camera to correlation.</p>
+        <p class="feat__story" data-rv>Point the camera at a product: OCR lifts the label and Gemini turns it into structured, searchable ingredient data, translating Korean and Japanese along the way. Logging is offline-first and instant, then syncs to Supabase as the cross-device source of truth.</p>
+        <div class="feat__tags" data-rv><span>React Native</span><span>Expo</span><span>Gemini</span><span>Supabase</span></div>
+        <div class="feat__links" data-rv>
+          <a class="flink" href="https://getrenew.app" target="_blank" rel="noopener noreferrer"><span class="pltxt">Visit site</span><span class="plarw">↗</span></a>
+          <a class="flink" href="https://apps.apple.com/us/app/renew-skincare-tracker/id6758534567" target="_blank" rel="noopener noreferrer"><span class="pltxt">App Store</span><span class="plarw">↗</span></a>
+          <a class="flink" href="resume/#renew"><span class="pltxt">Read more</span><span class="plarw">↗</span></a>
+          <button class="flink feat__shots" type="button" data-id="renew"><span class="pltxt">Screenshots</span><span class="plarw">↗</span></button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- SITES: dark chapter, enters as a card that grows to full-bleed -->
+  <section class="sites chapter-dark" id="sites" aria-label="Website designs">
+    <div class="sites__head" data-rv>
+      <h2>Sites that sell</h2>
+      <p class="sites__lead">Any niche, one job: turn visitors into enquiries. Four concept builds with trust-first design, transparent pricing, FAQs that answer real objections and SEO in the markup from day one. Every one is live; click through.</p>
+    </div>
+    <div class="sites__grid" id="sites-grid"></div>
     <noscript>
       <ul style="list-style:none;display:grid;gap:.5rem;font-family:var(--mono);font-size:.86rem;line-height:1.5">
-        <li><b>SanctumPDF</b> · Web app · <a href="https://sanctumpdf.com">sanctumpdf.com</a></li>
+        <li><b>Summit</b> · Bike servicing · <a href="summit/">view site</a></li>
+        <li><b>Brighton</b> · Cosmetic dentistry · <a href="brighton/">view site</a></li>
+        <li><b>Hawthorne</b> · Boutique real estate · <a href="hawthorne/">view site</a></li>
+        <li><b>Atelier</b> · Architecture studio · <a href="atelier/">view site</a></li>
+      </ul>
+    </noscript>
+  </section>
+
+  <!-- MORE BUILDS -->
+  <section class="work pad work--more" aria-label="More projects">
+    <div class="sec-top sec-top--sm" data-rv>
+      <div><h2>More builds</h2></div>
+    </div>
+    <div class="grid3" id="work-grid">
+      <a class="seeall" id="seeall" href="resume/" data-rv><span class="stxt">See all</span><span class="sarw">↗</span></a>
+    </div>
+    <noscript>
+      <ul style="list-style:none;display:grid;gap:.5rem;font-family:var(--mono);font-size:.86rem;line-height:1.5">
         <li><b>Swatch</b> · Web app · <a href="https://tryswatch.com">tryswatch.com</a></li>
-        <li><b>MetaStrip</b> · Web app · <a href="https://metastrip.app">metastrip.app</a> · <a href="https://github.com/lars-1987/metastrip">source</a></li>
-        <li><b>Atelier</b> · Website design · <a href="atelier/">view site</a></li>
-        <li><b>Renew</b> · Mobile app · <a href="https://getrenew.app">getrenew.app</a></li>
         <li><b>Bedcheck</b> · Mobile app · in development</li>
         <li>Full list and detail on the <a href="resume/">résumé</a>.</li>
       </ul>
     </noscript>
   </section>
 
-  <!-- SERVICES -->
-  <section class="services pad" id="services" aria-label="Services">
+  <!-- PROOF -->
+  <section class="proof pad" aria-label="Track record">
+    <ul class="proof__list">
+      <li data-rv><b>10×</b><span>search impressions in 30 days, MetaStrip</span></li>
+      <li data-rv><b>3</b><span>apps live on the App Store</span></li>
+      <li data-rv><b>4</b><span>conversion-focused site designs</span></li>
+      <li data-rv><b>0</b><span>cookies on this site, ever</span></li>
+    </ul>
+  </section>
+
+  <!-- SERVICES: dark chapter, floods in as a blob -->
+  <section class="services chapter-dark" id="services" aria-label="Services">
     <div class="sec-top" data-rv>
       <div><h2>Services</h2></div>
     </div>
-    <div class="svc-grid" id="svc-grid">
-      <article class="svc" data-rv><span class="svc__n">01</span><h3 class="svc__t">Product Design</h3><p class="svc__d">Design systems, interfaces and user experiences that feel considered, not assembled, from concept to production.</p><div class="svc__tags"><span>UI / UX</span><span>Design systems</span><span>Branding</span></div></article>
-      <article class="svc" data-rv><span class="svc__n">02</span><h3 class="svc__t">Web Experiences</h3><p class="svc__d">Marketing sites and landing pages with the typography, motion and pacing that make a brand feel expensive.</p><div class="svc__tags"><span>Marketing sites</span><span>Landing pages</span><span>Motion</span></div></article>
-      <article class="svc" data-rv><span class="svc__n">03</span><h3 class="svc__t">Full-Stack Engineering</h3><p class="svc__d">Auth, payments, data and infrastructure: the whole product, built to run quietly for years.</p><div class="svc__tags"><span>SaaS</span><span>E-commerce</span><span>Payments</span></div></article>
-      <article class="svc" data-rv><span class="svc__n">04</span><h3 class="svc__t">Mobile Products</h3><p class="svc__d">iOS and Android apps designed and built end-to-end, from first mockup to App Store.</p><div class="svc__tags"><span>iOS</span><span>Android</span><span>App Store</span></div></article>
+    <div class="svc-list" id="svc-grid">
+      <article class="svc" data-rv>
+        <div class="svc__l"><span class="svc__n">01</span><h3 class="svc__t">Product Design</h3></div>
+        <div class="svc__r"><p class="svc__d">Design systems, interfaces and user experiences that feel considered, not assembled, from concept to production.</p><div class="svc__tags"><span>UI / UX</span><span>Design systems</span><span>Branding</span></div></div>
+      </article>
+      <article class="svc" data-rv>
+        <div class="svc__l"><span class="svc__n">02</span><h3 class="svc__t">Web Experiences</h3></div>
+        <div class="svc__r"><p class="svc__d">Marketing sites and landing pages with the typography, motion and pacing that make a brand feel expensive.</p><div class="svc__tags"><span>Marketing sites</span><span>Landing pages</span><span>Motion</span></div></div>
+      </article>
+      <article class="svc" data-rv>
+        <div class="svc__l"><span class="svc__n">03</span><h3 class="svc__t">Full-Stack Engineering</h3></div>
+        <div class="svc__r"><p class="svc__d">Auth, payments, data and infrastructure: the whole product, built to run quietly for years.</p><div class="svc__tags"><span>SaaS</span><span>E-commerce</span><span>Payments</span></div></div>
+      </article>
+      <article class="svc" data-rv>
+        <div class="svc__l"><span class="svc__n">04</span><h3 class="svc__t">Mobile Products</h3></div>
+        <div class="svc__r"><p class="svc__d">iOS and Android apps designed and built end-to-end, from first mockup to App Store.</p><div class="svc__tags"><span>iOS</span><span>Android</span><span>App Store</span></div></div>
+      </article>
     </div>
   </section>
 
 </main>
 
-<!-- FOOTER (revealed as the page lifts off) -->
+<!-- FOOTER (full-screen cream finale, revealed as the dark stage lifts off) -->
 <footer class="footer" id="contact" aria-label="Contact">
   <div class="footer__in">
-    <div class="footer__cta"><a class="js-mail" data-u="larsh.dev" data-d="proton.me" href="#"><span class="txt">Let's talk</span><span class="arw">↗</span></a></div>
-    <div class="footer__row">
-      <div class="footer__links">
-        <a href="#" class="js-mail" data-u="larsh.dev" data-d="proton.me"><svg aria-hidden="true"><use href="#i-mail"/></svg><span class="flabel" data-mail-label>Email</span><span class="farw">↗</span></a>
-        <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-x"/></svg><span class="flabel">X</span><span class="farw">↗</span></a>
-        <a href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-github"/></svg><span class="flabel">GitHub</span><span class="farw">↗</span></a>
-        <a href="blog/"><span class="flabel">Blog</span><span class="farw">↗</span></a>
-        <a href="resume/"><span class="flabel">Résumé</span><span class="farw">↗</span></a>
-      </div>
-      <p class="footer__meta">Melbourne, Australia · <span id="year"></span> · <a href="privacy/">Privacy</a><br>Built by hand and self-hosted. Cookieless analytics that respects Do Not Track.</p>
+    <div class="footer__main">
+      <div class="footer__cta"><a class="js-mail" data-u="larsh.dev" data-d="proton.me" href="#"><span class="txt">Let's talk</span><span class="arw">↗</span></a></div>
     </div>
+    <div class="footer__grid">
+      <div class="footer__col">
+        <span class="footer__label">Explore</span>
+        <nav aria-label="Footer">
+          <a class="flink" href="#top"><span class="pltxt">Home</span><span class="plarw">↗</span></a>
+          <a class="flink" href="#work"><span class="pltxt">Work</span><span class="plarw">↗</span></a>
+          <a class="flink" href="#services"><span class="pltxt">Services</span><span class="plarw">↗</span></a>
+          <a class="flink" href="blog/"><span class="pltxt">Blog</span><span class="plarw">↗</span></a>
+          <a class="flink" href="resume/"><span class="pltxt">Résumé</span><span class="plarw">↗</span></a>
+        </nav>
+      </div>
+      <div class="footer__col">
+        <span class="footer__label">Elsewhere</span>
+        <nav aria-label="Social">
+          <a class="flink js-mail" data-u="larsh.dev" data-d="proton.me" href="#"><svg aria-hidden="true"><use href="#i-mail"/></svg><span class="pltxt">Email</span><span class="plarw">↗</span></a>
+          <a class="flink" href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-x"/></svg><span class="pltxt">X</span><span class="plarw">↗</span></a>
+          <a class="flink" href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-github"/></svg><span class="pltxt">GitHub</span><span class="plarw">↗</span></a>
+        </nav>
+      </div>
+      <div class="footer__col footer__status">
+        <span class="footer__label">Status</span>
+        <p>Open to new projects</p>
+        <p>Melbourne, Australia<span id="melb-time"></span></p>
+      </div>
+    </div>
+    <div class="footer__base">
+      <p class="footer__meta">© <span id="year"></span> Lars Holmström · <a href="privacy/">Privacy</a></p>
+      <p class="footer__meta">Built by hand. Cookieless. Respects Do Not Track.</p>
+    </div>
+    <div class="footer__mark" aria-hidden="true"><span>LARSH<i>.</i>DEV</span></div>
   </div>
 </footer>
 
@@ -444,8 +637,35 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
   if(reduce) doc.classList.add('reduce');
   var mqMobile = matchMedia('(max-width:680px)');
 
-  // ---------- year + email ----------
+  // ---------- year + email + Melbourne clock ----------
   var yr = document.getElementById('year'); if(yr) yr.textContent = new Date().getFullYear();
+  var tEl = document.getElementById('melb-time');
+  if(tEl){
+    try{
+      var clockFmt = new Intl.DateTimeFormat('en-AU', {hour:'numeric', minute:'2-digit', hour12:true, timeZone:'Australia/Melbourne'});
+      var tickClock = function(){ tEl.textContent = ' · ' + clockFmt.format(new Date()) + ' local'; };
+      tickClock(); setInterval(tickClock, 30000);
+    }catch(e){}
+  }
+
+  // ---------- footer wordmark: fit LARSH.DEV exactly edge-to-edge ----------
+  var mark = document.querySelector('.footer__mark');
+  var markTxt = mark && mark.querySelector('span');
+  function fitMark(){
+    if(!mark || !markTxt) return;
+    mark.style.fontSize = '';
+    var font = parseFloat(getComputedStyle(mark).fontSize);
+    var w = markTxt.getBoundingClientRect().width;
+    if(w > 0 && font > 0){
+      // width-per-em is constant for a fixed glyph run, so one measurement
+      // yields a vw-based size that self-scales to any viewport
+      var perEm = w / font;
+      mark.style.fontSize = 'min(calc(100vw / ' + perEm.toFixed(5) + '), 26svh)';
+    }
+  }
+  fitMark();
+  addEventListener('load', fitMark);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitMark);
   [].forEach.call(document.querySelectorAll('.js-mail'), function(a){
     var addr = a.getAttribute('data-u') + String.fromCharCode(64) + a.getAttribute('data-d');
     a.setAttribute('href','mailto:'+addr);
@@ -456,10 +676,11 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
   // ---------- WORK grid ----------
   var ICON = function(id){ return '<svg aria-hidden="true"><use href="#'+id+'"/></svg>'; };
   var grid = document.getElementById('work-grid');
-  var leads = (window.PROJECTS||[]).filter(function(p){ return p.lead; });
+  var seeall = document.getElementById('seeall');
+  var leads = (window.PROJECTS||[]).filter(function(p){ return p.lead && !p.featured && !p.siteDesign; });
   var galleries = {};
+  (window.PROJECTS||[]).forEach(function(p){ if(p.shots) galleries[p.id] = p.shots.map(function(s){ return 'assets/'+s; }); });
   leads.forEach(function(p){
-    galleries[p.id] = p.shots.map(function(s){ return 'assets/'+s; });
     var isMobile = (p.type === 'mobile') && !p.preview;
     var links = p.links.map(function(l){
       if(l.d) return '<span class="pcard__link is-off"><span class="pltxt">'+l.t+'</span></span>';
@@ -484,7 +705,27 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
           '</div>'+
         '</div>'+
       '</div>';
-    grid.appendChild(el);
+    grid.insertBefore(el, seeall);
+  });
+
+  // ---------- SITES band (dark chapter) ----------
+  var sitesGrid = document.getElementById('sites-grid');
+  ['summit','brighton','hawthorne','atelier'].forEach(function(id){
+    var p = (window.PROJECTS||[]).filter(function(x){ return x.id === id; })[0];
+    if(!p || !sitesGrid) return;
+    var a = document.createElement('a');
+    a.className = 'site'; a.setAttribute('data-rv','');
+    a.href = p.links[0].h; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    a.innerHTML =
+      '<span class="site__chrome"><i></i><i></i><i></i><span class="site__url">'+id+'</span></span>'+
+      '<span class="site__shot"><img src="'+(p.preview || 'assets/'+p.shots[0])+'" alt="'+p.name+' website design" loading="lazy" width="3351" height="1988" /></span>'+
+      '<span class="site__cap">'+
+        '<span class="site__name">'+p.name+'</span>'+
+        '<span class="site__niche">'+(p.niche||'')+'</span>'+
+        '<span class="site__lede">'+p.lede+'</span>'+
+        '<span class="site__go"><span class="pltxt">View live</span><span class="plarw">↗</span></span>'+
+      '</span>';
+    sitesGrid.appendChild(a);
   });
 
   // ---------- LIGHTBOX ----------
@@ -502,7 +743,7 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
   document.getElementById('lb-next').addEventListener('click', function(){ lbStep(1); });
   lb.addEventListener('click', function(e){ if(e.target === lb) lbClose(); });
   addEventListener('keydown', function(e){ if(!lb.classList.contains('open')) return; if(e.key==='Escape') lbClose(); if(e.key==='ArrowLeft') lbStep(-1); if(e.key==='ArrowRight') lbStep(1); });
-  [].forEach.call(document.querySelectorAll('.pcard__cam'), function(btn){
+  [].forEach.call(document.querySelectorAll('.pcard__cam, .feat__shots'), function(btn){
     btn.addEventListener('click', function(){ lbOpen(galleries[btn.getAttribute('data-id')], 0); });
   });
 
@@ -594,20 +835,45 @@ html.js.reduce [data-rv]{opacity:1;transform:none}
         .to('.hero__h1 .amp', {opacity:1, duration:.6, ease:'power2.out'}, .5)
         .to('.hero .hero__note', {opacity:1, y:0, duration:.8, ease:'expo.out'}, .45);
 
-  // scroll reveals
+  // scroll reveals (featured blocks, site tiles and the seeall tile have bespoke tweens below)
   gsap.utils.toArray('[data-rv]').forEach(function(el){
-    if(el.closest('.hero') || el.classList.contains('pcard')) return;
+    if(el.closest('.hero') || el.classList.contains('pcard') || el.closest('.feat') || el.classList.contains('site') || el.classList.contains('seeall')) return;
     gsap.to(el, {opacity:1, y:0, duration:.9, ease:'expo.out', scrollTrigger:{ trigger:el, start:'top 86%' }});
   });
 
-  // Work cards: a considered, staggered rise as the grid scrolls into view
-  var workCards = gsap.utils.toArray('#work-grid .pcard');
+  // featured blocks: each one staggers its own content in as it arrives
+  gsap.utils.toArray('.feat').forEach(function(f){
+    var els = f.querySelectorAll('[data-rv]');
+    gsap.set(els, {opacity:0, y:44});
+    gsap.to(els, {opacity:1, y:0, duration:1.0, ease:'expo.out', stagger:.08,
+      scrollTrigger:{ trigger:f, start:'top 78%', once:true }});
+  });
+
+  // Work cards + the seeall tile: a considered, staggered rise as the grid scrolls into view
+  var workCards = gsap.utils.toArray('#work-grid .pcard, #work-grid .seeall');
   if(workCards.length){
     gsap.set(workCards, {opacity:0, y:52, scale:.965});
     gsap.to(workCards, {opacity:1, y:0, scale:1, duration:1.1, ease:'expo.out',
       stagger:{ each:.09, from:'start' },
       scrollTrigger:{ trigger:'#work-grid', start:'top 80%', once:true }});
   }
+
+  // site tiles: same recipe as the work cards
+  var siteTiles = gsap.utils.toArray('.sites__grid .site');
+  if(siteTiles.length){
+    gsap.set(siteTiles, {opacity:0, y:52, scale:.965});
+    gsap.to(siteTiles, {opacity:1, y:0, scale:1, duration:1.1, ease:'expo.out',
+      stagger:{ each:.09, from:'start' },
+      scrollTrigger:{ trigger:'#sites-grid', start:'top 80%', once:true }});
+  }
+
+  // chapter takeovers (scrubbed, no pinning: page height must stay stable for the footer lift)
+  // Sites: the dark card grows from inset-rounded to full-bleed as it arrives
+  gsap.fromTo('#sites', {scale:.92, borderRadius:'28px'}, {scale:1, borderRadius:'0px', ease:'none',
+    scrollTrigger:{ trigger:'#sites', start:'top 92%', end:'top 30%', scrub:true }});
+  // Services: a dark blob floods down from the seam, echoing the hero blob
+  gsap.fromTo('#services', {clipPath:'circle(7% at 50% 0%)'}, {clipPath:'circle(150% at 50% 0%)', ease:'none',
+    scrollTrigger:{ trigger:'#services', start:'top 88%', end:'top 22%', scrub:true }});
 
   // intro word ink-in
   (function(){
