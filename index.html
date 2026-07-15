@@ -377,7 +377,7 @@ h2{font-weight:600;font-size:clamp(36px,4.6vw,64px);letter-spacing:-.02em}
       </nav>
       <div class="mfoot">
         <div class="socials">
-          <a href="#contact" aria-label="Email">
+          <a class="js-mail" data-u="larsh.dev" data-d="proton.me" aria-label="Email">
             <svg class="stroke" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a>
           <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer" aria-label="X">
             <svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
@@ -518,7 +518,7 @@ h2{font-weight:600;font-size:clamp(36px,4.6vw,64px);letter-spacing:-.02em}
           <span class="t addr">…</span><span class="a">→</span>
         </button>
         <div class="socialrow">
-          <a class="js-mail" data-u="larsh.dev" data-d="proton.me" href="#contact" aria-label="Email">
+          <a class="js-mail" data-u="larsh.dev" data-d="proton.me" aria-label="Email">
             <svg class="stroke" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a>
           <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer" aria-label="X">
             <svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
@@ -566,7 +566,9 @@ h2{font-weight:600;font-size:clamp(36px,4.6vw,64px);letter-spacing:-.02em}
     else target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
   };
   $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
-    const t = $(a.getAttribute('href'));
+    const h = a.getAttribute('href') || '';
+    if (h.length < 2 || h[0] !== '#') return; // ignore "#" and JS-rewritten (mailto) hrefs
+    const t = $(h);
     if (!t) return;
     e.preventDefault();
     closeMenu();
@@ -835,11 +837,12 @@ void main(){
   const say = msg => { toast.textContent = msg; toast.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove('on'), 2600); };
   const addr = el => `${el.dataset.u}@${el.dataset.d}`;
   $$('.js-mail').forEach(el => {
+    const a = addr(el);
     const label = $('.addr', el);
-    if (label) label.textContent = addr(el);
+    if (label) label.textContent = a;
+    if (el.tagName === 'A') el.setAttribute('href', 'mailto:' + a); // real mailto, no #contact in the status bar
     el.addEventListener('click', e => {
       e.preventDefault();
-      const a = addr(el);
       location.href = `mailto:${a}`;
       if (navigator.clipboard) navigator.clipboard.writeText(a).then(() => say('Email copied, and opening your mail app'), () => {});
     });

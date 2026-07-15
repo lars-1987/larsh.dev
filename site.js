@@ -14,7 +14,9 @@
     requestAnimationFrame(raf);
   }
   $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
-    const t = $(a.getAttribute('href'));
+    const h = a.getAttribute('href') || '';
+    if (h.length < 2 || h[0] !== '#') return; // ignore "#" and JS-rewritten (mailto) hrefs
+    const t = $(h);
     if (!t) return;
     e.preventDefault();
     closeMenu();
@@ -71,11 +73,12 @@
   const say = msg => { if (!toast) return; toast.textContent = msg; toast.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove('on'), 2600); };
   const addr = el => `${el.dataset.u}@${el.dataset.d}`;
   $$('.js-mail').forEach(el => {
+    const a = addr(el);
     const label = $('.addr', el);
-    if (label) label.textContent = addr(el);
+    if (label) label.textContent = a;
+    if (el.tagName === 'A') el.setAttribute('href', 'mailto:' + a); // real mailto, no #contact in the status bar
     el.addEventListener('click', e => {
       e.preventDefault();
-      const a = addr(el);
       location.href = `mailto:${a}`;
       if (navigator.clipboard) navigator.clipboard.writeText(a).then(() => say('Email copied, and opening your mail app'), () => {});
     });
