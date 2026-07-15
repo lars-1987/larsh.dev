@@ -1,203 +1,177 @@
 <!doctype html>
-<!-- Privacy policy for larsh.dev. Static, self-contained; fonts + analytics from ../vendor & ../analytics.js. -->
+<!-- Privacy policy for larsh.dev. New design system (../site.css + ../site.js). -->
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#FAF7F3" />
 <title>Privacy · Lars Holmström</title>
 <meta name="description" content="How larsh.dev handles data: no accounts, no cookies, privacy-respecting analytics with session replay, and Do Not Track honoured." />
 <link rel="canonical" href="https://larsh.dev/privacy/" />
-<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<link rel="preload" href="../vendor/fonts/archivo-100-900-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="../vendor/fonts.css" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="stylesheet" href="/vendor/fonts.css" />
+<link rel="stylesheet" href="../site.css?v=2" />
 <style>
-:root{
-  --paper:#F2ECDF;--paper-2:#EAE2D0;--paper-ink:#16140F;--card:#0E0D0C;--card-fg:#F3EEE3;
-  --mut-cream:#6E655A;--mut-card:rgba(243,238,227,.6);--accent:#E39A63;--accent-2:#9C5A28;
-  --line-cream:rgba(22,20,15,.14);--line-card:rgba(243,238,227,.16);
-  --r-card:clamp(20px,2.4vw,40px);--r-pill:999px;--gut:clamp(14px,3.2vw,40px);--pad:clamp(22px,4.4vw,72px);
-  --grot:"Archivo",ui-sans-serif,system-ui,-apple-system,sans-serif;--mono:"Martian Mono",ui-monospace,monospace;--ease:cubic-bezier(.19,1,.22,1);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
-body{background:var(--paper);color:var(--paper-ink);font-family:var(--grot);font-weight:500;font-size:1rem;line-height:1.65;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}::selection{background:var(--accent);color:var(--card)}
-.eyebrow{font-family:var(--mono);font-weight:400;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut-cream)}
-.disp{font-family:var(--grot);font-weight:800;text-transform:uppercase;line-height:.9;letter-spacing:-.02em;font-stretch:106%}
-
-.nav{position:fixed;left:50%;top:var(--gut);transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:.16rem;padding:.5rem;border-radius:var(--r-pill);background:rgba(255,251,244,.86);backdrop-filter:blur(14px) saturate(1.2);border:1px solid rgba(22,20,15,.1);box-shadow:0 16px 40px -18px rgba(0,0,0,.5)}
-.nav__links{display:flex;align-items:center;gap:.16rem}
-.nav a{font-family:var(--grot);font-weight:600;font-size:clamp(.79rem,1.32vw,.95rem);color:var(--paper-ink);padding:.62em 1.05em;border-radius:var(--r-pill);white-space:nowrap;transition:color .3s var(--ease),background .3s var(--ease)}
-.nav a:hover{background:rgba(22,20,15,.07)}
-.nav__burger{display:none}
-.menu{position:fixed;inset:0;z-index:70;background:var(--card);color:var(--card-fg);display:flex;flex-direction:column;justify-content:center;gap:1rem;padding:var(--pad);transform:translateY(-100%);transition:transform .6s var(--ease);visibility:hidden}
-html.menu-open .menu{transform:none;visibility:visible}
-.menu a{font-family:var(--grot);font-weight:800;text-transform:uppercase;font-size:clamp(2rem,9vw,3.4rem);letter-spacing:-.02em;color:var(--card-fg)}
-.menu a:hover{color:var(--accent)}
-
-.phead{background:var(--card);color:var(--card-fg);margin:var(--gut);border-radius:var(--r-card);padding:clamp(70px,12vh,140px) clamp(24px,4vw,64px) clamp(28px,5vw,52px);position:relative;overflow:hidden}
-.phead__glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(40% 55% at 82% 15%,rgba(227,154,99,.26),rgba(227,154,99,0) 70%)}
-.phead__in{position:relative;max-width:1080px;margin:0 auto}
-.phead h1{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.03em;line-height:.86;font-size:clamp(3rem,12vw,8rem);font-stretch:108%;margin:.3em 0 .3em}
-.phead__date{font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;color:var(--mut-card)}
-
-main{max-width:min(760px,92vw);margin:0 auto;padding:clamp(40px,7vh,90px) var(--pad) clamp(30px,5vh,60px)}
-.lede{font-size:clamp(1.15rem,2vw,1.5rem);line-height:1.45;font-weight:500;margin-bottom:clamp(30px,5vh,52px)}
-.lede b{font-weight:700}
-section{padding-top:clamp(26px,4vh,40px);border-top:1px solid var(--line-cream);margin-top:clamp(26px,4vh,40px)}
-section:first-of-type{border-top:0;margin-top:0;padding-top:0}
-.s-num{font-family:var(--mono);font-weight:300;font-size:.66rem;letter-spacing:.16em;color:var(--mut-cream);display:block;margin-bottom:.7em}
-h2{font-family:var(--grot);font-weight:700;letter-spacing:-.02em;font-size:clamp(1.3rem,2.6vw,1.9rem);line-height:1.1;margin-bottom:clamp(12px,2vh,18px)}
-p{max-width:64ch;color:var(--paper-ink);margin-bottom:1em}p:last-child{margin-bottom:0}
-p b{font-weight:700}
-ul{list-style:none;max-width:64ch;margin:0 0 1em}
-li{position:relative;padding-left:1.4em;margin-bottom:.55em}
-li::before{content:"";position:absolute;left:.1em;top:.62em;width:.42em;height:.42em;background:var(--accent);border-radius:1px}
-li b{font-weight:700}
-.lnk{color:var(--accent-2);border-bottom:1px solid var(--accent-2);transition:color .3s var(--ease),border-color .3s var(--ease);cursor:pointer}
-.lnk:hover{color:var(--accent);border-color:var(--accent)}
-
-.pfoot{max-width:min(760px,92vw);margin:0 auto;padding:clamp(26px,4vh,40px) var(--pad) clamp(40px,7vh,72px);border-top:1px solid var(--line-cream);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-family:var(--mono);font-size:.72rem;letter-spacing:.03em;color:var(--mut-cream)}
-.pfoot a{color:var(--paper-ink);border-bottom:1px solid var(--line-cream)}
-@media(max-width:680px){
-  .nav__links{display:none}.nav{gap:0;padding:.35rem}
-  .nav__burger{display:inline-flex;align-items:center;gap:.55em;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-ink);padding:.6em 1em;background:none;border:0;cursor:pointer}
-  .nav__burger b{display:block;width:20px;height:2px;background:var(--paper-ink);position:relative}
-  .nav__burger b::before,.nav__burger b::after{content:"";position:absolute;left:0;width:20px;height:2px;background:var(--paper-ink)}
-  .nav__burger b::before{top:-6px}.nav__burger b::after{top:6px}
-}
+.legal{position:relative;width:min(760px,calc(100vw - 48px));margin:0 auto;padding:150px 0 60px}
+.mono{font-family:'Martian Mono',ui-monospace,monospace}
+.phead{margin-bottom:clamp(34px,5vh,54px)}
+.phead h1{font-weight:600;font-size:clamp(46px,9vw,96px);letter-spacing:-.03em;line-height:.95}
+.phead .date{font-family:'Martian Mono',monospace;font-size:12px;letter-spacing:.05em;color:var(--mut);margin-top:20px}
+.lede{font-size:clamp(19px,2.2vw,27px);font-weight:500;line-height:1.44;letter-spacing:-.015em;color:var(--ink);margin-bottom:clamp(36px,6vh,60px)}
+.lede b{font-weight:600}
+.legal section{padding-top:clamp(32px,5vh,48px);border-top:1px solid var(--hair);margin-top:clamp(32px,5vh,48px)}
+.legal section:first-of-type{border-top:0;margin-top:0;padding-top:0}
+.s-num{font-family:'Martian Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--mut);display:block;margin-bottom:14px}
+.legal h2{font-weight:600;font-size:clamp(24px,3vw,34px);letter-spacing:-.02em;line-height:1.12;margin-bottom:18px}
+.legal p{font-size:clamp(16px,1.6vw,18px);line-height:1.65;color:rgba(17,17,17,.82);max-width:66ch;margin-bottom:1em}
+.legal p:last-child{margin-bottom:0}
+.legal p b,.legal li b{font-weight:600;color:var(--ink)}
+.legal ul{list-style:none;max-width:66ch;margin:0 0 1em}
+.legal li{position:relative;padding-left:22px;margin-bottom:10px;line-height:1.6;font-size:clamp(16px,1.6vw,18px);color:rgba(17,17,17,.82)}
+.legal li::before{content:"";position:absolute;left:2px;top:.66em;width:6px;height:6px;background:var(--ink);border-radius:1px}
+.lnk{color:var(--ink);border-bottom:1px solid var(--hair);text-underline-offset:3px;transition:border-color .3s;cursor:pointer}
+.lnk:hover{border-color:var(--ink)}
+@media (max-width:560px){ .legal{padding-top:120px} }
 </style>
 </head>
 <body>
 
-<nav class="nav" aria-label="Primary">
-  <div class="nav__links">
-    <a href="../">Home</a>
-    <a href="../#work">Work</a>
-    <a href="../#services">Services</a>
-    <a href="../resume/">Résumé</a>
-    <a href="../blog/">Blog</a>
-    <a href="../#contact">Contact</a>
+<footer class="foot" aria-label="Footer">
+  <div class="footcard">
+    <div class="footrow">
+      <nav class="fbtns" aria-label="Footer links">
+        <a class="fbtn" href="../work.html"><span class="t">Work</span><span class="a">→</span></a>
+        <a class="fbtn" href="../index.html#services"><span class="t">Services</span><span class="a">→</span></a>
+        <a class="fbtn" href="../blog/"><span class="t">Blog</span><span class="a">→</span></a>
+        <a class="fbtn" href="../resume/"><span class="t">Résumé</span><span class="a">→</span></a>
+      </nav>
+      <span class="fstatus mono">● OPEN TO NEW PROJECTS · MELBOURNE</span>
+    </div>
+    <span class="wordmark" aria-hidden="true">LARSH.DEV</span>
+    <div class="fmeta mono">
+      <span>© LARS HOLMSTRÖM · <a href="./">PRIVACY</a></span>
+      <span>BUILT BY HAND. COOKIELESS. RESPECTS DO NOT TRACK.</span>
+    </div>
   </div>
-  <button class="nav__burger" id="burger" aria-label="Open menu" aria-expanded="false"><b></b>Menu</button>
-</nav>
-<div class="menu" id="menu" aria-hidden="true">
-  <a href="../">Home</a>
-  <a href="../#work">Work</a>
-  <a href="../#services">Services</a>
-  <a href="../resume/">Résumé</a>
-  <a href="../blog/">Blog</a>
-  <a href="../#contact">Contact</a>
-</div>
-
-<header class="phead">
-  <div class="phead__glow" aria-hidden="true"></div>
-  <div class="phead__in">
-    <p class="eyebrow">Legal</p>
-    <h1>Privacy</h1>
-    <p class="phead__date">Last updated: 1 July 2026</p>
-  </div>
-</header>
-
-<main>
-  <p class="lede">This is my personal site, run by <b>Lars Holmström</b> in Melbourne, Australia. The short version: <b>no accounts, no cookies, and nothing that identifies you personally.</b> I use privacy-respecting analytics to understand how the site is used, and I honour Do Not Track.</p>
-
-  <section>
-    <span class="s-num">01</span>
-    <h2>The short version</h2>
-    <ul>
-      <li>No accounts, no sign-up, and no email needed to browse.</li>
-      <li><b>No cookies</b> are set on your device.</li>
-      <li>I use privacy-respecting product analytics (PostHog), including session replay, to see how the site is actually used.</li>
-      <li>If your browser sends a <b>Do Not Track</b> or Global Privacy Control signal, none of it loads at all.</li>
-      <li>I never sell your data, and there is no advertising.</li>
-    </ul>
-  </section>
-
-  <section>
-    <span class="s-num">02</span>
-    <h2>What is collected</h2>
-    <p>When Do Not Track is not set, the site loads PostHog, which records:</p>
-    <ul>
-      <li><b>Usage analytics</b> &mdash; which pages and features you use, clicks, scrolls and navigation, the site that referred you, and general device information (browser and operating system type, screen size, language).</li>
-      <li><b>Session replay</b> &mdash; a reconstruction of how you interacted with a page: a synthetic playback of what you clicked, where you moved, and what changed on screen, so I can see how the site is used and improve it. It is <b>not</b> a video or screen recording of your device, and any text typed into a field is masked by default and not captured (the site has no forms in any case).</li>
-      <li><b>Approximate location</b> &mdash; PostHog uses your IP address to estimate a coarse location (country, sometimes region or city). It is used only in aggregate and is not used to identify you.</li>
-    </ul>
-    <p>I do not collect names, email addresses, passwords, or payment details, because this site has no accounts and asks for none of those.</p>
-  </section>
-
-  <section>
-    <span class="s-num">03</span>
-    <h2>Cookies and on-device storage</h2>
-    <p>This site is <b>cookieless</b> &mdash; it sets no cookies. So that a visit reads as one coherent session across pages, PostHog stores a single random, anonymous <b>session identifier in your browser's local storage</b>. It is not linked to your identity, it is not a cookie, and you can remove it at any time by clearing this site's data in your browser.</p>
-  </section>
-
-  <section>
-    <span class="s-num">04</span>
-    <h2>Do Not Track</h2>
-    <p>I honour the Do Not Track (DNT) and Global Privacy Control (GPC) signals. If either is enabled, the analytics script loads nothing at all &mdash; no analytics, no session replay, no requests &mdash; and you browse with zero measurement.</p>
-  </section>
-
-  <section>
-    <span class="s-num">05</span>
-    <h2>Where your data goes</h2>
-    <p>Analytics are processed by <b>PostHog Inc.</b> on its United States cloud, acting as my data processor. If you visit from outside the US (including Australia, the EU and the UK), anonymous usage and replay data is transferred to and processed in the United States.</p>
-    <p>The site itself is served as static files by my hosting provider, which may keep standard server logs (such as IP address and browser type) for security and reliability. There are no other third-party services, trackers, or advertising networks.</p>
-  </section>
-
-  <section>
-    <span class="s-num">06</span>
-    <h2>How long it is kept</h2>
-    <p>Usage and session-replay data are retained by PostHog under my account's retention settings and then deleted. Because nothing is linked to an identifiable person, individual records cannot be tied back to you.</p>
-  </section>
-
-  <section>
-    <span class="s-num">07</span>
-    <h2>Your rights</h2>
-    <p>Depending on where you live &mdash; for example under the Australian Privacy Act, the EU/UK GDPR, or the California CCPA &mdash; you have rights over personal data about you, such as access, correction, and deletion. Because this site is anonymous and cookieless, I usually hold no information that can be connected to you individually. If you have a question or request, <a class="lnk js-mail" data-u="larsh.dev" data-d="proton.me">email me</a> and I will help where I can.</p>
-  </section>
-
-  <section>
-    <span class="s-num">08</span>
-    <h2>Children</h2>
-    <p>This site is not directed at children under 13, and I do not knowingly collect information from them.</p>
-  </section>
-
-  <section>
-    <span class="s-num">09</span>
-    <h2>Changes</h2>
-    <p>If this policy changes, I will update this page and the date above.</p>
-  </section>
-
-  <section>
-    <span class="s-num">10</span>
-    <h2>Contact</h2>
-    <p>Questions about privacy? Email <a class="lnk js-mail" data-u="larsh.dev" data-d="proton.me">larsh&#8203;.dev&#8203;@&#8203;proton.me</a>.</p>
-  </section>
-</main>
-
-<footer class="pfoot">
-  <span>Lars Holmström · Melbourne, Australia · <span id="year"></span></span>
-  <span><a href="../">← Back to larsh.dev</a></span>
 </footer>
 
-<script src="../mailto.js"></script>
+<div class="page" id="page">
+  <div class="pagebg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav" id="nav">
+    <div class="navpill" id="navpill">
+      <div class="navrow">
+        <a class="brand" href="../index.html">larsh.dev</a>
+        <button class="navbtn" id="navbtn" aria-expanded="false" aria-label="Menu"><span class="ic"><i></i><i></i><i></i></span></button>
+      </div>
+      <nav class="menu" aria-label="Site">
+        <a class="mlink" href="../work.html"><span class="n mono">01</span><span class="t">Work</span><span class="a">→</span></a>
+        <a class="mlink" href="../index.html#sites"><span class="n mono">02</span><span class="t">Sites</span><span class="a">→</span></a>
+        <a class="mlink" href="../index.html#services"><span class="n mono">03</span><span class="t">Services</span><span class="a">→</span></a>
+        <a class="mlink" href="../blog/"><span class="n mono">04</span><span class="t">Blog</span><span class="a">→</span></a>
+        <a class="mlink" href="../index.html#contact"><span class="n mono">05</span><span class="t">Contact</span><span class="a">→</span></a>
+      </nav>
+      <div class="mfoot">
+        <div class="socials">
+          <a class="js-mail" data-u="larsh.dev" data-d="proton.me" aria-label="Email"><svg class="stroke" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a>
+          <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
+          <a href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+        </div>
+        <span class="clock mono" id="clock">MELB --:--</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="legal">
+    <header class="phead" data-r>
+      <h1>Privacy</h1>
+      <p class="date">Last updated: 1 July 2026</p>
+    </header>
+
+    <p class="lede" data-r>This is my personal site, run by <b>Lars Holmström</b> in Melbourne, Australia. The short version: <b>no accounts, no cookies, and nothing that identifies you personally.</b> I use privacy-respecting analytics to understand how the site is used, and I honour Do Not Track.</p>
+
+    <section data-r>
+      <span class="s-num">01</span>
+      <h2>The short version</h2>
+      <ul>
+        <li>No accounts, no sign-up, and no email needed to browse.</li>
+        <li><b>No cookies</b> are set on your device.</li>
+        <li>I use privacy-respecting product analytics (PostHog), including session replay, to see how the site is actually used.</li>
+        <li>If your browser sends a <b>Do Not Track</b> or Global Privacy Control signal, none of it loads at all.</li>
+        <li>I never sell your data, and there is no advertising.</li>
+      </ul>
+    </section>
+
+    <section data-r>
+      <span class="s-num">02</span>
+      <h2>What is collected</h2>
+      <p>When Do Not Track is not set, the site loads PostHog, which records:</p>
+      <ul>
+        <li><b>Usage analytics</b> &mdash; which pages and features you use, clicks, scrolls and navigation, the site that referred you, and general device information (browser and operating system type, screen size, language).</li>
+        <li><b>Session replay</b> &mdash; a reconstruction of how you interacted with a page: a synthetic playback of what you clicked, where you moved, and what changed on screen, so I can see how the site is used and improve it. It is <b>not</b> a video or screen recording of your device, and any text typed into a field is masked by default and not captured (the site has no forms in any case).</li>
+        <li><b>Approximate location</b> &mdash; PostHog uses your IP address to estimate a coarse location (country, sometimes region or city). It is used only in aggregate and is not used to identify you.</li>
+      </ul>
+      <p>I do not collect names, email addresses, passwords, or payment details, because this site has no accounts and asks for none of those.</p>
+    </section>
+
+    <section data-r>
+      <span class="s-num">03</span>
+      <h2>Cookies and on-device storage</h2>
+      <p>This site is <b>cookieless</b> &mdash; it sets no cookies. So that a visit reads as one coherent session across pages, PostHog stores a single random, anonymous <b>session identifier in your browser's local storage</b>. It is not linked to your identity, it is not a cookie, and you can remove it at any time by clearing this site's data in your browser.</p>
+    </section>
+
+    <section data-r>
+      <span class="s-num">04</span>
+      <h2>Do Not Track</h2>
+      <p>I honour the Do Not Track (DNT) and Global Privacy Control (GPC) signals. If either is enabled, the analytics script loads nothing at all &mdash; no analytics, no session replay, no requests &mdash; and you browse with zero measurement.</p>
+    </section>
+
+    <section data-r>
+      <span class="s-num">05</span>
+      <h2>Where your data goes</h2>
+      <p>Analytics are processed by <b>PostHog Inc.</b> on its United States cloud, acting as my data processor. If you visit from outside the US (including Australia, the EU and the UK), anonymous usage and replay data is transferred to and processed in the United States.</p>
+      <p>The site itself is served as static files by my hosting provider, which may keep standard server logs (such as IP address and browser type) for security and reliability. There are no other third-party services, trackers, or advertising networks.</p>
+    </section>
+
+    <section data-r>
+      <span class="s-num">06</span>
+      <h2>How long it is kept</h2>
+      <p>Usage and session-replay data are retained by PostHog under my account's retention settings and then deleted. Because nothing is linked to an identifiable person, individual records cannot be tied back to you.</p>
+    </section>
+
+    <section data-r>
+      <span class="s-num">07</span>
+      <h2>Your rights</h2>
+      <p>Depending on where you live &mdash; for example under the Australian Privacy Act, the EU/UK GDPR, or the California CCPA &mdash; you have rights over personal data about you, such as access, correction, and deletion. Because this site is anonymous and cookieless, I usually hold no information that can be connected to you individually. If you have a question or request, <a class="lnk js-mail" data-u="larsh.dev" data-d="proton.me">email me</a> and I will help where I can.</p>
+    </section>
+
+    <section data-r>
+      <span class="s-num">08</span>
+      <h2>Children</h2>
+      <p>This site is not directed at children under 13, and I do not knowingly collect information from them.</p>
+    </section>
+
+    <section data-r>
+      <span class="s-num">09</span>
+      <h2>Changes</h2>
+      <p>If this policy changes, I will update this page and the date above.</p>
+    </section>
+
+    <section data-r>
+      <span class="s-num">10</span>
+      <h2>Contact</h2>
+      <p>Questions about privacy? Email <a class="lnk js-mail" data-u="larsh.dev" data-d="proton.me"><span class="addr">…</span></a>.</p>
+    </section>
+  </main>
+
+</div>
+
+<div class="endspace" aria-hidden="true"></div>
+<div class="toast mono" id="toast" role="status"></div>
+
+<script src="/vendor/lenis.min.js"></script>
+<script src="../site.js?v=2"></script>
 <script src="../analytics.js"></script>
-<script>
-(function(){
-  var y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
-  [].forEach.call(document.querySelectorAll('.js-mail'),function(a){
-    var e=a.getAttribute('data-u')+String.fromCharCode(64)+a.getAttribute('data-d');
-    a.setAttribute('href','mailto:'+e);
-    if(a.textContent.indexOf('@')>-1) a.textContent=e;
-  });
-  var b=document.getElementById('burger');
-  if(b){ var set=function(o){document.documentElement.classList.toggle('menu-open',o);b.setAttribute('aria-expanded',o?'true':'false');};
-    b.addEventListener('click',function(){set(!document.documentElement.classList.contains('menu-open'));});
-    [].forEach.call(document.querySelectorAll('#menu a'),function(a){a.addEventListener('click',function(){set(false);});});
-    addEventListener('keydown',function(e){if(e.key==='Escape')set(false);});
-  }
-})();
-</script>
 </body>
 </html>
