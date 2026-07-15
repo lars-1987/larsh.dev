@@ -5,16 +5,36 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://larsh.dev/web-design-melbourne/</loc>
+    <loc>https://larsh.dev/work.html</loc>
     <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://larsh.dev/resume/</loc>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://larsh.dev/blog/</loc>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://larsh.dev/resume/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://larsh.dev/web-design-melbourne/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://larsh.dev/summit/</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://larsh.dev/brighton/</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://larsh.dev/hawthorne/</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://larsh.dev/atelier/</loc>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://larsh.dev/blog/building-swatch-or-a-colour-problem-i-gave-myself.html</loc>

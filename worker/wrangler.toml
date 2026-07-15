@@ -1,0 +1,17 @@
+name = "larsh-contact"
+main = "index.js"
+compatibility_date = "2024-11-01"
+workers_dev = false
+
+# Custom domain — wrangler provisions the DNS record + cert automatically
+# because the larsh.dev zone is already on Cloudflare.
+routes = [
+  { pattern = "api.larsh.dev", custom_domain = true }
+]
+
+# Non-secret config. The Resend API key is NOT here — it's a secret:
+#   wrangler secret put RESEND_API_KEY
+[vars]
+CONTACT_TO   = "larsh.dev@proton.me"
+CONTACT_FROM = "larsh.dev <form@larsh.dev>"
+ALLOW_ORIGIN = "https://larsh.dev"

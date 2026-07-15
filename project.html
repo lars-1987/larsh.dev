@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FAF7F3">
+<title>Project — Lars Holmström</title>
+<meta name="description" content="A project by Lars Holmström.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/vendor/fonts.css">
+<link rel="stylesheet" href="./site.css?v=2">
+<style>
+/* project detail page-specific */
+.proj-head{padding:150px 0 0}
+.proj-head .row{display:grid;grid-template-columns:1fr 360px;align-items:end;gap:32px}
+.proj-head h1{font-weight:600;font-size:clamp(40px,7.5vw,88px);letter-spacing:-.025em;line-height:.95}
+.proj-head .lede{color:var(--mut);font-size:clamp(15px,1.4vw,18px);line-height:1.5}
+.metaband{display:flex;flex-wrap:wrap;align-items:flex-end;gap:32px 48px;margin-top:44px;
+  padding-top:24px;border-top:1px solid var(--hair)}
+.metaband .pair{display:flex;flex-direction:column;gap:6px}
+.metaband .k{font-size:10px;letter-spacing:.08em;color:var(--mut)}
+.metaband .v{font-size:16px;max-width:520px}
+.metaband .visit{margin-left:auto}
+.hero-shot{border-radius:20px;overflow:hidden;aspect-ratio:1180/740;margin-top:40px;background:#e8e4de}
+.hero-shot img{width:100%;height:100%;object-fit:cover}
+/* phone apps: screenshots shown contained on a coloured band, not cropped landscape */
+.phones{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;border-radius:20px;
+  padding:48px 24px;margin-top:40px}
+.phones img{height:min(560px,64vh);width:auto;border-radius:26px;box-shadow:0 20px 50px rgba(0,0,0,.22)}
+.body{padding:80px 0 40px}
+.blk{max-width:740px;margin:0 auto 60px;padding:0}
+.blk:last-child{margin-bottom:0}
+.blk h2{font-weight:600;font-size:clamp(28px,3.4vw,40px);letter-spacing:-.015em;margin-bottom:20px}
+.blk p{font-size:clamp(16px,1.5vw,18px);line-height:1.6;letter-spacing:-.005em;color:rgba(17,17,17,.82)}
+.blk p code{font-family:'Martian Mono',monospace;font-size:.85em;background:rgba(17,17,17,.06);
+  padding:1px 6px;border-radius:5px}
+.shot{border-radius:18px;overflow:hidden;margin:0 auto 60px;background:#e8e4de}
+.shot.full{aspect-ratio:1180/740}
+.shot.full img,.pairimg img{width:100%;height:100%;object-fit:cover}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 auto 60px}
+.pairimg{border-radius:16px;overflow:hidden;aspect-ratio:582/368;background:#e8e4de}
+.more{padding:60px 0 100px;border-top:1px solid var(--hair)}
+.more .h2row{margin-bottom:40px}
+.more .alink{font-weight:600;font-size:17px;text-decoration:underline;text-underline-offset:4px}
+.more .alink:hover{text-decoration-thickness:2px}
+@media (max-width:1023px){
+  .proj-head{padding:130px 0 0}
+  .proj-head .row{grid-template-columns:1fr;gap:16px;align-items:start}
+  .metaband .visit{margin-left:0;flex-basis:100%}
+}
+@media (max-width:560px){
+  .proj-head{padding:112px 0 0}
+  .pair{grid-template-columns:1fr}
+  .body{padding:56px 0 32px}
+}
+</style>
+</head>
+<body>
+
+<footer class="foot" aria-label="Footer">
+  <div class="footcard">
+    <div class="footrow">
+      <nav class="fbtns" aria-label="Footer links">
+        <a class="fbtn" href="./work.html"><span class="t">Work</span><span class="a">→</span></a>
+        <a class="fbtn" href="./index.html#services"><span class="t">Services</span><span class="a">→</span></a>
+        <a class="fbtn" href="./blog/"><span class="t">Blog</span><span class="a">→</span></a>
+        <a class="fbtn" href="/resume/"><span class="t">Résumé</span><span class="a">→</span></a>
+      </nav>
+      <span class="fstatus mono">● OPEN TO NEW PROJECTS · MELBOURNE</span>
+    </div>
+    <span class="wordmark" aria-hidden="true">LARSH.DEV</span>
+    <div class="fmeta mono">
+      <span>© LARS HOLMSTRÖM · <a href="/privacy/">PRIVACY</a></span>
+      <span>BUILT BY HAND. COOKIELESS. RESPECTS DO NOT TRACK.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="page" id="page">
+  <div class="pagebg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav" id="nav">
+    <div class="navpill" id="navpill">
+      <div class="navrow">
+        <a class="brand" href="./index.html">larsh.dev</a>
+        <button class="navbtn" id="navbtn" aria-expanded="false" aria-label="Menu">
+          <span class="ic"><i></i><i></i><i></i></span>
+        </button>
+      </div>
+      <nav class="menu" aria-label="Site">
+        <a class="mlink" href="./work.html"><span class="n mono">01</span><span class="t">Work</span><span class="a">→</span></a>
+        <a class="mlink" href="./index.html#sites"><span class="n mono">02</span><span class="t">Sites</span><span class="a">→</span></a>
+        <a class="mlink" href="./index.html#services"><span class="n mono">03</span><span class="t">Services</span><span class="a">→</span></a>
+        <a class="mlink" href="./blog/"><span class="n mono">04</span><span class="t">Blog</span><span class="a">→</span></a>
+        <a class="mlink" href="./index.html#contact"><span class="n mono">05</span><span class="t">Contact</span><span class="a">→</span></a>
+      </nav>
+      <div class="mfoot">
+        <div class="socials">
+          <a class="js-mail" data-u="larsh.dev" data-d="proton.me" href="#" aria-label="Email">
+            <svg class="stroke" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a>
+          <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer" aria-label="X">
+            <svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
+          <a href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+        </div>
+        <span class="clock mono" id="clock">MELB --:--</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" id="proj"><!-- rendered from window.PROJECTS --></main>
+
+</div>
+
+<div class="endspace" aria-hidden="true"></div>
+<div class="toast mono" id="toast" role="status"></div>
+
+<script src="/projects.js"></script>
+<script>
+(() => {
+  const BUILD = ['sanctumpdf','metastrip','renew','bedcheck','swatch','fenced','vesper','virtus','helio','larshdev'];
+  // card presentation not stored in projects.js: short desc + panel treatment
+  const CARD = {
+    sanctumpdf:{img:'sanctum-preview.webp',d:'In-browser PDF conversion',st:'SHIPPED'},
+    metastrip:{img:'metastrip-preview.webp',d:'Zero-server metadata removal',st:'OPEN SOURCE'},
+    renew:{img:'renew-preview.webp',d:'AI skincare tracking for iOS',st:'SHIPPED'},
+    bedcheck:{img:'bedcheck-preview.webp',d:'Bedtime accountability for iOS',st:'IN DEV · ALPHA'},
+    swatch:{img:'tryswatch-preview.webp',d:'A colour-palette studio for the browser',st:'SHIPPED'},
+    fenced:{img:'fenced1.webp',d:'Markdown to self-contained HTML',st:'OPEN SOURCE'},
+    vesper:{img:'vesper1.webp',d:'Multilingual scripture app for iOS',st:'SHIPPED',pane:'#212333'},
+    virtus:{img:'virtus1.webp',d:'Stoic daily wisdom, fully on-device',st:'SHIPPED',pane:'#D4CCBD'},
+    helio:{img:'helio1.webp',d:'Project cockpit for macOS',st:'IN DEVELOPMENT'},
+    larshdev:{img:'larshdev-1.webp',d:'An alternative take on this site',st:'EXPERIMENT'}
+  };
+  const byId = Object.fromEntries((window.PROJECTS || []).map(p => [p.id, p]));
+  const params = new URLSearchParams(location.search);
+  let id = params.get('id');
+  if (!byId[id]) id = 'sanctumpdf';
+  const p = byId[id];
+  document.title = `${p.name} — Lars Holmström`;
+
+  const asset = f => '/assets/' + f.replace(/^assets\//, '');
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+  const pane = CARD[id] && CARD[id].pane;      // phone-only apps get a coloured band
+  const shots = (p.shots || []).slice();
+  // landscape hero: preview if present, else first (landscape) shot
+  let heroImg = pane ? null : (p.preview ? asset(p.preview) : (shots.length ? asset(shots.shift()) : null));
+
+  // visit link: first link with a real URL
+  const live = (p.links || []).find(l => l.h && !l.d);
+
+  // editorial blocks from points[], interleaving remaining shots between them
+  let html = '';
+  html += `<header class="proj-head" data-r>
+    <div class="row">
+      <h1>${esc(p.name)}</h1>
+      <p class="lede">${p.lede}</p>
+    </div>
+    <div class="metaband">
+      <div class="pair"><span class="k mono">TYPE</span><span class="v">${esc(p.typeLabel)}</span></div>
+      <div class="pair"><span class="k mono">STATUS</span><span class="v">${esc(cap(p.status))}</span></div>
+      <div class="pair"><span class="k mono">STACK</span><span class="v">${p.tech}</span></div>
+      ${live ? `<a class="chip sm visit" href="${live.h}" target="_blank" rel="noopener"><span class="t">Visit site</span><span class="a">→</span></a>` : ''}
+    </div>
+  </header>`;
+
+  if (pane) {
+    html += `<div class="phones" data-r="pop" style="background:${pane}">` +
+      (p.shots || []).map(s => `<img src="${asset(s)}" alt="${esc(p.name)} screen" loading="lazy">`).join('') + '</div>';
+  } else if (heroImg) {
+    html += `<div class="hero-shot" data-r="pop"><img src="${heroImg}" alt="${esc(p.name)}"></div>`;
+  }
+
+  html += '<div class="body">';
+  const pts = p.points || [];
+  pts.forEach((pt, i) => {
+    const m = pt.match(/^<strong>([\s\S]*?)<\/strong>\s*([\s\S]*)$/);
+    const h = m ? m[1] : '';
+    const b = m ? m[2] : pt;
+    html += `<section class="blk" data-r>${h ? `<h2>${h}</h2>` : ''}<p>${b}</p></section>`;
+    // landscape projects interleave a full-width shot between blocks
+    if (!pane && shots.length && i < pts.length - 1) {
+      html += `<div class="shot full" data-r="pop"><img src="${asset(shots.shift())}" alt="${esc(p.name)} screenshot" loading="lazy"></div>`;
+    }
+  });
+  // any leftover landscape shots → pair grid
+  while (!pane && shots.length) {
+    const a = shots.shift(), b = shots.shift();
+    html += `<div class="pair">
+      <div class="pairimg" data-r="pop"><img src="${asset(a)}" alt="${esc(p.name)} screenshot" loading="lazy"></div>
+      ${b ? `<div class="pairimg" data-r="pop"><img src="${asset(b)}" alt="${esc(p.name)} screenshot" loading="lazy"></div>` : ''}
+    </div>`;
+  }
+  html += '</div>';
+
+  // more projects: next two in the build list
+  const idx = BUILD.indexOf(id);
+  const more = [BUILD[(idx + 1) % BUILD.length], BUILD[(idx + 2) % BUILD.length]];
+  html += `<section class="more"><div class="h2row"><h2>More projects</h2>
+    <a class="alink" href="./work.html">All projects&nbsp;&nbsp;→</a></div><div class="pgrid">`;
+  more.forEach(mid => {
+    const mp = byId[mid], c = CARD[mid];
+    html += `<a class="card" href="./project.html?id=${mid}" data-r="pop">
+      <div class="ph${c.pane ? ' pane' : ''}"${c.pane ? ` style="background:${c.pane}"` : ''}><img src="/assets/${c.img}" alt="${esc(mp.name)}" loading="lazy"></div>
+      <div class="meta"><h3>${esc(mp.name)}</h3><span class="st mono">${c.st}</span></div>
+      <p class="d">${c.d}</p></a>`;
+  });
+  html += '</div></section>';
+
+  document.getElementById('proj').innerHTML = html;
+})();
+</script>
+<script src="/vendor/lenis.min.js"></script>
+<script src="./site.js?v=2"></script>
+<script src="/analytics.js"></script>
+</body>
+</html>

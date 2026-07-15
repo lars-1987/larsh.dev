@@ -18,53 +18,54 @@ def _ttf(src, out, axes=None):
     return p
 ARCHIVO_800 = _ttf("vendor/fonts/archivo-100-900-latin.woff2", "archivo-800.ttf", {"wght": 800, "wdth": 100})
 MONO = _ttf("vendor/fonts/martian-mono-300-latin.woff2", "mono.ttf")
+ARCHIVO_600 = _ttf("vendor/fonts/archivo-100-900-latin.woff2", "archivo-600.ttf", {"wght": 600, "wdth": 100})
+
+import random
 
 W, H = 1200, 630
-PAPER = (242, 236, 223)
-CARD  = (14, 13, 12)
-FG    = (243, 238, 227)
-MUT   = (154, 150, 140)
-ACC   = (227, 154, 99)
+PAPER = (250, 247, 243)
+INK   = (17, 17, 17)
+MUT   = (120, 116, 110)
 
 img = Image.new("RGB", (W, H), PAPER)
+draw = ImageDraw.Draw(img)
 
-# black card inset with padding (mirrors the hero)
-m = 40
-cw, ch = W - 2*m, H - 2*m
-card = Image.new("RGB", (cw, ch), CARD)
+# faint cold-press grain so it reads as paper, not flat fill
+random.seed(7)
+px = img.load()
+for _ in range(70000):
+    x, y = random.randint(0, W - 1), random.randint(0, H - 1)
+    r0, g0, b0 = px[x, y]
+    d = random.randint(-7, 4)
+    px[x, y] = (max(0, r0 + d), max(0, g0 + d), max(0, b0 + d))
 
-# soft peach glow, upper area (echoes the blob)
-glow = Image.new("RGB", (cw, ch), CARD)
-gd = ImageDraw.Draw(glow)
-r = 360
-gd.ellipse((cw - 300 - r, -40 - r, cw - 300 + r, -40 + r), fill=(70, 44, 28))
-glow = glow.filter(ImageFilter.GaussianBlur(150))
-card = Image.blend(card, glow, 0.75)
+# nav pill, centered at top (echoes the live nav)
+pill_font = ImageFont.truetype(ARCHIVO_600, 26)
+pt = "larsh.dev"
+pw = draw.textlength(pt, font=pill_font) + 150
+ph = 60
+px0 = (W - pw) / 2
+py0 = 40
+draw.rounded_rectangle((px0, py0, px0 + pw, py0 + ph), radius=18, fill=INK)
+draw.text((px0 + 28, py0 + ph / 2), pt, font=pill_font, fill=PAPER, anchor="lm")
+chip = ph - 16
+draw.rounded_rectangle((px0 + pw - chip - 8, py0 + 8, px0 + pw - 8, py0 + 8 + chip), radius=12, fill=PAPER)
 
-cd = ImageDraw.Draw(card)
-pad = 60
-wordmark = ImageFont.truetype(MONO, 22)
-h_font = ImageFont.truetype(ARCHIVO_800, 96)
-tag_font = ImageFont.truetype(MONO, 20)
+# headline, centered (the hero line)
+h_font = ImageFont.truetype(ARCHIVO_800, 116)
+def centered(text, y):
+    tw = draw.textlength(text, font=h_font)
+    draw.text(((W - tw) / 2, y), text, font=h_font, fill=INK)
+centered("WEB DESIGN", 232)
+centered("+ FULL STACK", 350)
 
-# wordmark, top-left (letterspaced)
-cd.text((pad, 46), "L A R S   H O L M S T R Ö M", font=wordmark, fill=FG)
-
-# headline bottom-left: "WEB DESIGN +" / "FULL STACK", peach plus
-y1, y2 = ch - 250, ch - 150
-l1a = "WEB DESIGN "
-cd.text((pad, y1), l1a, font=h_font, fill=FG)
-w1 = cd.textlength(l1a, font=h_font)
-cd.text((pad + w1, y1), "+", font=h_font, fill=ACC)
-cd.text((pad, y2), "FULL STACK", font=h_font, fill=FG)
-
-# tagline
-cd.text((pad, ch - 62), "Web designer & full-stack developer   ·   Melbourne", font=tag_font, fill=MUT)
-
-# round the card corners and paste onto paper
-mask = Image.new("L", (cw, ch), 0)
-ImageDraw.Draw(mask).rounded_rectangle((0, 0, cw, ch), radius=36, fill=255)
-img.paste(card, (m, m), mask)
+# corner captions, like the hero
+cap_font = ImageFont.truetype(ARCHIVO_600, 40)
+mono_font = ImageFont.truetype(MONO, 22)
+draw.text((64, H - 100), "\u00a92026", font=cap_font, fill=INK)
+loc = "MELBOURNE, AUSTRALIA"
+lw = draw.textlength(loc, font=mono_font)
+draw.text((W - 64 - lw, H - 86), loc, font=mono_font, fill=INK)
 
 img.save("og.png", "PNG", optimize=True)
 print("wrote og.png (%dx%d)" % (W, H))

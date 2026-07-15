@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FAF7F3">
+<title>All projects — Lars Holmström</title>
+<meta name="description" content="Everything shipped, shipping and experimental: apps, tools and sites, designed and built end-to-end.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="All projects — Lars Holmström">
+<meta property="og:description" content="Everything shipped, shipping and experimental: apps, tools and sites, designed and built end-to-end.">
+<meta property="og:url" content="https://larsh.dev/work.html">
+<meta property="og:site_name" content="Lars Holmström">
+<meta property="og:image" content="https://larsh.dev/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://larsh.dev/og.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/vendor/fonts.css">
+<link rel="stylesheet" href="./site.css?v=2">
+<style>
+/* work index page-specific */
+.work-head{padding:150px 0 40px}
+.work-head .row{display:grid;grid-template-columns:1fr 360px;align-items:start;gap:32px}
+.work-head h1{font-weight:600;font-size:clamp(38px,7vw,88px);letter-spacing:-.025em;line-height:.95}
+.work-head .lead{color:var(--mut);font-size:clamp(15px,1.4vw,18px);line-height:1.5;padding-top:8px}
+.filters{margin-top:44px;font-size:clamp(9px,1vw,12px);letter-spacing:.06em;color:var(--mut)}
+.work-grid{padding-bottom:80px}
+@media (max-width:1023px){ .work-head .row{grid-template-columns:1fr;gap:16px} .work-head{padding:130px 0 32px} }
+@media (max-width:560px){ .work-head{padding:112px 0 24px} }
+</style>
+</head>
+<body>
+
+<footer class="foot" aria-label="Footer">
+  <div class="footcard">
+    <div class="footrow">
+      <nav class="fbtns" aria-label="Footer links">
+        <a class="fbtn" href="./work.html"><span class="t">Work</span><span class="a">→</span></a>
+        <a class="fbtn" href="./index.html#services"><span class="t">Services</span><span class="a">→</span></a>
+        <a class="fbtn" href="./blog/"><span class="t">Blog</span><span class="a">→</span></a>
+        <a class="fbtn" href="/resume/"><span class="t">Résumé</span><span class="a">→</span></a>
+      </nav>
+      <span class="fstatus mono">● OPEN TO NEW PROJECTS · MELBOURNE</span>
+    </div>
+    <span class="wordmark" aria-hidden="true">LARSH.DEV</span>
+    <div class="fmeta mono">
+      <span>© LARS HOLMSTRÖM · <a href="/privacy/">PRIVACY</a></span>
+      <span>BUILT BY HAND. COOKIELESS. RESPECTS DO NOT TRACK.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="page" id="page">
+  <div class="pagebg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav" id="nav">
+    <div class="navpill" id="navpill">
+      <div class="navrow">
+        <a class="brand" href="./index.html">larsh.dev</a>
+        <button class="navbtn" id="navbtn" aria-expanded="false" aria-label="Menu">
+          <span class="ic"><i></i><i></i><i></i></span>
+        </button>
+      </div>
+      <nav class="menu" aria-label="Site">
+        <a class="mlink" href="./work.html"><span class="n mono">01</span><span class="t">Work</span><span class="a">→</span></a>
+        <a class="mlink" href="./index.html#sites"><span class="n mono">02</span><span class="t">Sites</span><span class="a">→</span></a>
+        <a class="mlink" href="./index.html#services"><span class="n mono">03</span><span class="t">Services</span><span class="a">→</span></a>
+        <a class="mlink" href="./blog/"><span class="n mono">04</span><span class="t">Blog</span><span class="a">→</span></a>
+        <a class="mlink" href="./index.html#contact"><span class="n mono">05</span><span class="t">Contact</span><span class="a">→</span></a>
+      </nav>
+      <div class="mfoot">
+        <div class="socials">
+          <a class="js-mail" data-u="larsh.dev" data-d="proton.me" href="#" aria-label="Email">
+            <svg class="stroke" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a>
+          <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer" aria-label="X">
+            <svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
+          <a href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+        </div>
+        <span class="clock mono" id="clock">MELB --:--</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="work-head">
+      <div class="row">
+        <h1 data-r>All projects</h1>
+        <p class="lead" data-r="right">Everything shipped, shipping and experimental: apps, tools and sites, designed and built end-to-end.</p>
+      </div>
+      <p class="filters mono" data-r>ALL 10&nbsp;&nbsp;·&nbsp;&nbsp;WEB 05&nbsp;&nbsp;·&nbsp;&nbsp;MOBILE 04&nbsp;&nbsp;·&nbsp;&nbsp;MACOS 01</p>
+    </div>
+
+    <div class="pgrid work-grid">
+      <a class="card" href="./project.html?id=sanctumpdf" data-r="pop">
+        <div class="ph"><img src="/assets/sanctum-preview.webp" alt="SanctumPDF" loading="lazy"></div>
+        <div class="meta"><h3>SanctumPDF</h3><span class="st mono">SHIPPED</span></div>
+        <p class="d">In-browser PDF conversion</p>
+      </a>
+      <a class="card" href="./project.html?id=metastrip" data-r="pop">
+        <div class="ph"><img src="/assets/metastrip-preview.webp" alt="MetaStrip" loading="lazy"></div>
+        <div class="meta"><h3>MetaStrip</h3><span class="st mono">OPEN SOURCE</span></div>
+        <p class="d">Zero-server metadata removal</p>
+      </a>
+      <a class="card" href="./project.html?id=renew" data-r="pop">
+        <div class="ph"><img src="/assets/renew-preview.webp" alt="Renew" loading="lazy"></div>
+        <div class="meta"><h3>Renew</h3><span class="st mono">SHIPPED</span></div>
+        <p class="d">AI skincare tracking for iOS</p>
+      </a>
+      <a class="card" href="./project.html?id=bedcheck" data-r="pop">
+        <div class="ph"><img src="/assets/bedcheck-preview.webp" alt="Bedcheck" loading="lazy"></div>
+        <div class="meta"><h3>Bedcheck</h3><span class="st mono">IN DEV · ALPHA</span></div>
+        <p class="d">Bedtime accountability for iOS</p>
+      </a>
+      <a class="card" href="./project.html?id=swatch" data-r="pop">
+        <div class="ph"><img src="/assets/tryswatch-preview.webp" alt="Swatch" loading="lazy"></div>
+        <div class="meta"><h3>Swatch</h3><span class="st mono">SHIPPED</span></div>
+        <p class="d">A colour-palette studio for the browser</p>
+      </a>
+      <a class="card" href="./project.html?id=fenced" data-r="pop">
+        <div class="ph"><img src="/assets/fenced1.webp" alt="Fenced" loading="lazy"></div>
+        <div class="meta"><h3>Fenced</h3><span class="st mono">OPEN SOURCE</span></div>
+        <p class="d">Markdown to self-contained HTML</p>
+      </a>
+      <a class="card" href="./project.html?id=vesper" data-r="pop">
+        <div class="ph pane" style="background:#212333"><img src="/assets/vesper1.webp" alt="Vesper" loading="lazy"></div>
+        <div class="meta"><h3>Vesper</h3><span class="st mono">SHIPPED</span></div>
+        <p class="d">Multilingual scripture app for iOS</p>
+      </a>
+      <a class="card" href="./project.html?id=virtus" data-r="pop">
+        <div class="ph pane" style="background:#D4CCBD"><img src="/assets/virtus1.webp" alt="Virtus" loading="lazy"></div>
+        <div class="meta"><h3>Virtus</h3><span class="st mono">SHIPPED</span></div>
+        <p class="d">Stoic daily wisdom, fully on-device</p>
+      </a>
+      <a class="card" href="./project.html?id=helio" data-r="pop">
+        <div class="ph"><img src="/assets/helio1.webp" alt="Helio" loading="lazy"></div>
+        <div class="meta"><h3>Helio</h3><span class="st mono">IN DEVELOPMENT</span></div>
+        <p class="d">Project cockpit for macOS</p>
+      </a>
+      <a class="card" href="./project.html?id=larshdev" data-r="pop">
+        <div class="ph"><img src="/assets/larshdev-1.webp" alt="larsh.dev v2" loading="lazy"></div>
+        <div class="meta"><h3>larsh.dev v2</h3><span class="st mono">EXPERIMENT</span></div>
+        <p class="d">An alternative take on this site</p>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<div class="endspace" aria-hidden="true"></div>
+<div class="toast mono" id="toast" role="status"></div>
+
+<script src="/vendor/lenis.min.js"></script>
+<script src="./site.js?v=2"></script>
+<script src="/analytics.js"></script>
+</body>
+</html>

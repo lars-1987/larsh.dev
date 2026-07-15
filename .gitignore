@@ -20,3 +20,14 @@ summit/Summit_Bicycle_Workshop_Site_Plan.md
 brighton/Brighton_Aesthetic_Desntistry_Site_Plan
 hawthorne/hawthorne-build-plan.md
 atelier/Atelier_Architecture_Build_Spec_v2.md
+
+# Pre-redesign build snapshot — local backup only
+deprecated/
+
+# Local reference / scratch — not part of the site
+Reference/
+review/
+
+# Wrangler local state/cache
+.wrangler/
+worker/node_modules/
