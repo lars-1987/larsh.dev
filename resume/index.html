@@ -1,136 +1,121 @@
 <!doctype html>
-<!-- Résumé — Lars Holmström. Static, self-contained. Fonts + data from ../vendor & ../projects.js.
-     Print stylesheet reflows to a clean light CV (Cmd-P → Save as PDF). -->
+<!-- Résumé — Lars Holmström. New magazine design system (../site.css + ../site.js).
+     Experience renders from ../projects.js. Print stylesheet reflows to a clean
+     light CV (Cmd-P → Save as PDF). -->
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#FAF7F3" />
 <title>Résumé — Lars Holmström</title>
 <meta name="description" content="Lars Holmström — web designer & full-stack developer in Melbourne. Selected work in depth, languages & frameworks, and homelab." />
 <link rel="canonical" href="https://larsh.dev/resume/" />
-<meta name="robots" content="noindex" />
-<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<link rel="preload" href="../vendor/fonts/archivo-100-900-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="../vendor/fonts.css" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="stylesheet" href="/vendor/fonts.css" />
+<link rel="stylesheet" href="../site.css?v=2" />
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfilePage","mainEntity":{"@type":"Person","name":"Lars Holmström","url":"https://larsh.dev/","jobTitle":"Web designer & full-stack developer","address":{"@type":"PostalAddress","addressLocality":"Melbourne","addressCountry":"AU"},"sameAs":["https://x.com/larsitodev","https://github.com/lars-1987"]}}</script>
 <style>
-:root{
-  --paper:#F2ECDF;--paper-2:#EAE2D0;--paper-ink:#16140F;--card:#0E0D0C;--card-2:#17140F;--card-fg:#F3EEE3;
-  --mut-cream:#6E655A;--mut-card:rgba(243,238,227,.6);--accent:#E39A63;--accent-2:#C58455;
-  --line-cream:rgba(22,20,15,.14);--line-card:rgba(243,238,227,.16);
-  --r-card:clamp(20px,2.4vw,40px);--r-pill:999px;--gut:clamp(14px,3.2vw,40px);--pad:clamp(22px,4.4vw,72px);
-  --grot:"Archivo",ui-sans-serif,system-ui,-apple-system,sans-serif;--mono:"Martian Mono",ui-monospace,monospace;--ease:cubic-bezier(.19,1,.22,1);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
-body{background:var(--paper);color:var(--paper-ink);font-family:var(--grot);font-weight:500;font-size:1rem;line-height:1.55;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}::selection{background:var(--accent);color:var(--card)}
-img{display:block;max-width:100%}
-.mono{font-family:var(--mono);font-weight:400;letter-spacing:.02em}
-.pad{padding-left:var(--pad);padding-right:var(--pad)}
-.eyebrow{font-family:var(--mono);font-weight:400;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}
-.disp{font-family:var(--grot);font-weight:800;text-transform:uppercase;line-height:.9;letter-spacing:-.02em;font-stretch:106%}
+.resume{padding-top:150px}
+.mono{font-family:'Martian Mono',ui-monospace,monospace}
 
-/* nav */
-.nav{position:fixed;left:50%;top:var(--gut);transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:.16rem;padding:.5rem;border-radius:var(--r-pill);background:rgba(255,251,244,.86);backdrop-filter:blur(14px) saturate(1.2);border:1px solid rgba(22,20,15,.1);box-shadow:0 16px 40px -18px rgba(0,0,0,.5)}
-.nav__links{display:flex;align-items:center;gap:.16rem}
-.nav a{font-family:var(--grot);font-weight:600;font-size:clamp(.79rem,1.32vw,.95rem);color:var(--paper-ink);padding:.62em 1.05em;border-radius:var(--r-pill);white-space:nowrap;transition:color .3s var(--ease),background .3s var(--ease)}
-.nav a:hover{background:rgba(22,20,15,.07)}
-.nav a.is-active{background:var(--accent);color:var(--card)}
-.nav__burger{display:none}
-.menu{position:fixed;inset:0;z-index:70;background:var(--card);color:var(--card-fg);display:flex;flex-direction:column;justify-content:center;gap:1rem;padding:var(--pad);transform:translateY(-100%);transition:transform .6s var(--ease);visibility:hidden}
-html.menu-open .menu{transform:none;visibility:visible}
-.menu a{font-family:var(--grot);font-weight:800;text-transform:uppercase;font-size:clamp(2rem,9vw,3.4rem);letter-spacing:-.02em;color:var(--card-fg)}
-.menu a:hover{color:var(--accent)}
-@media(max-width:680px){
-  .nav__links{display:none}
-  .nav{gap:0;padding:.35rem}
-  .nav__burger{display:inline-flex;align-items:center;gap:.55em;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-ink);padding:.6em 1em;background:none;border:0;cursor:pointer}
-  .nav__burger b{display:block;width:20px;height:2px;background:var(--paper-ink);position:relative}
-  .nav__burger b::before,.nav__burger b::after{content:"";position:absolute;left:0;width:20px;height:2px;background:var(--paper-ink)}
-  .nav__burger b::before{top:-6px}.nav__burger b::after{top:6px}
-}
-
-/* header card */
-.rhead{background:var(--card);color:var(--card-fg);margin:var(--gut);border-radius:var(--r-card);padding:clamp(70px,12vh,150px) clamp(24px,4vw,64px) clamp(30px,5vw,60px);position:relative;overflow:hidden}
-.rhead__glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(40% 55% at 82% 15%,rgba(227,154,99,.28),rgba(227,154,99,0) 70%)}
-.rhead__in{position:relative;max-width:1180px;margin:0 auto}
-.rhead h1{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.03em;line-height:.86;font-size:clamp(3rem,11vw,9rem);font-stretch:108%;margin:.3em 0 .2em}
-.rhead__role{font-size:clamp(1.1rem,2.2vw,1.7rem);font-weight:600;color:var(--card-fg)}
-.rhead__meta{margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:.6rem}
-.rhead__meta a,.rhead__meta span{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--card-fg);border:1px solid var(--line-card);border-radius:var(--r-pill);padding:.6em 1em;display:inline-flex;align-items:center;gap:.5em}
-.rhead__meta a{transition:border-color .3s,color .3s}.rhead__meta a:hover{border-color:var(--accent);color:var(--accent)}
-.rhead__meta svg{width:1em;height:1em}
-.rhead__print{cursor:pointer;background:var(--accent);color:var(--card);border:1px solid var(--accent) !important}
+/* header */
+.rhead{max-width:920px}
+.rhead h1{font-weight:600;font-size:clamp(44px,8vw,92px);letter-spacing:-.03em;line-height:.95}
+.rhead .role{color:var(--mut);font-size:clamp(17px,2vw,22px);margin-top:18px}
+.rhead .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+.rhead .meta a,.rhead .meta span{display:inline-flex;align-items:center;gap:8px;
+  font-family:'Martian Mono',monospace;font-size:11px;letter-spacing:.04em;
+  border:1px solid var(--hair);border-radius:999px;padding:9px 15px;color:var(--mut)}
+.rhead .meta a{transition:border-color .3s,color .3s;cursor:pointer}
+.rhead .meta a:hover{border-color:var(--ink);color:var(--ink)}
+.rhead .meta svg{width:13px;height:13px;fill:currentColor}
+.rhead .meta .print{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.rhead .meta .print:hover{color:var(--paper)}
+.rhead .meta .print svg{fill:var(--paper)}
 
 /* sections */
-.sec{padding:clamp(50px,9vh,120px) 0;border-top:1px solid var(--line-cream);max-width:1180px;margin:0 auto}
-.sec:first-of-type{border-top:0}
-.sec__head{display:flex;align-items:baseline;gap:1rem;margin-bottom:clamp(28px,5vh,56px)}
-.sec__head h2{font-size:clamp(1.8rem,5vw,3.6rem)}
-.sec__head .eyebrow{color:var(--mut-cream)}
-.summary{font-size:clamp(1.15rem,2vw,1.6rem);font-weight:500;line-height:1.4;max-width:60ch}
-.summary b{font-weight:700}
+.rsec{padding:clamp(52px,8vh,104px) 0;border-top:1px solid var(--hair)}
+.rsec > h2{font-weight:600;font-size:clamp(30px,4.2vw,52px);letter-spacing:-.02em;margin-bottom:44px}
+.summary{font-size:clamp(20px,2.4vw,30px);font-weight:500;line-height:1.4;letter-spacing:-.015em;max-width:24ch;max-width:min(760px,100%)}
+.summary b{font-weight:600}
 
 /* experience */
-.exp{display:grid;grid-template-columns:1fr;gap:.9rem;padding:clamp(24px,3.4vw,42px) 0;border-top:1px solid var(--line-cream);scroll-margin-top:6rem;transition:background .4s ease}
-.exp--target{animation:expFlash 1.6s ease}
-@keyframes expFlash{0%,100%{background:transparent}18%{background:rgba(227,154,99,.12)}}
+.exp{padding:clamp(28px,3.4vw,44px) 0;border-top:1px solid var(--hair);scroll-margin-top:120px;transition:background .5s ease}
 .exp:first-child{border-top:0;padding-top:0}
-.exp__head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.exp__name{font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;font-size:clamp(1.4rem,3vw,2.3rem);line-height:.95}
-.exp__meta{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut-cream)}
-.exp__meta .wip{color:var(--accent-2)}
-.exp__tech{font-family:var(--mono);font-size:.72rem;letter-spacing:.02em;color:var(--mut-cream);line-height:1.5}
-.exp__points{list-style:none;display:grid;gap:.55rem;max-width:75ch}
-.exp__points li{position:relative;padding-left:1.3em;line-height:1.5}
-.exp__points li::before{content:"";position:absolute;left:.05em;top:.62em;width:.42em;height:.42em;background:var(--accent);border-radius:1px}
-.exp__points strong{font-weight:700}.exp__points code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);padding:.05em .35em;border-radius:4px}
-.exp__links{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.2rem}
-.exp__links a{font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;display:inline-flex;align-items:center;gap:.4em;border-bottom:1px solid var(--line-cream);padding-bottom:.15em;transition:color .3s,border-color .3s}
-.exp__links a:hover{color:var(--accent-2);border-color:var(--accent-2)}
-.exp__links a svg{width:.9em;height:.9em}.exp__links .off{opacity:.5}
+.exp--target{animation:expFlash 1.8s ease}
+@keyframes expFlash{0%,100%{background:transparent}18%{background:rgba(17,17,17,.05)}}
+.exp__head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.exp__name{font-weight:500;font-size:clamp(24px,3vw,34px);letter-spacing:-.01em;line-height:1.05}
+.exp__meta{font-family:'Martian Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);white-space:nowrap}
+.exp__meta.wip{color:var(--ink)}
+.exp__tech{font-family:'Martian Mono',monospace;font-size:12px;letter-spacing:.01em;color:var(--mut);line-height:1.6;margin-top:12px;max-width:80ch}
+.exp__points{list-style:none;display:grid;gap:10px;margin-top:22px;max-width:76ch}
+.exp__points li{position:relative;padding-left:22px;line-height:1.6;font-size:clamp(15px,1.5vw,17px);color:rgba(17,17,17,.82)}
+.exp__points li::before{content:"";position:absolute;left:2px;top:.66em;width:6px;height:6px;background:var(--ink);border-radius:1px}
+.exp__points strong{font-weight:600;color:var(--ink)}
+.exp__points code{font-family:'Martian Mono',monospace;font-size:.84em;background:rgba(17,17,17,.06);padding:2px 6px;border-radius:5px}
+.exp__links{display:flex;gap:18px;flex-wrap:wrap;margin-top:22px}
+.exp__links a{font-family:'Martian Mono',monospace;font-size:11px;letter-spacing:.04em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:6px;color:var(--ink);border-bottom:1px solid var(--hair);padding-bottom:3px;transition:border-color .3s}
+.exp__links a:hover{border-color:var(--ink)}
+.exp__links a svg{width:12px;height:12px;fill:currentColor}
+.exp__links .off{opacity:.45;pointer-events:none}
 
-/* skills + homelab (ported) */
-.skills__groups{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,3vw,44px)}
-.skill-group__cat{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mut-cream);margin-bottom:1rem}
-.skill-group__items{display:flex;flex-wrap:wrap;gap:.6rem}
-.skill{display:inline-flex;align-items:center;gap:.55em;font-weight:600;font-size:.92rem;border:1px solid var(--line-cream);border-radius:var(--r-pill);padding:.55em 1em;transition:border-color .3s,transform .3s}
-.skill:hover{border-color:var(--accent-2);transform:translateY(-2px)}
-.skill svg{width:1.1em;height:1.1em;color:var(--paper-ink)}
-.lab-specs{display:grid;gap:clamp(18px,2.6vw,32px)}
-.lab-row{display:grid;grid-template-columns:minmax(140px,1fr) 3fr;gap:1rem 2rem;padding-top:clamp(14px,2vh,20px);border-top:1px solid var(--line-cream)}
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(28px,3.4vw,52px)}
+.skill-group__cat{font-family:'Martian Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-bottom:18px}
+.skill-group__items{display:flex;flex-wrap:wrap;gap:10px}
+.skill{display:inline-flex;align-items:center;gap:9px;font-weight:500;font-size:15px;color:var(--ink);
+  border:1px solid var(--hair);border-radius:999px;padding:9px 16px;transition:border-color .3s,translate .3s var(--ease)}
+.skill:hover{border-color:var(--ink);translate:0 -2px}
+.skill svg{width:16px;height:16px;fill:currentColor}
+
+/* homelab */
+.lab{display:grid;gap:clamp(20px,2.6vw,34px)}
+.lab-row{display:grid;grid-template-columns:minmax(150px,1fr) 3fr;gap:12px 40px;padding-top:22px;border-top:1px solid var(--hair)}
 .lab-row:first-child{border-top:0;padding-top:0}
-.lab-row__cat{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-2)}
-.lab-row__items{display:grid;gap:.5rem}
-.lab-row__item b{font-weight:700}.lab-row__item .sep{color:var(--mut-cream);margin:0 .5em}
+.lab-row__cat{font-family:'Martian Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.lab-row__items{display:grid;gap:9px;color:rgba(17,17,17,.82);font-size:clamp(15px,1.5vw,17px)}
+.lab-row__item b{font-weight:600;color:var(--ink)}
+.lab-row__item .sep{color:var(--mut);margin:0 .5em}
 
-/* footer */
-.rfoot{background:var(--card);color:var(--card-fg);padding:clamp(40px,7vh,70px) var(--pad);margin-top:clamp(40px,8vh,90px)}
-.rfoot__in{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;font-family:var(--mono);font-size:.72rem;letter-spacing:.03em;color:var(--mut-card)}
-.rfoot a{color:var(--card-fg);border-bottom:1px solid var(--line-card)}
-
-@media (max-width:760px){.skills__groups{grid-template-columns:1fr}.lab-row{grid-template-columns:1fr;gap:.5rem}}
+@media (max-width:760px){
+  .resume{padding-top:120px}
+  .skills{grid-template-columns:1fr}
+  .lab-row{grid-template-columns:1fr;gap:6px}
+  .exp__meta{white-space:normal}
+}
 
 /* ===== PRINT: clean light CV ===== */
 @media print{
   @page{margin:14mm}
-  :root{--paper:#fff;--paper-ink:#111;--mut-cream:#333;--accent:#8a5a2b;--accent-2:#8a5a2b;--line-cream:rgba(0,0,0,.22)}
+  .nav,.foot,.endspace,.toast,.grain,.pagebg,.rhead .print,.no-print{display:none !important}
   html,body{background:#fff;color:#111}
-  .nav,.menu,.rhead__glow,.rhead__print,.rfoot,.exp__shots,.no-print{display:none !important}
-  .rhead{background:#fff;color:#111;margin:0;padding:0 0 6mm;border-radius:0;border-bottom:2px solid #111}
-  .rhead h1{font-size:34pt;margin:.1em 0}.rhead__role{font-size:12pt}
-  .rhead__meta{margin-top:3mm}.rhead__meta a,.rhead__meta span{color:#111;border:0;padding:0 .8em 0 0;font-size:8.5pt}
-  .sec{padding:6mm 0;border-top:0;max-width:none}
-  .sec__head{margin-bottom:4mm}.sec__head h2{font-size:15pt}
-  .summary{font-size:11pt}
-  .exp{padding:4mm 0;break-inside:avoid}
-  .exp__name{font-size:12.5pt}.exp__meta,.exp__tech{font-size:8.5pt}
-  .exp__points li{font-size:9.5pt}.exp__points li::before{background:#111}
-  .exp__links a{color:#111;border:0}
-  .skill,.skill-group{break-inside:avoid}.skill{border-color:rgba(0,0,0,.3)}.skill svg{color:#111}
-  .lab-row{break-inside:avoid}
-  h1,h2,h3,.exp__name,.skill-group__cat,.lab-row__cat{break-after:avoid}
+  .page{isolation:auto}
+  .resume{padding-top:0}
+  .wrap{width:auto}
+  .rhead{max-width:none;padding:0 0 6mm;border-bottom:2px solid #111;margin-bottom:4mm}
+  .rhead h1{font-size:32pt;line-height:1}
+  .rhead .role{font-size:12pt;margin-top:2mm;color:#111}
+  .rhead .meta{margin-top:3mm;gap:0 5mm}
+  .rhead .meta a,.rhead .meta span{border:0;padding:0;color:#111;font-size:8.5pt}
+  .rsec{padding:5mm 0;border-top:0}
+  .rsec > h2{font-size:15pt;margin-bottom:3mm}
+  .summary{font-size:11pt;max-width:none}
+  .exp{padding:3.5mm 0;break-inside:avoid;border-top:1px solid #ccc}
+  .exp__name{font-size:12.5pt}
+  .exp__meta,.exp__tech{font-size:8.5pt;color:#333}
+  .exp__points li{font-size:9.5pt;color:#111}
+  .exp__points li::before{background:#111}
+  .exp__links a{color:#111;border:0;padding:0}
+  .skills{gap:4mm}
+  .skill,.skill-group{break-inside:avoid}
+  .skill{border-color:#999;padding:1mm 2.5mm;font-size:9pt}
+  .skill svg{fill:#111}
+  .lab-row{break-inside:avoid;border-top:1px solid #ccc}
+  .lab-row__cat,.lab-row__item b{color:#111}
+  h1,h2,.exp__name,.skill-group__cat,.lab-row__cat{break-after:avoid}
   a{text-decoration:none}
 }
 </style>
@@ -145,7 +130,6 @@ html.menu-open .menu{transform:none;visibility:visible}
   <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M17.543 12.724c-.02-2.013 1.646-2.986 1.72-3.034-.937-1.37-2.396-1.558-2.914-1.58-1.24-.124-2.422.73-3.053.73-.63 0-1.602-.712-2.637-.693-1.355.02-2.605.788-3.302 2.003-1.408 2.444-.36 6.06 1.01 8.04.67.968 1.466 2.056 2.506 2.018 1.007-.04 1.388-.653 2.602-.653 1.215 0 1.56.653 2.62.634 1.082-.02 1.767-.988 2.428-1.962.764-1.128 1.08-2.222 1.098-2.28-.024-.01-2.105-.81-2.127-3.212M15.57 6.84c.55-.67.921-1.598.819-2.524-.79.033-1.749.527-2.316 1.195-.509.593-.954 1.54-.834 2.448.88.068 1.78-.448 2.332-1.118"/></symbol>
   <symbol id="i-github" viewBox="0 0 256 256"><path fill="currentColor" d="M208.31 75.68A59.78 59.78 0 0 0 202.93 28a8 8 0 0 0-6.93-4 59.75 59.75 0 0 0-48 24h-25.05a59.75 59.75 0 0 0-48-24 8 8 0 0 0-6.93 4 59.78 59.78 0 0 0-5.38 47.68A58.14 58.14 0 0 0 56 104v8a56.06 56.06 0 0 0 48.44 55.47A39.8 39.8 0 0 0 96 192v8H72a24 24 0 0 1-24-24A40 40 0 0 0 8 136a8 8 0 0 0 0 16 24 24 0 0 1 24 24 40 40 0 0 0 40 40h24v16a8 8 0 0 0 16 0v-40a24 24 0 0 1 48 0v40a8 8 0 0 0 16 0v-40a39.8 39.8 0 0 0-8.44-24.53A56.06 56.06 0 0 0 200 112v-8a58.14 58.14 0 0 0-8.31-28.32z"/></symbol>
   <symbol id="i-arrow-ur" viewBox="0 0 256 256"><path fill="currentColor" d="M200 64v104a8 8 0 0 1-16 0V83.3L69.66 197.66a8 8 0 0 1-11.32-11.32L172.69 72H88a8 8 0 0 1 0-16h104a8 8 0 0 1 8 8z"/></symbol>
-  <symbol id="i-arrow-l" viewBox="0 0 256 256"><path fill="currentColor" d="M224 128a8 8 0 0 1-8 8H59.31l58.35 58.34a8 8 0 0 1-11.32 11.32l-72-72a8 8 0 0 1 0-11.32l72-72a8 8 0 0 1 11.32 11.32L59.31 120H216a8 8 0 0 1 8 8Z"/></symbol>
   <symbol id="i-mail" viewBox="0 0 256 256"><path fill="currentColor" d="M224 48H32a8 8 0 0 0-8 8v136a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a8 8 0 0 0-8-8zM98.71 128 40 181.81V74.19zm11.84 10.85 12 11.05a8 8 0 0 0 10.82 0l12-11.05 47 43.15H63.5zM157.29 128 216 74.18v107.63z"/></symbol>
   <symbol id="i-x" viewBox="0 0 256 256"><path fill="currentColor" d="M214.75 211.71l-62.6-91.21 61.77-67.97a8 8 0 0 0-11.84-10.76l-58.84 64.74-41.66-60.7A8 8 0 0 0 94.69 36H48a8 8 0 0 0-6.6 12.52l62.6 91.2-61.77 67.98a8 8 0 1 0 11.84 10.76l58.84-64.74 41.66 60.7A8 8 0 0 0 161.31 220H208a8 8 0 0 0 6.6-12.52z"/></symbol>
   <symbol id="i-print" viewBox="0 0 256 256"><path fill="currentColor" d="M214.4 74.66A32 32 0 0 0 192 66V40a16 16 0 0 0-16-16H80a16 16 0 0 0-16 16v26a32 32 0 0 0-22.4 8.66A31.65 31.65 0 0 0 32 98v54a16 16 0 0 0 16 16h16v24a16 16 0 0 0 16 16h96a16 16 0 0 0 16-16v-24h16a16 16 0 0 0 16-16V98a31.65 31.65 0 0 0-9.6-23.34ZM80 40h96v24H80Zm96 176H80v-48h96Zm32-64H48V98a15.86 15.86 0 0 1 4.71-11.36A16 16 0 0 1 64 82h128a16 16 0 0 1 11.28 4.64A15.86 15.86 0 0 1 208 98Zm-24-40a12 12 0 1 1-12-12 12 12 0 0 1 12 12Z"/></symbol>
@@ -160,157 +144,170 @@ html.menu-open .menu{transform:none;visibility:visible}
   <symbol id="t-tailwind" viewBox="0 0 24 24"><path fill="currentColor" d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/></symbol>
   <symbol id="t-docker" viewBox="0 0 24 24"><path fill="currentColor" d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186h-2.12a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338.001-.676.03-1.01.087-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.751.751 0 00-.75.748 11.376 11.376 0 00.692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137.983.003 1.963-.086 2.93-.266a12.248 12.248 0 003.823-1.389c.98-.567 1.86-1.288 2.61-2.136 1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288Z"/></symbol>
   <symbol id="t-supabase" viewBox="0 0 24 24"><path fill="currentColor" d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C-.33 13.427.65 15.455 2.409 15.455h9.579l.113 7.51c.014.985 1.259 1.408 1.873.636l9.262-11.653c1.093-1.375.113-3.403-1.645-3.403h-9.642z"/></symbol>
-  <symbol id="t-proxmox" viewBox="0 0 24 24"><path fill="currentColor" d="M4.928 1.825c-1.09.553-1.09.64-.07 1.78 5.655 6.295 7.004 7.782 7.107 7.782.139.017 7.971-8.542 8.058-8.801.034-.07-.208-.312-.519-.536-.415-.312-.864-.433-1.712-.467-1.59-.104-2.144.242-4.115 2.455-.899 1.003-1.66 1.833-1.66 1.833-.017 0-.76-.813-1.642-1.798S8.473 2.1 8.127 1.91c-.796-.45-2.421-.484-3.2-.086zM1.297 4.367C.45 4.695 0 5.007 0 5.248c0 .121 1.331 1.678 2.94 3.459 1.625 1.78 2.939 3.268 2.939 3.302 0 .035-1.331 1.522-2.94 3.303C1.314 17.11.017 18.683.035 18.822c.086.467 1.504 1.055 2.541 1.055 1.678-.018 2.058-.312 5.603-4.202 1.78-1.954 3.233-3.614 3.233-3.666 0-.069-1.435-1.694-3.199-3.63-2.3-2.508-3.423-3.632-3.96-3.874-.812-.398-2.126-.467-2.956-.138zm18.467.12c-.502.26-1.764 1.505-3.943 3.891-1.763 1.937-3.199 3.562-3.199 3.631 0 .07 1.453 1.712 3.234 3.666 3.544 3.89 3.925 4.184 5.602 4.202 1.038 0 2.455-.588 2.542-1.055.017-.156-1.28-1.712-2.905-3.493-1.608-1.78-2.94-3.285-2.94-3.32 0-.034 1.332-1.539 2.94-3.32C22.72 6.91 24.017 5.352 24 5.214c-.087-.45-1.366-.968-2.473-1.038-.795-.034-1.21.035-1.763.312zM7.954 16.973c-2.144 2.369-3.908 4.374-3.943 4.46-.034.07.208.312.52.537.414.311.864.432 1.711.467 1.574.103 2.161-.26 4.15-2.508.864-.968 1.608-1.78 1.625-1.78s.761.812 1.643 1.798c2.023 2.248 2.559 2.576 4.132 2.49.848-.035 1.297-.156 1.712-.467.311-.225.553-.467.519-.536-.087-.26-7.92-8.819-8.058-8.801-.069 0-1.867 1.954-4.011 4.34z"/></symbol>
-  <symbol id="t-cloudflare" viewBox="0 0 24 24"><path fill="currentColor" d="M16.5088 16.8447c.1475-.5068.0908-.9707-.1553-1.3154-.2246-.3164-.6045-.499-1.0615-.5205l-8.6592-.1123a.1559.1559 0 0 1-.1333-.0713c-.0283-.042-.0351-.0986-.021-.1553.0278-.084.1123-.1484.2036-.1562l8.7359-.1123c1.0351-.0489 2.1601-.8868 2.5537-1.9136l.499-1.3013c.0215-.0561.0293-.1128.0147-.168-.5625-2.5463-2.835-4.4453-5.5499-4.4453-2.5039 0-4.6284 1.6177-5.3876 3.8614-.4927-.3658-1.1187-.5625-1.794-.499-1.2026.119-2.1665 1.083-2.2861 2.2856-.0283.31-.0069.6128.0635.894C1.5683 13.171 0 14.7754 0 16.752c0 .1748.0142.3515.0352.5273.0141.083.0844.1475.1689.1475h15.9814c.0909 0 .1758-.0645.2032-.1553l.12-.4268zm2.7568-5.5634c-.0771 0-.1611 0-.2383.0112-.0566 0-.1054.0415-.127.0976l-.3378 1.1744c-.1475.5068-.0918.9707.1543 1.3164.2256.3164.6055.498 1.0625.5195l1.8437.1133c.0557 0 .1055.0263.1329.0703.0283.043.0351.1074.0214.1562-.0283.084-.1132.1485-.204.1553l-1.921.1123c-1.041.0488-2.1582.8867-2.5527 1.914l-.1406.3585c-.0283.0713.0215.1416.0986.1416h6.5977c.0771 0 .1474-.0489.169-.126.1122-.4082.1757-.837.1757-1.2803 0-2.6025-2.125-4.727-4.7344-4.727"/></symbol>
-  <symbol id="t-vercel" viewBox="0 0 24 24"><path fill="currentColor" d="M24 22.525H0l12-21.05 12 21.05z"/></symbol>
   <symbol id="t-git" viewBox="0 0 24 24"><path fill="currentColor" d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.658 2.66c.645-.223 1.387-.078 1.9.435.721.72.721 1.884 0 2.604-.719.719-1.881.719-2.6 0-.539-.541-.674-1.337-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348.713.721.713 1.883 0 2.6-.719.721-1.889.721-2.609 0-.719-.719-.719-1.879 0-2.598.182-.18.387-.316.605-.406V8.835c-.217-.091-.424-.222-.6-.401-.545-.545-.676-1.342-.396-2.009L7.636 3.7.45 10.881c-.6.605-.6 1.584 0 2.189l10.48 10.477c.604.604 1.582.604 2.186 0l10.43-10.43c.605-.603.605-1.582 0-2.187"/></symbol>
   <symbol id="t-linux" viewBox="0 0 24 24"><path fill="currentColor" d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2zm-2.962.059h.036c.142 0 .27.048.399.135.146.129.264.288.344.465.09.199.14.4.153.667v.004c.007.134.006.2-.002.266v.08c-.03.007-.056.018-.083.024-.152.055-.274.135-.393.2.012-.09.013-.18.003-.267v-.015c-.012-.133-.04-.2-.082-.333a.613.613 0 00-.166-.267.248.248 0 00-.183-.064h-.021c-.071.006-.13.04-.186.132a.552.552 0 00-.12.27.944.944 0 00-.023.33v.015c.012.135.037.2.08.334.046.134.098.2.166.268.01.009.02.018.034.024-.07.057-.117.07-.176.136a.304.304 0 01-.131.068 2.62 2.62 0 01-.275-.402 1.772 1.772 0 01-.155-.667 1.759 1.759 0 01.08-.668 1.43 1.43 0 01.283-.535c.128-.133.26-.2.418-.2zm1.37 1.706c.332 0 .733.065 1.216.399.293.2.523.269 1.052.468h.003c.255.136.405.266.478.399v-.131a.571.571 0 01.016.47c-.123.31-.516.643-1.063.842v.002c-.268.135-.501.333-.775.465-.276.135-.588.292-1.012.267a1.139 1.139 0 01-.448-.067 3.566 3.566 0 01-.322-.198c-.195-.135-.363-.332-.612-.465v-.005h-.005c-.4-.246-.616-.512-.686-.71-.07-.268-.005-.47.193-.6.224-.135.38-.271.483-.336.104-.074.143-.102.176-.131h.002v-.003c.169-.202.436-.47.839-.601.139-.036.294-.065.466-.065zm2.8 2.142c.358 1.417 1.196 3.475 1.735 4.473.286.534.855 1.659 1.102 3.024.156-.005.33.018.513.064.646-1.671-.546-3.467-1.089-3.966-.22-.2-.232-.335-.123-.335.59.534 1.365 1.572 1.646 2.757.13.535.16 1.104.021 1.67.067.028.135.06.205.067 1.032.534 1.413.938 1.23 1.537v-.043c-.06-.003-.12 0-.18 0h-.016c.151-.467-.182-.825-1.065-1.224-.915-.4-1.646-.336-1.77.465-.008.043-.013.066-.018.135-.068.023-.139.053-.209.064-.43.268-.662.669-.793 1.187-.13.533-.17 1.156-.205 1.869v.003c-.02.334-.17.838-.319 1.35-1.5 1.072-3.58 1.538-5.348.334a2.645 2.645 0 00-.402-.533 1.45 1.45 0 00-.275-.333c.182 0 .338-.03.465-.067a.615.615 0 00.314-.334c.108-.267 0-.697-.345-1.163-.345-.467-.931-.995-1.788-1.521-.63-.4-.986-.87-1.15-1.396-.165-.534-.143-1.085-.015-1.645.245-1.07.873-2.11 1.274-2.763.107-.065.037.135-.408.974-.396.751-1.14 2.497-.122 3.854a8.123 8.123 0 01.647-2.876c.564-1.278 1.743-3.504 1.836-5.268.048.036.217.135.289.202.218.133.38.333.59.465.21.201.477.335.876.335.039.003.075.006.11.006.412 0 .73-.134.997-.268.29-.134.52-.334.74-.4h.005c.467-.135.835-.402 1.044-.7zm2.185 8.958c.037.6.343 1.245.882 1.377.588.134 1.434-.333 1.791-.765l.211-.01c.315-.007.577.01.847.268l.003.003c.208.199.305.53.391.876.085.4.154.78.409 1.066.486.527.645.906.636 1.14l.003-.007v.018l-.003-.012c-.015.262-.185.396-.498.595-.63.401-1.746.712-2.457 1.57-.618.737-1.37 1.14-2.036 1.191-.664.053-1.237-.2-1.574-.898l-.005-.003c-.21-.4-.12-1.025.056-1.69.176-.668.428-1.344.463-1.897.037-.714.076-1.335.195-1.814.12-.465.308-.797.641-.984l.045-.022zm-10.814.049h.01c.053 0 .105.005.157.014.376.055.706.333 1.023.752l.91 1.664.003.003c.243.533.754 1.064 1.189 1.637.434.598.77 1.131.729 1.57v.006c-.057.744-.48 1.148-1.125 1.294-.645.135-1.52.002-2.395-.464-.968-.536-2.118-.469-2.857-.602-.369-.066-.61-.2-.723-.4-.11-.2-.113-.602.123-1.23v-.004l.002-.003c.117-.334.03-.752-.027-1.118-.055-.401-.083-.71.043-.94.16-.334.396-.4.69-.533.294-.135.64-.202.915-.47h.002v-.002c.256-.268.445-.601.668-.838.19-.201.38-.336.663-.336z"/></symbol>
   <symbol id="t-sqlite" viewBox="0 0 24 24"><path fill="currentColor" d="M21.678.521c-1.032-.92-2.28-.55-3.513.544a8.71 8.71 0 0 0-.547.535c-2.109 2.237-4.066 6.38-4.674 9.544.237.48.422 1.093.544 1.561a13.044 13.044 0 0 1 .164.703s-.019-.071-.096-.296l-.05-.146a1.689 1.689 0 0 0-.033-.08c-.138-.32-.518-.995-.686-1.289-.143.423-.27.818-.376 1.176.484.884.778 2.4.778 2.4s-.025-.099-.147-.442c-.107-.303-.644-1.244-.772-1.464-.217.804-.304 1.346-.226 1.478.152.256.296.698.422 1.186.286 1.1.485 2.44.485 2.44l.017.224a22.41 22.41 0 0 0 .056 2.748c.095 1.146.273 2.13.5 2.657l.155-.084c-.334-1.038-.47-2.399-.41-3.967.09-2.398.642-5.29 1.661-8.304 1.723-4.55 4.113-8.201 6.3-9.945-1.993 1.8-4.692 7.63-5.5 9.788-.904 2.416-1.545 4.684-1.931 6.857.666-2.037 2.821-2.912 2.821-2.912s1.057-1.304 2.292-3.166c-.74.169-1.955.458-2.362.629-.6.251-.762.337-.762.337s1.945-1.184 3.613-1.72C21.695 7.9 24.195 2.767 21.678.521m-18.573.543A1.842 1.842 0 0 0 1.27 2.9v16.608a1.84 1.84 0 0 0 1.835 1.834h9.418a22.953 22.953 0 0 1-.052-2.707c-.006-.062-.011-.141-.016-.2a27.01 27.01 0 0 0-.473-2.378c-.121-.47-.275-.898-.369-1.057-.116-.197-.098-.31-.097-.432 0-.12.015-.245.037-.386a9.98 9.98 0 0 1 .234-1.045l.217-.028c-.017-.035-.014-.065-.031-.097l-.041-.381a32.8 32.8 0 0 1 .382-1.194l.2-.019c-.008-.016-.01-.038-.018-.053l-.043-.316c.63-3.28 2.587-7.443 4.8-9.791.066-.069.133-.128.198-.194Z"/></symbol>
   <symbol id="i-database" viewBox="0 0 256 256"><path fill="currentColor" d="M128 24C74.17 24 32 48.6 32 80v96c0 31.4 42.17 56 96 56s96-24.6 96-56V80c0-31.4-42.17-56-96-56Zm80 56c0 8.36-11.71 17.29-31.32 23.88C159.92 109.37 145 112 128 112s-31.92-2.63-48.68-8.12C59.71 97.29 48 88.36 48 80s11.71-17.29 31.32-23.88C96.08 50.63 111 48 128 48s31.92 2.63 48.68 8.12C196.29 62.71 208 71.64 208 80ZM48 104.19c3.84 2.74 8.42 5.25 13.69 7.49C81.92 119.27 104.07 124 128 124s46.08-4.73 66.31-12.32c5.27-2.24 9.85-4.75 13.69-7.49V128c0 8.36-11.71 17.29-31.32 23.88C159.92 157.37 145 160 128 160s-31.92-2.63-48.68-8.12C59.71 145.29 48 136.36 48 128Zm160 71.81c0 8.36-11.71 17.29-31.32 23.88C159.92 205.37 145 208 128 208s-31.92-2.63-48.68-8.12C59.71 193.29 48 184.36 48 176v-23.81c3.84 2.74 8.42 5.25 13.69 7.49C81.92 167.27 104.07 172 128 172s46.08-4.73 66.31-12.32c5.27-2.24 9.85-4.75 13.69-7.49Z"/></symbol>
+  <symbol id="t-proxmox" viewBox="0 0 24 24"><path fill="currentColor" d="M4.928 1.825c-1.09.553-1.09.64-.07 1.78 5.655 6.295 7.004 7.782 7.107 7.782.139.017 7.971-8.542 8.058-8.801.034-.07-.208-.312-.519-.536-.415-.312-.864-.433-1.712-.467-1.59-.104-2.144.242-4.115 2.455-.899 1.003-1.66 1.833-1.66 1.833-.017 0-.76-.813-1.642-1.798S8.473 2.1 8.127 1.91c-.796-.45-2.421-.484-3.2-.086zM1.297 4.367C.45 4.695 0 5.007 0 5.248c0 .121 1.331 1.678 2.94 3.459 1.625 1.78 2.939 3.268 2.939 3.302 0 .035-1.331 1.522-2.94 3.303C1.314 17.11.017 18.683.035 18.822c.086.467 1.504 1.055 2.541 1.055 1.678-.018 2.058-.312 5.603-4.202 1.78-1.954 3.233-3.614 3.233-3.666 0-.069-1.435-1.694-3.199-3.63-2.3-2.508-3.423-3.632-3.96-3.874-.812-.398-2.126-.467-2.956-.138zm18.467.12c-.502.26-1.764 1.505-3.943 3.891-1.763 1.937-3.199 3.562-3.199 3.631 0 .07 1.453 1.712 3.234 3.666 3.544 3.89 3.925 4.184 5.602 4.202 1.038 0 2.455-.588 2.542-1.055.017-.156-1.28-1.712-2.905-3.493-1.608-1.78-2.94-3.285-2.94-3.32 0-.034 1.332-1.539 2.94-3.32C22.72 6.91 24.017 5.352 24 5.214c-.087-.45-1.366-.968-2.473-1.038-.795-.034-1.21.035-1.763.312zM7.954 16.973c-2.144 2.369-3.908 4.374-3.943 4.46-.034.07.208.312.52.537.414.311.864.432 1.711.467 1.574.103 2.161-.26 4.15-2.508.864-.968 1.608-1.78 1.625-1.78s.761.812 1.643 1.798c2.023 2.248 2.559 2.576 4.132 2.49.848-.035 1.297-.156 1.712-.467.311-.225.553-.467.519-.536-.087-.26-7.92-8.819-8.058-8.801-.069 0-1.867 1.954-4.011 4.34z"/></symbol>
+  <symbol id="t-cloudflare" viewBox="0 0 24 24"><path fill="currentColor" d="M16.5088 16.8447c.1475-.5068.0908-.9707-.1553-1.3154-.2246-.3164-.6045-.499-1.0615-.5205l-8.6592-.1123a.1559.1559 0 0 1-.1333-.0713c-.0283-.042-.0351-.0986-.021-.1553.0278-.084.1123-.1484.2036-.1562l8.7359-.1123c1.0351-.0489 2.1601-.8868 2.5537-1.9136l.499-1.3013c.0215-.0561.0293-.1128.0147-.168-.5625-2.5463-2.835-4.4453-5.5499-4.4453-2.5039 0-4.6284 1.6177-5.3876 3.8614-.4927-.3658-1.1187-.5625-1.794-.499-1.2026.119-2.1665 1.083-2.2861 2.2856-.0283.31-.0069.6128.0635.894C1.5683 13.171 0 14.7754 0 16.752c0 .1748.0142.3515.0352.5273.0141.083.0844.1475.1689.1475h15.9814c.0909 0 .1758-.0645.2032-.1553l.12-.4268zm2.7568-5.5634c-.0771 0-.1611 0-.2383.0112-.0566 0-.1054.0415-.127.0976l-.3378 1.1744c-.1475.5068-.0918.9707.1543 1.3164.2256.3164.6055.498 1.0625.5195l1.8437.1133c.0557 0 .1055.0263.1329.0703.0283.043.0351.1074.0214.1562-.0283.084-.1132.1485-.204.1553l-1.921.1123c-1.041.0488-2.1582.8867-2.5527 1.914l-.1406.3585c-.0283.0713.0215.1416.0986.1416h6.5977c.0771 0 .1474-.0489.169-.126.1122-.4082.1757-.837.1757-1.2803 0-2.6025-2.125-4.727-4.7344-4.727"/></symbol>
+  <symbol id="t-vercel" viewBox="0 0 24 24"><path fill="currentColor" d="M24 22.525H0l12-21.05 12 21.05z"/></symbol>
 </defs></svg>
 
-<nav class="nav" aria-label="Primary">
-  <div class="nav__links">
-    <a href="../">Home</a>
-    <a href="../#work">Work</a>
-    <a href="../#services">Services</a>
-    <a href="./" class="is-active">Résumé</a>
-    <a href="../blog/">Blog</a>
-    <a href="../#contact">Contact</a>
-  </div>
-  <button class="nav__burger" id="burger" aria-label="Open menu" aria-expanded="false"><b></b>Menu</button>
-</nav>
-<div class="menu" id="menu" aria-hidden="true">
-  <a href="../">Home</a>
-  <a href="../#work">Work</a>
-  <a href="../#services">Services</a>
-  <a href="./">Résumé</a>
-  <a href="../blog/">Blog</a>
-  <a href="../#contact">Contact</a>
-</div>
-
-<header class="rhead">
-  <div class="rhead__glow" aria-hidden="true"></div>
-  <div class="rhead__in">
-    <p class="eyebrow">Résumé</p>
-    <h1>Lars Holmström</h1>
-    <p class="rhead__role">Web designer &amp; full-stack developer</p>
-    <div class="rhead__meta">
-      <span>Melbourne, Australia</span>
-      <span>Available for select projects</span>
-      <a class="js-mail" data-u="larsh.dev" data-d="proton.me" href="#"><svg aria-hidden="true"><use href="#i-mail"/></svg><span data-mail-label>Email</span></a>
-      <a href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-github"/></svg>GitHub</a>
-      <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-x"/></svg>X</a>
-      <a class="rhead__print" href="#" onclick="window.print();return false;"><svg aria-hidden="true"><use href="#i-print"/></svg>Print / Save PDF</a>
+<footer class="foot" aria-label="Footer">
+  <div class="footcard">
+    <div class="footrow">
+      <nav class="fbtns" aria-label="Footer links">
+        <a class="fbtn" href="../work.html"><span class="t">Work</span><span class="a">→</span></a>
+        <a class="fbtn" href="../index.html#services"><span class="t">Services</span><span class="a">→</span></a>
+        <a class="fbtn" href="../blog/"><span class="t">Blog</span><span class="a">→</span></a>
+        <a class="fbtn" href="./"><span class="t">Résumé</span><span class="a">→</span></a>
+      </nav>
+      <span class="fstatus mono">● OPEN TO NEW PROJECTS · MELBOURNE</span>
     </div>
-  </div>
-</header>
-
-<main class="pad">
-  <section class="sec">
-    <p class="summary"><b>Solo developer building privacy-first products end to end.</b> I design and ship native apps and client-side web tools from a blank canvas to the App Store and the browser: interface and motion, front end and back end, and the self-hosted homelab it runs on. Client-heavy, server-light architectures; zero third-party calls where it counts.</p>
-  </section>
-
-  <section class="sec" id="experience">
-    <div class="sec__head"><p class="eyebrow">Selected work</p><h2 class="disp">Experience</h2></div>
-    <div id="exp-list"></div>
-  </section>
-
-  <section class="sec" id="skills">
-    <div class="sec__head"><p class="eyebrow">Stack</p><h2 class="disp">Languages &amp; frameworks</h2></div>
-    <div class="skills__groups">
-      <div class="skill-group"><div class="skill-group__cat">Languages</div><div class="skill-group__items">
-        <span class="skill"><svg aria-hidden="true"><use href="#t-swift"/></svg>Swift</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-typescript"/></svg>TypeScript</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-javascript"/></svg>JavaScript</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-python"/></svg>Python</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-php"/></svg>PHP</span>
-      </div></div>
-      <div class="skill-group"><div class="skill-group__cat">Frameworks</div><div class="skill-group__items">
-        <span class="skill"><svg aria-hidden="true"><use href="#t-swift"/></svg>SwiftUI</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-react"/></svg>React</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-react"/></svg>React Native</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-expo"/></svg>Expo</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-nextjs"/></svg>Next.js</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-node"/></svg>Node.js</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-tailwind"/></svg>Tailwind CSS</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-wordpress"/></svg>WordPress</span>
-      </div></div>
-      <div class="skill-group"><div class="skill-group__cat">Data</div><div class="skill-group__items">
-        <span class="skill"><svg aria-hidden="true"><use href="#i-database"/></svg>SwiftData</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-sqlite"/></svg>SQLite</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#i-database"/></svg>WatermelonDB</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#i-database"/></svg>CloudKit</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#i-database"/></svg>PostgreSQL</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-supabase"/></svg>Supabase</span>
-      </div></div>
-      <div class="skill-group"><div class="skill-group__cat">Infrastructure</div><div class="skill-group__items">
-        <span class="skill"><svg aria-hidden="true"><use href="#t-docker"/></svg>Docker</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-proxmox"/></svg>Proxmox</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-cloudflare"/></svg>Cloudflare</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-vercel"/></svg>Vercel</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-git"/></svg>Git</span>
-        <span class="skill"><svg aria-hidden="true"><use href="#t-linux"/></svg>Linux</span>
-      </div></div>
+    <span class="wordmark" aria-hidden="true">LARSH.DEV</span>
+    <div class="fmeta mono">
+      <span>© LARS HOLMSTRÖM · <a href="../privacy/">PRIVACY</a></span>
+      <span>BUILT BY HAND. COOKIELESS. RESPECTS DO NOT TRACK.</span>
     </div>
-  </section>
-
-  <section class="sec" id="homelab">
-    <div class="sec__head"><p class="eyebrow">Homelab</p><h2 class="disp">What I run</h2></div>
-    <div class="lab-specs">
-      <div class="lab-row"><div class="lab-row__cat">Virtualisation</div><div class="lab-row__items">
-        <div class="lab-row__item"><b>Proxmox</b><span class="sep">·</span>VM/LXC host running everything below</div>
-        <div class="lab-row__item"><b>Docker + Compose</b><span class="sep">·</span>service deployment &amp; orchestration</div>
-        <div class="lab-row__item"><b>Portainer</b><span class="sep">·</span>container management across hosts</div>
-        <div class="lab-row__item"><b>Linux</b><span class="sep">·</span>Ubuntu / Arch / Debian, headless</div>
-        <div class="lab-row__item"><b>Arch VM + systemd</b><span class="sep">·</span>persistent Python Discord bot (PUBG API + Steam RSS)</div>
-      </div></div>
-      <div class="lab-row"><div class="lab-row__cat">Networking &amp; access</div><div class="lab-row__items">
-        <div class="lab-row__item"><b>Unifi</b><span class="sep">·</span>managed network + segmentation</div>
-        <div class="lab-row__item"><b>Caddy</b><span class="sep">·</span>reverse proxy, automatic TLS</div>
-        <div class="lab-row__item"><b>PiHole + Unbound</b><span class="sep">·</span>DNS filtering with recursive resolution</div>
-        <div class="lab-row__item"><b>Tailscale</b><span class="sep">·</span>WireGuard-based secure remote access</div>
-      </div></div>
-      <div class="lab-row"><div class="lab-row__cat">Storage</div><div class="lab-row__items">
-        <div class="lab-row__item"><b>ZFS</b><span class="sep">·</span>snapshots, integrity, redundancy</div>
-      </div></div>
-      <div class="lab-row"><div class="lab-row__cat">Observability &amp; services</div><div class="lab-row__items">
-        <div class="lab-row__item"><b>Uptime Kuma</b><span class="sep">·</span>service health monitoring &amp; alerting</div>
-        <div class="lab-row__item"><b>Grafana + Teslamate</b><span class="sep">·</span>self-hosted vehicle telemetry dashboards</div>
-        <div class="lab-row__item"><b>Jellyfin</b><span class="sep">·</span>self-hosted media streaming</div>
-      </div></div>
-    </div>
-  </section>
-</main>
-
-<footer class="rfoot">
-  <div class="rfoot__in">
-    <span>Lars Holmström · Melbourne, Australia · <span id="year"></span> · <a href="../privacy/">Privacy</a></span>
-    <span><a href="../">← Back to larsh.dev</a></span>
   </div>
 </footer>
 
-<script src="../mailto.js"></script>
-<script src="../analytics.js"></script>
+<div class="page" id="page">
+  <div class="pagebg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav" id="nav">
+    <div class="navpill" id="navpill">
+      <div class="navrow">
+        <a class="brand" href="../index.html">larsh.dev</a>
+        <button class="navbtn" id="navbtn" aria-expanded="false" aria-label="Menu"><span class="ic"><i></i><i></i><i></i></span></button>
+      </div>
+      <nav class="menu" aria-label="Site">
+        <a class="mlink" href="../work.html"><span class="n mono">01</span><span class="t">Work</span><span class="a">→</span></a>
+        <a class="mlink" href="../index.html#sites"><span class="n mono">02</span><span class="t">Sites</span><span class="a">→</span></a>
+        <a class="mlink" href="../index.html#services"><span class="n mono">03</span><span class="t">Services</span><span class="a">→</span></a>
+        <a class="mlink" href="../blog/"><span class="n mono">04</span><span class="t">Blog</span><span class="a">→</span></a>
+        <a class="mlink" href="../index.html#contact"><span class="n mono">05</span><span class="t">Contact</span><span class="a">→</span></a>
+      </nav>
+      <div class="mfoot">
+        <div class="socials">
+          <a class="js-mail" data-u="larsh.dev" data-d="proton.me" href="#" aria-label="Email"><svg class="stroke" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></a>
+          <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
+          <a href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+        </div>
+        <span class="clock mono" id="clock">MELB --:--</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap resume">
+    <header class="rhead" data-r>
+      <h1>Lars Holmström</h1>
+      <p class="role">Web designer &amp; full-stack developer</p>
+      <div class="meta">
+        <span>Melbourne, Australia</span>
+        <span>Available for select projects</span>
+        <a class="js-mail" data-u="larsh.dev" data-d="proton.me" href="#"><svg aria-hidden="true"><use href="#i-mail"/></svg><span class="addr">Email</span></a>
+        <a href="https://github.com/lars-1987" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-github"/></svg>GitHub</a>
+        <a href="https://x.com/larsitodev" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-x"/></svg>X</a>
+        <a class="print" href="#" onclick="window.print();return false;"><svg aria-hidden="true"><use href="#i-print"/></svg>Print / Save PDF</a>
+      </div>
+    </header>
+
+    <section class="rsec" data-r>
+      <p class="summary"><b>Solo developer building privacy-first products end to end.</b> I design and ship native apps and client-side web tools from a blank canvas to the App Store and the browser: interface and motion, front end and back end, and the self-hosted homelab it runs on. Client-heavy, server-light architectures; zero third-party calls where it counts.</p>
+    </section>
+
+    <section class="rsec" id="experience">
+      <h2 data-r>Experience</h2>
+      <div id="exp-list"></div>
+    </section>
+
+    <section class="rsec" id="skills">
+      <h2 data-r>Languages &amp; frameworks</h2>
+      <div class="skills" data-r>
+        <div class="skill-group"><div class="skill-group__cat">Languages</div><div class="skill-group__items">
+          <span class="skill"><svg aria-hidden="true"><use href="#t-swift"/></svg>Swift</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-typescript"/></svg>TypeScript</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-javascript"/></svg>JavaScript</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-python"/></svg>Python</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-php"/></svg>PHP</span>
+        </div></div>
+        <div class="skill-group"><div class="skill-group__cat">Frameworks</div><div class="skill-group__items">
+          <span class="skill"><svg aria-hidden="true"><use href="#t-swift"/></svg>SwiftUI</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-react"/></svg>React</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-react"/></svg>React Native</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-expo"/></svg>Expo</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-nextjs"/></svg>Next.js</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-node"/></svg>Node.js</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-tailwind"/></svg>Tailwind CSS</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-wordpress"/></svg>WordPress</span>
+        </div></div>
+        <div class="skill-group"><div class="skill-group__cat">Data</div><div class="skill-group__items">
+          <span class="skill"><svg aria-hidden="true"><use href="#i-database"/></svg>SwiftData</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-sqlite"/></svg>SQLite</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#i-database"/></svg>WatermelonDB</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#i-database"/></svg>CloudKit</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#i-database"/></svg>PostgreSQL</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-supabase"/></svg>Supabase</span>
+        </div></div>
+        <div class="skill-group"><div class="skill-group__cat">Infrastructure</div><div class="skill-group__items">
+          <span class="skill"><svg aria-hidden="true"><use href="#t-docker"/></svg>Docker</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-proxmox"/></svg>Proxmox</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-cloudflare"/></svg>Cloudflare</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-vercel"/></svg>Vercel</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-git"/></svg>Git</span>
+          <span class="skill"><svg aria-hidden="true"><use href="#t-linux"/></svg>Linux</span>
+        </div></div>
+      </div>
+    </section>
+
+    <section class="rsec" id="homelab">
+      <h2 data-r>Homelab</h2>
+      <div class="lab" data-r>
+        <div class="lab-row"><div class="lab-row__cat">Virtualisation</div><div class="lab-row__items">
+          <div class="lab-row__item"><b>Proxmox</b><span class="sep">·</span>VM/LXC host running everything below</div>
+          <div class="lab-row__item"><b>Docker + Compose</b><span class="sep">·</span>service deployment &amp; orchestration</div>
+          <div class="lab-row__item"><b>Portainer</b><span class="sep">·</span>container management across hosts</div>
+          <div class="lab-row__item"><b>Linux</b><span class="sep">·</span>Ubuntu / Arch / Debian, headless</div>
+          <div class="lab-row__item"><b>Arch VM + systemd</b><span class="sep">·</span>persistent Python Discord bot (PUBG API + Steam RSS)</div>
+        </div></div>
+        <div class="lab-row"><div class="lab-row__cat">Networking &amp; access</div><div class="lab-row__items">
+          <div class="lab-row__item"><b>Unifi</b><span class="sep">·</span>managed network + segmentation</div>
+          <div class="lab-row__item"><b>Caddy</b><span class="sep">·</span>reverse proxy, automatic TLS</div>
+          <div class="lab-row__item"><b>PiHole + Unbound</b><span class="sep">·</span>DNS filtering with recursive resolution</div>
+          <div class="lab-row__item"><b>Tailscale</b><span class="sep">·</span>WireGuard-based secure remote access</div>
+        </div></div>
+        <div class="lab-row"><div class="lab-row__cat">Storage</div><div class="lab-row__items">
+          <div class="lab-row__item"><b>ZFS</b><span class="sep">·</span>snapshots, integrity, redundancy</div>
+        </div></div>
+        <div class="lab-row"><div class="lab-row__cat">Observability &amp; services</div><div class="lab-row__items">
+          <div class="lab-row__item"><b>Uptime Kuma</b><span class="sep">·</span>service health monitoring &amp; alerting</div>
+          <div class="lab-row__item"><b>Grafana + Teslamate</b><span class="sep">·</span>self-hosted vehicle telemetry dashboards</div>
+          <div class="lab-row__item"><b>Jellyfin</b><span class="sep">·</span>self-hosted media streaming</div>
+        </div></div>
+      </div>
+    </section>
+  </div>
+
+</div>
+
+<div class="endspace" aria-hidden="true"></div>
+<div class="toast mono" id="toast" role="status"></div>
+
 <script src="../projects.js"></script>
 <script>
 (function(){
-  var yr=document.getElementById('year'); if(yr) yr.textContent=new Date().getFullYear();
-  [].forEach.call(document.querySelectorAll('.js-mail'),function(a){
-    var addr=a.getAttribute('data-u')+String.fromCharCode(64)+a.getAttribute('data-d');
-    a.setAttribute('href','mailto:'+addr);
-    var l=a.querySelector('[data-mail-label]'); if(l) l.textContent=addr;
-  });
   var ICON=function(id){return '<svg aria-hidden="true"><use href="#'+id+'"/></svg>';};
   var list=document.getElementById('exp-list');
   (window.PROJECTS||[]).forEach(function(p){
-    var links=p.links.map(function(l){
+    var links=(p.links||[]).map(function(l){
       if(l.d) return '<a class="off" aria-disabled="true">'+l.t+'</a>';
       var href = /^https?:/.test(l.h) ? l.h : '../'+l.h;
       return '<a href="'+href+'" target="_blank" rel="noopener noreferrer">'+l.t+' '+ICON('i-arrow-ur')+'</a>';
     }).join('');
-    var pts=p.points.map(function(x){return '<li>'+x+'</li>';}).join('');
-    var el=document.createElement('article'); el.className='exp'; el.id=p.id;
+    var pts=(p.points||[]).map(function(x){return '<li>'+x+'</li>';}).join('');
+    var el=document.createElement('article'); el.className='exp'; el.id=p.id; el.setAttribute('data-r','');
     el.innerHTML=
       '<div class="exp__head"><h3 class="exp__name">'+p.name+'</h3>'+
         '<span class="exp__meta'+(p.wip?' wip':'')+'">'+p.typeLabel+' · '+p.status+'</span></div>'+
@@ -319,16 +316,13 @@ html.menu-open .menu{transform:none;visibility:visible}
       '<div class="exp__links">'+links+'</div>';
     list.appendChild(el);
   });
-  // jump to a project when arriving via #id from the Work grid's "Read more"
-  if(location.hash.length>1){ var tgt=document.getElementById(location.hash.slice(1)); if(tgt) setTimeout(function(){ tgt.scrollIntoView(); tgt.classList.add('exp--target'); },80); }
-  var burger=document.getElementById('burger');
-  if(burger){
-    var setM=function(o){document.documentElement.classList.toggle('menu-open',o);burger.setAttribute('aria-expanded',o?'true':'false');};
-    burger.addEventListener('click',function(){setM(!document.documentElement.classList.contains('menu-open'));});
-    [].forEach.call(document.querySelectorAll('#menu a'),function(a){a.addEventListener('click',function(){setM(false);});});
-    addEventListener('keydown',function(e){if(e.key==='Escape')setM(false);});
-  }
+  // jump to a project when arriving via #id from the Work grid
+  if(location.hash.length>1){ var tgt=document.getElementById(location.hash.slice(1));
+    if(tgt) setTimeout(function(){ tgt.scrollIntoView(); tgt.classList.add('exp--target'); },120); }
 })();
 </script>
+<script src="/vendor/lenis.min.js"></script>
+<script src="../site.js?v=2"></script>
+<script src="../analytics.js"></script>
 </body>
 </html>
