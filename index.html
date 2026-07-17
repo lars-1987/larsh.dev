@@ -118,9 +118,14 @@ a{color:inherit;text-decoration:none}
 .display-gl{position:absolute;left:0;top:-90px;width:100%;height:calc(100% + 180px);
   pointer-events:none;mix-blend-mode:difference;transform:translateZ(0)}
 .display-wrap.gl .display{opacity:0}
+/* captions stack in the bottom-left (© over the city) and slide out of the way as
+   the fold scrubs the portrait up through them — see updatePortrait(). `translate`
+   holds the centring so `transform` is free for the scrub; the two compose. */
 .hero-foot{position:absolute;left:50%;bottom:36px;translate:-50% 0;
-  width:var(--pw);display:flex;align-items:flex-end;justify-content:space-between}
-.hero-foot .year{font-weight:600;font-size:clamp(22px,2.8vw,40px);letter-spacing:-.02em}
+  width:var(--pw);display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+  will-change:transform,opacity}
+.hero-foot .year{font-weight:600;font-size:clamp(22px,2.8vw,40px);letter-spacing:-.02em;
+  line-height:1}
 .hero-foot .loc{font-size:clamp(10px,.9vw,13px);letter-spacing:.06em}
 
 /* hero load-in */
@@ -130,9 +135,21 @@ a{color:inherit;text-decoration:none}
   from{opacity:0;transform:translateZ(0) translateY(36px);clip-path:inset(-8% 0 62% 0)}
   to{opacity:1;transform:translateZ(0) translateY(0);clip-path:inset(-8% 0 -8% 0)}}
 .navpill{animation:navIn .7s var(--ease) .15s backwards}
-.display-wrap{animation:displayIn 1s var(--ease) .3s backwards}
-.hero-foot .year{animation:riseIn .7s var(--ease) .9s backwards}
-.hero-foot .loc{animation:riseIn .7s var(--ease) 1.02s backwards}
+/* Never animate .display-wrap: transform/opacity/clip-path each make it a stacking
+   context, and a stacking context ISOLATES mix-blend-mode. The difference blend then
+   has no backdrop and the letters render white for the animation's whole run, then
+   snap to black the instant it ends and the isolation collapses. So the load-in runs
+   on the blended elements themselves — an element's own stacking context isolates its
+   descendants, not its own blend against the page. JS adds .in once Archivo has loaded
+   and the GL texture is repainted, so the headline never reveals in a fallback font. */
+.hero:not(.in) .display,
+.hero:not(.in) .display-gl,
+.hero:not(.in) .year,
+.hero:not(.in) .loc{opacity:0}
+.hero.in .display-wrap:not(.gl) .display{animation:displayIn 1s var(--ease) backwards}
+.hero.in .display-gl{animation:displayIn 1s var(--ease) backwards}
+.hero.in .year{animation:riseIn .7s var(--ease) .55s backwards}
+.hero.in .loc{animation:riseIn .7s var(--ease) .67s backwards}
 
 .about{position:relative;min-height:100svh;display:grid;align-content:center}
 .about .grid{width:var(--pw);margin-inline:auto;display:grid;
@@ -329,7 +346,11 @@ h2{font-weight:600;font-size:clamp(36px,4.6vw,64px);letter-spacing:-.02em}
 }
 @media (prefers-reduced-motion:reduce){
   [data-r]{opacity:1;translate:none;transition:none}
-  .navpill,.display-wrap,.hero-foot .year,.hero-foot .loc{animation:none}
+  .navpill,.display,.display-gl,.hero-foot .year,.hero-foot .loc{animation:none}
+  /* no gate: show the hero outright rather than wait on fonts */
+  .hero:not(.in) .display,.hero:not(.in) .display-gl,
+  .hero:not(.in) .year,.hero:not(.in) .loc{opacity:1}
+  .display-wrap.gl .display{opacity:0}
   *{scroll-behavior:auto!important}
 }
 </style>
@@ -738,6 +759,7 @@ void main(){
 
   /* ---------- portrait: coin-spin to colour through the fold ---------- */
   const fold = $('#fold'), portrait = $('#portrait');
+  const hero = $('#top'), heroFoot = $('.hero-foot');
   let vh = innerHeight, dropY = 0, introP = reduced ? 1 : 0;
   // hero state: the top of the circle sits just under the first display line
   const measureDrop = () => {
@@ -761,6 +783,15 @@ void main(){
     portrait.style.transform =
       `perspective(1200px) translateY(${((1 - e) * dropY).toFixed(1)}px) rotateY(${(e * 360).toFixed(1)}deg) scale(${((1 + e * .04) * (.88 + .12 * introP)).toFixed(3)})`;
     portrait.style.filter = `grayscale(${(1 - e).toFixed(3)})`;
+    // captions: the hero scrolls up while the portrait stays pinned, so the stacked
+    // block would ride straight through the spinning circle. Clear it out to the left
+    // early in the fold (done by p≈.34) so the portrait sweeps into an empty frame.
+    if (heroFoot) {
+      const q = Math.min(1, Math.max(0, (p - .04) / .3));
+      const eq = q * q * (3 - 2 * q); // smoothstep
+      heroFoot.style.transform = `translateX(${(-eq * 130).toFixed(1)}px)`;
+      heroFoot.style.opacity = (1 - eq).toFixed(3);
+    }
     // about lines: cascade keyed to fold progress so the last line lands as
     // the portrait reaches dead centre (e≈1). START/END framed in p; K = overlap.
     if (aboutLines.length) {
@@ -794,6 +825,12 @@ void main(){
     };
     requestAnimationFrame(irun);
   }
+  // hold the hero until its final look is settled: Archivo loaded (paintTex re-runs on
+  // fonts.ready — registered earlier, so it repaints first) plus two frames for the GL
+  // draw to land. Raced with a timeout so a slow/absent font load still reveals.
+  const fontsReady = (document.fonts && document.fonts.ready) || Promise.resolve();
+  Promise.race([fontsReady, new Promise(r => setTimeout(r, 900))]).then(() =>
+    requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add('in'))));
 
   /* ---------- section reveals ---------- */
   const io = new IntersectionObserver(entries => {
