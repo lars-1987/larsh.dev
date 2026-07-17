@@ -17,6 +17,7 @@ def _ttf(src, out, axes=None):
     f.save(p)
     return p
 ARCHIVO_800 = _ttf("vendor/fonts/archivo-100-900-latin.woff2", "archivo-800.ttf", {"wght": 800, "wdth": 100})
+ARCHIVO_HERO = _ttf("vendor/fonts/archivo-100-900-latin.woff2", "archivo-hero.ttf", {"wght": 800, "wdth": 118})  # matches the extended site hero
 MONO = _ttf("vendor/fonts/martian-mono-300-latin.woff2", "mono.ttf")
 ARCHIVO_600 = _ttf("vendor/fonts/archivo-100-900-latin.woff2", "archivo-600.ttf", {"wght": 600, "wdth": 100})
 
@@ -51,13 +52,15 @@ draw.text((px0 + 28, py0 + ph / 2), pt, font=pill_font, fill=PAPER, anchor="lm")
 chip = ph - 16
 draw.rounded_rectangle((px0 + pw - chip - 8, py0 + 8, px0 + pw - 8, py0 + 8 + chip), radius=12, fill=PAPER)
 
-# headline, centered (the hero line)
-h_font = ImageFont.truetype(ARCHIVO_800, 116)
+# headline, centered (the hero line) — extended cut to match the site hero
+h_font = ImageFont.truetype(ARCHIVO_HERO, 108)
 def centered(text, y):
     tw = draw.textlength(text, font=h_font)
     draw.text(((W - tw) / 2, y), text, font=h_font, fill=INK)
-centered("WEB DESIGN", 232)
-centered("+ FULL STACK", 350)
+    return tw
+_w1 = centered("WEB DESIGN", 236)
+_w2 = centered("+ FULL STACK", 350)
+print(f"headline widths @wdth118/108px: WEB DESIGN={_w1:.0f}, + FULL STACK={_w2:.0f} (card={W}, safe<1120)")
 
 # corner captions, like the hero
 cap_font = ImageFont.truetype(ARCHIVO_600, 40)

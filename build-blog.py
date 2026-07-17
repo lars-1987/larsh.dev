@@ -343,7 +343,7 @@ def page(title, desc, body_html, extra_script="", head_extra=""):
 {head_extra}
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="stylesheet" href="/vendor/fonts.css" />
-<link rel="stylesheet" href="../site.css?v=2" />
+<link rel="stylesheet" href="../site.css?v=3" />
 <style>{BLOG_CSS}</style>
 </head>
 <body>
@@ -357,7 +357,7 @@ def page(title, desc, body_html, extra_script="", head_extra=""):
 <div class="endspace" aria-hidden="true"></div>
 <div class="toast mono" id="toast" role="status"></div>
 <script src="/vendor/lenis.min.js"></script>
-<script src="../site.js?v=2"></script>
+<script src="../site.js?v=3"></script>
 {extra_script}
 <script src="/analytics.js"></script>
 </body>

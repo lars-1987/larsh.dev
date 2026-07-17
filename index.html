@@ -33,6 +33,14 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:auto}
 html,body{background:var(--paper)}
+/* page scrollbar: ink pill like the nav, rounded + slightly inset via a transparent
+   border (background-clip keeps the fill inside it, so the border reads as a gap).
+   Scoped to the viewport (html) so inner textareas / code blocks keep default bars.
+   Webkit/Chromium/Safari; Firefox gets colour only (no radius/inset). */
+html::-webkit-scrollbar{width:20px}
+html::-webkit-scrollbar-track{background:transparent}
+html::-webkit-scrollbar-thumb{background:var(--ink);border-radius:12px;border:4px solid transparent;background-clip:padding-box}
+html{scrollbar-color:var(--ink) transparent}
 body{
   font-family:'Archivo',ui-sans-serif,system-ui,sans-serif;
   color:var(--ink);
@@ -70,15 +78,17 @@ a{color:inherit;text-decoration:none}
 .brand{color:var(--paper);font-weight:600;font-size:20px;letter-spacing:-.02em}
 .navbtn{width:44px;height:44px;border:0;border-radius:12px;background:var(--paper);
   color:var(--ink);cursor:pointer;display:grid;place-items:center;font:inherit}
-.navbtn .ic{display:block;width:14px;height:14px;position:relative}
-.navbtn .ic i{position:absolute;left:50%;top:50%;width:3px;height:3px;border-radius:50%;
-  background:var(--ink);translate:-50% -50%;transition:all .3s var(--ease)}
-.navbtn .ic i:nth-child(1){margin-left:-6px}
-.navbtn .ic i:nth-child(3){margin-left:6px}
-.nav.open .navbtn .ic i{width:14px;height:2px;border-radius:1px;margin:0}
-.nav.open .navbtn .ic i:nth-child(1){rotate:45deg}
+/* hamburger → X. Three stacked bars; on open the middle fades and the outer two
+   slide to centre and cross. Only transform/opacity animate, so it stays smooth. */
+.navbtn .ic{display:block;width:16px;height:12px;position:relative}
+.navbtn .ic i{position:absolute;left:0;width:16px;height:2px;border-radius:1px;
+  background:var(--ink);transition:transform .32s var(--ease),opacity .18s var(--ease)}
+.navbtn .ic i:nth-child(1){top:0}
+.navbtn .ic i:nth-child(2){top:5px}
+.navbtn .ic i:nth-child(3){top:10px}
+.nav.open .navbtn .ic i:nth-child(1){transform:translateY(5px) rotate(45deg)}
 .nav.open .navbtn .ic i:nth-child(2){opacity:0}
-.nav.open .navbtn .ic i:nth-child(3){rotate:-45deg}
+.nav.open .navbtn .ic i:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
 .menu{padding:14px 28px 0}
 .menu a.mlink{position:relative;display:flex;align-items:baseline;gap:16px;padding:5px 0;
   color:var(--paper);font-weight:600;font-size:29px;letter-spacing:-.01em;
@@ -109,7 +119,11 @@ a{color:inherit;text-decoration:none}
 .hero{position:relative;min-height:100svh;margin-top:-100svh;
   display:flex;flex-direction:column;justify-content:center;align-items:center}
 .display-wrap{position:relative;margin-top:-6svh}
-.display{color:#fff;mix-blend-mode:difference;text-align:center;
+/* hero display face = Archivo instanced at wdth 118% (wider than Majd's default 100%
+   for more horizontal command), subset to the hero glyphs (~2.5KB). Static single
+   weight — the canvas draws a fixed weight anyway, so nothing dynamic is lost. */
+@font-face{font-family:'Archivo Ext';src:url(/vendor/fonts/archivo-hero-118.woff2) format('woff2');font-weight:800;font-display:block}
+.display{color:#fff;mix-blend-mode:difference;text-align:center;font-family:'Archivo Ext',sans-serif;
   font-weight:800;font-size:clamp(49px,10.3vw,148px);line-height:.92;
   letter-spacing:-.025em;user-select:none;
   transform:translateZ(0)} /* Safari: promote the blended element to its own layer */
@@ -678,7 +692,7 @@ void main(){
       const c2 = t2.getContext('2d');
       const fs = parseFloat(getComputedStyle(display).fontSize) * dpr;
       c2.fillStyle = '#fff';
-      c2.font = `800 ${fs}px Archivo, sans-serif`;
+      c2.font = `800 ${fs}px 'Archivo Ext', sans-serif`;
       c2.textAlign = 'center'; c2.textBaseline = 'alphabetic';
       if ('letterSpacing' in c2) c2.letterSpacing = (fs * -.025).toFixed(1) + 'px';
       const lh = fs * .92;
